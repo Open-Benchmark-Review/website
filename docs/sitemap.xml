@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://openbenchmarkreview.org/</loc></url>
+  <url><loc>https://openbenchmarkreview.org/methodology.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/about.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/submit.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/benchmarks/</loc></url>
+  <url><loc>https://openbenchmarkreview.org/benchmarks/hackbench.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/benchmarks/frontiercs-2.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/benchmarks/deeprsi.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/benchmarks/frontierml.html</loc></url>
+  <url><loc>https://openbenchmarkreview.org/benchmarks/ai4ai-bench.html</loc></url>
+</urlset>

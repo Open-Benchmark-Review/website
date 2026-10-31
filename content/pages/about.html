@@ -1,0 +1,37 @@
+<!-- title: About -->
+<!-- lead: Open Benchmark Review is an independent project that checks whether AI benchmark scores mean what they claim, and publishes the evidence so anyone can check the checking. -->
+<!-- toc -->
+<li><a href="#what">What we do</a></li>
+<li><a href="#how">How reviews are done</a></li>
+<li><a href="#fixed">Fixed benchmarks</a></li>
+<li><a href="#notice">Developer notice</a></li>
+<li><a href="#disagree">Disagreeing with a review</a></li>
+<li><a href="#contact">Contact</a></li>
+<!-- main -->
+<section id="what" aria-labelledby="a-what">
+  <h2 id="a-what">What we do</h2>
+  <div class="prose">
+    <p>Benchmarks are the main public way to measure what AI systems can do, and their leaderboards shape what people build, buy and regulate. When a benchmark grades wrongly, its leaderboard can mislead everyone who reads it.</p>
+    <p>We review public benchmarks against a published rubric. Each review reads the tasks, the graders and, where they are released, the agents' own runs, then says whether the scores can be read the way they are presented. Every finding cites its evidence, and every review ships its task log and analysis scripts.</p>
+  </div>
+</section>
+<section id="how" aria-labelledby="a-how">
+  <h2 id="a-how">How reviews are done</h2>
+  <p>Each review follows a written protocol that is published with it. In several reviews, the per-task reading was done by AI model reviewers working under that protocol, and a lead auditor re-checked every defect the verdict relies on against the source. Each review's limitations section says exactly how it was done and what could not be checked.</p>
+</section>
+<section id="fixed" aria-labelledby="a-fixed">
+  <h2 id="a-fixed">If a benchmark is fixed, does the verdict change?</h2>
+  <p>A review applies to the version it names. A new version can be reviewed again and gets its own verdict. Reviews stop once the threshold is clearly crossed, so a fixed version may still have other problems.</p>
+</section>
+<section id="notice" aria-labelledby="a-notice">
+  <h2 id="a-notice">Are developers told before publication?</h2>
+  <p>Yes. We send each review to the benchmark's developers before we publish it, and we link any response they send.</p>
+</section>
+<section id="disagree" aria-labelledby="a-disagree">
+  <h2 id="a-disagree">I disagree with a review</h2>
+  <p>Open an issue on <a href="{{repo}}/issues">GitHub</a> with the review, the finding and your evidence, or email us. If you develop the benchmark and want your response linked from the review, say so. Corrections are published in the review and noted in its history.</p>
+</section>
+<section id="contact" aria-labelledby="a-contact">
+  <h2 id="a-contact">Contact</h2>
+  <p>Email <span class="mono">{{email}}</span>. We read everything; corrections and developer responses come first.</p>
+</section>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DeepRSI review · Open Benchmark Review</title>
+<meta name="description" content="DeepRSI is rated Flawed. Scored attempts that break their own prompt&#x27;s rules, disqualifications under a rule the prompt never states, and no published disqualification criteria.">
+<link rel="canonical" href="https://openbenchmarkreview.org/benchmarks/deeprsi.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Open Benchmark Review">
+<meta property="og:title" content="DeepRSI review · Open Benchmark Review">
+<meta property="og:description" content="DeepRSI is rated Flawed. Scored attempts that break their own prompt&#x27;s rules, disqualifications under a rule the prompt never states, and no published disqualification criteria.">
+<meta property="og:url" content="https://openbenchmarkreview.org/benchmarks/deeprsi.html">
+<meta property="og:image" content="https://openbenchmarkreview.org/assets/og/deeprsi.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DeepRSI review · Open Benchmark Review">
+<meta name="twitter:description" content="DeepRSI is rated Flawed. Scored attempts that break their own prompt&#x27;s rules, disqualifications under a rule the prompt never states, and no published disqualification criteria.">
+<meta name="twitter:image" content="https://openbenchmarkreview.org/assets/og/deeprsi.png">
+<meta name="theme-color" content="#8B1E1A">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/obr-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="">
+<header class="site-header"><div class="container"><a class="brand" href="../index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="../benchmarks/index.html" aria-current="page">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a></nav></div></header><div class="page-head"><div class="container"><div class="crumbs"><a href="../index.html">Open Benchmark Review</a> · <a href="index.html">Benchmarks</a> · <a href="index.html#ml-benchmarks">ML Benchmarks</a></div><h1>DeepRSI</h1><div class="facts"><p><strong>Benchmark creator:</strong> <a href="https://www.hillclimb.com/" target="_blank" rel="noopener">Hillclimb</a> (Pruthvi Rajaghatta, Pranav Devarinti, Alex Berezovsky, Jun Park et al.)</p><p><strong>Original benchmark:</strong> <a href="https://www.deeprsi.com" target="_blank" rel="noopener">deeprsi.com</a></p><p><strong>Version reviewed:</strong> 15 tasks, 180 attempts; leaderboard of Oct. 23, 2026</p><p><strong>Verdict:</strong> <span class="badge flawed"><span class="mk" aria-hidden="true">*</span>Flawed</span></p><p><a href="https://github.com/Open-Benchmark-Review/audits/tree/main/audits/deeprsi">Full report, task log and scripts</a></p></div></div></div><div class="body"><div class="container layout"><nav class="toc" aria-label="On this page"><span class="label">On this page</span><ol>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#representative-errors">Representative Errors</a></li>
+        <li><a href="#errors">Errors</a></li>
+        <li><a href="#rubric">Rubric</a>
+          <ol>
+            <li><a href="#reviewability">1. Reviewability</a></li>
+            <li><a href="#scoring">2. Scoring</a></li>
+            <li><a href="#evaluation-quality">3. Evaluation Quality</a></li>
+          </ol>
+        </li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ol></nav><main>
+      <section id="summary" aria-label="Summary">
+        <p class="lede">DeepRSI is an agentic benchmark of 15 open-ended ML research-engineering tasks: training recipes, GPU kernels, estimators and search algorithms. Each model gets two 48-hour attempts per task in the Pi harness, with no internet. A private grader scores the final code on held-out data, and the score is the improvement over the starting code. Some attempts are disqualified by an unpublished process. Models are ranked by an Elo rating built from per-task wins and losses.<sup><a href="#n1">1</a></sup></p>
+        <h3 class="sumh">What we found</h3><ul class="found"><li><strong>6 of the 15 tasks (40%)</strong> contain a wrongly graded attempt. A benchmark is rated Flawed at 20%.</li><li>In five tasks, an attempt that breaks a rule written in its own prompt was scored as valid.</li><li>In one task, five attempts were disqualified under a rule the prompt never mentions. Lifting those disqualifications changes the winner.</li><li>Disqualifications have no published criteria. The same behaviour is disqualified in one attempt and scored in another.</li><li>Each model gets only two attempts per task, against the five the rubric recommends. The scores are imprecise as a result: Fable 5.1's Elo interval runs from 1159 to 2567.</li></ul><p class="holds"><strong>Does the ranking hold?</strong> Yes. Fable 5.1, GPT-6 Astra, Gemini 4 Argon and Kimi K3 keep their places under every correction we tried, and enforcing the rules consistently only swaps the bottom two. The scores themselves don't hold: several results presented as valid break the task rules.</p>
+        <div class="figures" role="list">
+          <div class="fig bad" role="listitem"><b>6 / 15</b><span>tasks with confirmed grading defects</span></div>
+          <div class="fig" role="listitem"><b>5</b><span>rule-breaking attempts scored as valid</span></div>
+          <div class="fig" role="listitem"><b>5</b><span>attempts disqualified under an unstated rule</span></div>
+          <div class="fig" role="listitem"><b>2</b><span>attempts per task and model</span></div>
+        </div>
+      </section>
+
+      <section id="representative-errors" aria-label="Representative errors">
+        <h2>Representative Errors</h2>
+        <ul class="errs">
+          <li><span class="term">Public-label fitting scored as valid.</span> In <code>philly-job-survival-prediction</code>, the task winner, Grok 4.7 <code>ZQBYTSN</code>, ships hundreds of hard-coded logit shifts for named users, virtual clusters and weekdays. They were read off public-set residuals; its notes include "826467 h30 +2.5 … official 0.29084". The prompt says "Do not train on public labels", and the agent itself reasoned that hardcoding public-fit biases "is therefore not allowed". Gemini 4 Argon was disqualified for "Public-label fitting" in the same task. With consistent enforcement, Fable wins the task.</li>
+          <li><span class="term">Weights compiled into source code.</span> In <code>color-swap-puzzle-post-training</code>, GPT-6 Astra <code>eURgQdS</code> hand-constructs and locks embedding, attention and MLP weights in <code>sft.py</code> (<code>self.lock(...)</code>), wiring a solver into the transformer. The prompt forbids weights "even if they're encoded in source files". DeepRSI's own methodology post calls this a "catastrophic reward hack", yet the attempt scored 14.3.<sup><a href="#n4">4</a></sup></li>
+          <li><span class="term">Budget overruns enforced once, missed twice.</span> Grok <code>uQfoSfX</code> was disqualified for "Budget gaming" in the NCA world-model task. In the same task, Grok <code>SuK3gtG</code> trains to <code>min(budget+25, 635)</code> seconds against a 600 s budget, and was scored. In chess, Grok <code>o85kXzg</code> sets its deadline at <code>budget_seconds + 55 - SAVE_MARGIN</code> (<code>train.py:652</code>), and was also scored.</li>
+          <li><span class="term">Memorised public answers.</span> In <code>qwen3-4b-self-judge-filtering</code>, Grok <code>cxmH3Ca</code>'s "judge" makes no model calls. It applies 212 accept rules keyed to specific public reference answers.</li>
+          <li><span class="term">Hidden requirement enforced by disqualification.</span> In <code>large-vocabulary-cross-entropy-acceleration</code>, five of 12 attempts were disqualified for "Forbidden computational shortcut", meaning they dropped low-probability entries from the gradient. The public overview says agents "may not skip unlikely next tokens", but the prompt the agents received does not. The only constraint they were given is the numerical tolerances, and all five passed them. With the disqualifications lifted, Grok <code>ojLuB26</code> (3.79×) beats Fable (3.70×).</li>
+          <li><span class="term">Contested (not counted).</span> In <code>qwen2-5-vl-vqa-latency-reduction</code>, the official winner, GPT-6 Astra <code>UiTsk8e</code> (41.8), answers through a trained scene classifier and a trained question parser feeding a small executor, so the language model never sees the image. Argon was disqualified for "Required-component bypass", but its attempt used a handwritten program, which the prompt forbids. Astra's modules are trained, which it allows. Neither Astra attempt has a reward breakdown.</li>
+        </ul>
+        <p>The private verifier did catch several exploits:</p>
+        <ul>
+          <li>hashed answer tables for the public SIFT queries (private recall 0.816)</li>
+          <li>a codebook trained on the public SIFT queries (public 0.984, private 0.799)</li>
+          <li>a game-tree submission that cleared the public check by exactly one tree</li>
+        </ul>
+        <div><p><strong>Outside scoring defects:</strong></p>
+          <ul>
+            <li><strong>Context cap on one model.</strong> GPT-6 Astra ran through Pi's Azure route, whose registry entry sets a 272,000-token context window against a native 1.05M. It peaked at 307k tokens and was compacted about 12 times per attempt. Every other model ran at or near its native window.<sup><a href="#n5">5</a></sup></li>
+            <li><strong>Re-run batch.</strong> 18 of Astra's 30 attempts were re-run together on Oct. 9, three to four days after the field. The originals are not published and the re-runs lack reward breakdowns.</li>
+            <li><strong>Graded attempts dropped.</strong> Three attempts with complete private grades are excluded from the Elo as "ungraded" because they recorded no checkpoint. This removes Grok's two FlashMLA losses and is worth +58 Elo to Grok.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="errors" aria-label="Errors">
+        <h2>Errors</h2>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Task</th><th>Error type</th><th>Evidence</th></tr></thead>
+            <tbody>
+              <tr><td><code>philly-job-survival-prediction</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>ZQBYTSN</code> (task winner): public-label logit shifts</td></tr>
+              <tr><td><code>color-swap-puzzle-post-training</code></td><td><span class="type t-fp">False Positive</span></td><td>Astra <code>eURgQdS</code>: hand-set weights locked in <code>sft.py</code></td></tr>
+              <tr><td><code>chess-lm-pretraining-recipe</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>o85kXzg</code>: deadline = budget + 35 s (<code>train.py:652</code>)</td></tr>
+              <tr><td><code>nca-world-model-rollout-fidelity</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>SuK3gtG</code>: budget overrun disqualified elsewhere in the task</td></tr>
+              <tr><td><code>qwen3-4b-self-judge-filtering</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>cxmH3Ca</code>: 212 rules keyed to public answers</td></tr>
+              <tr><td><code>large-vocabulary-cross-entropy-acceleration</code></td><td><span class="type t-fn">False Negative</span></td><td>5 disqualifications under a rule absent from the prompt</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tally"><p>Total: <b>6</b> of <b>15</b> tasks (<b>40%</b>): 5 false positive and 1 false negative (hidden requirement). The Flawed threshold is 20%. On the narrowest count, the defect changes the task winner in 2 of 15 tasks (13%), Philly and cross-entropy. The verdict therefore also rests on the second trigger: disqualification is DeepRSI's only enforcement of its task rules, and it has no published criteria and is applied inconsistently. That is an issue that corrupts grading at scale.</p></div>
+
+        <h3>Sensitivity of the leaderboard</h3>
+        <p>We reproduced the published Elo exactly. Correcting the confirmed defects, or any other scoring choice we tested, leaves the top four in place. Ranks are shown below; absolute Elo moves mostly because the scale is re-centred on the starter.</p>
+        <div class="tbl">
+          <table class="sens">
+            <thead><tr><th>Scenario</th><th class="num">Fable</th><th class="num">Astra</th><th class="num">Argon</th><th class="num">Kimi</th><th class="num">Grok</th><th class="num">Flash</th></tr></thead>
+            <tbody>
+              <tr><td>Published Elo (reproduced)</td><td class="num">1 (1548)</td><td class="num">2 (1232)</td><td class="num">3 (965)</td><td class="num">4 (820)</td><td class="num">5 (685)</td><td class="num">6 (643)</td></tr>
+              <tr><td>Count the 3 dropped "ungraded" attempts</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
+              <tr><td>Rewards within 5% count as ties</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
+              <tr><td>Zero the 5 confirmed false positives</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num"><b>6</b></td><td class="num"><b>5</b></td></tr>
+              <tr><td>Lift the hidden-rule disqualifications</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
+              <tr><td>Zero all 33 grey-area and reward-hack attempts</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num"><b>6</b></td><td class="num"><b>5</b></td></tr>
+              <tr><td>Bootstrap: share of replicates at this rank</td><td class="num">99%</td><td class="num">99%</td><td class="num">86%</td><td class="num">70%</td><td class="num">52%</td><td class="num">65%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="rubric" aria-label="Rubric">
+        <h2>Rubric</h2>
+
+        <h3 id="reviewability">1. Reviewability</h3>
+        <div class="opts"><span class="opt on warn">Partial</span></div>
+
+        <h3 id="scoring">2. Scoring</h3>
+
+        <div class="rub">
+          <h4>Scoring</h4>
+          <div class="opts" aria-label="Status"><span class="opt on flag">Flag</span></div>
+          <div class="note"><span class="lbl">Notes</span>6 of 15 tasks (40%) are affected, and the disqualification process is inconsistent; see Errors.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Benchmark Consistency</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>We found no confirmed mixing of versions, but three things are unexplained. 18 GPT-6 Astra attempts were re-run on Oct. 9, with the originals unpublished. A trial cited in the methodology post (<code>ZDjKTPm</code>) is not on the leaderboard. Three graded attempts are excluded as "ungraded". Gemini 4 Argon was run 10 days after the field against frozen ratings, which is disclosed.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Elicitation</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>Agents get 48 hours in a modern minimal harness, with reasoning effort at each provider's maximum and identical auto-resume prompts. All 29 non-voluntary terminations happened after at least 47.6 hours. The caveat is GPT-6 Astra's 272k context cap (native 1.05M). It is #2 regardless, and the cost cannot be measured from the data.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Bias in Evaluation Setup</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>All models share the Pi harness and get equal time and hardware. GPT-6 Astra alone differs on three counts: the provider route, the context cap and the re-run batch. No material advantage is confirmed. Excluding Grok's two "ungraded" FlashMLA losses gives it +58 Elo without changing its rank.</div>
+        </div>
+
+        <h3 id="evaluation-quality">3. Evaluation quality</h3>
+        <div class="tbl">
+          <table class="eq"><thead><tr><th>Check</th><th>What we found</th></tr></thead><tbody><tr><td>Runs per model</td><td><b>2 runs/model/task.</b> Elo intervals are wide (Fable 1159–2567), but the top-four order holds in at least 70% of bootstrap replicates, and #1 and #2 in 99%.</td></tr><tr><td>Enough time and compute</td><td><strong>Yes.</strong> 48 hours and 1–2 GPUs per task. GPT-6 Astra is constrained on context. Sandbox rotation at 24 hours kills running processes.</td></tr><tr><td>Same agent setup for every model</td><td><strong>Yes.</strong> Pi 0.85.1 for every model, native to none. The authors list native harnesses as future work.</td></tr><tr><td>Test data exposure</td><td>0% of tasks were public before release, since they come from Hillclimb's private research collaborations. 100% of trajectories and patches are public now.</td></tr><tr><td>Measures what it claims</td><td><strong>Partly.</strong> The tasks are realistic research-engineering problems. But 71% of attempts score through standard engineering and none was judged novel, so "recursive self-improvement" overstates what is measured.</td></tr></tbody></table>
+        </div>
+      </section>
+
+      <section id="disclaimer" aria-label="Disclaimer">
+        <h2>Disclaimer</h2>
+        <p>This is a full review of all 15 tasks and 180 attempts, without access to the private verifier. Model reviewers classified each attempt from its patch and trajectory, and every counted defect was re-verified by hand. False negatives that only the private verifier would reveal cannot be ruled out.</p>
+      </section>
+
+      <section id="notes" aria-label="Notes">
+        <h2>Notes</h2>
+        <ol class="notes">
+          <li id="n1">Leaderboard and methodology: <a href="https://www.deeprsi.com">deeprsi.com</a>, <a href="https://www.deeprsi.com/blog/">deeprsi.com/blog</a> (Oct. 12, 2026). Epoch AI's listing: <a href="https://epoch.ai/data/benchmark-reviews-documentation/included-benchmarks">Not enough information, Oct. 26, 2026</a>.</li>
+          <li id="n2">Data endpoints: <code>/data/trial-viewer/&lt;trial&gt;.jgz</code>, <code>/data/trajectory-index/&lt;trial&gt;.jgz</code> and <code>/data/trajectory-steps/&lt;trial&gt;/&lt;n&gt;.jgz</code>. Elo parameters and the 3 excluded trials are in <code>/assets/results-oDxM4uUp.js</code>. Data revision <code>v=0b2f9df94f36</code>, generated Oct. 23, 2026 18:10 UTC.</li>
+          <li id="n3">Per-attempt reviews, the adjudication of contested calls, the task log, the setup audit and all scripts are in <a href="https://github.com/openbenchmarkreview/audits/tree/main/audits/deeprsi">audits/deeprsi</a>.</li>
+          <li id="n4">Prompt text for Color-Swap: "Create all training data and learned weights during the run. Don't submit saved data or weights, even if they're encoded in source files." The methodology post describes the same behaviour under "Catastrophic Reward Hack – Astra Writes the Teacher into Weights".</li>
+          <li id="n5">Context windows: GPT-6 Astra <a href="https://developers.openai.com/docs/models/gpt-6-astra">1.05M</a>; Pi registry <a href="https://pi.dev/models/azure/gpt-6-astra"><code>azure-openai-responses</code> contextWindow 272,000</a>; Grok 4.7 <a href="https://docs.x.ai/docs/grok-4-7">500k</a>; Gemini 4 Argon <a href="https://ai.google.dev/gemini-api/docs/models/gemini-4-argon">1,048,576</a>.</li>
+        </ol>
+        <h3>Cite</h3>
+        <div class="cite">Open Benchmark Review (2026), "DeepRSI: Benchmark Review". Reviewed Oct. 27, 2026. github.com/openbenchmarkreview/audits</div>
+      </section>
+
+      <footer>Rubric: Epoch AI Benchmark Reviews, Rubric v1. Verdict categories: Verified, Flawed, Not enough information.</footer>
+    </main></div></div><footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="../benchmarks/index.html">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <span class="mono">reviews@openbenchmarkreview.org</span></p></div></footer>
+</body>
+</html>

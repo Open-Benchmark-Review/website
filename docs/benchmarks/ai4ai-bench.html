@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI4AI-Bench review · Open Benchmark Review</title>
+<meta name="description" content="AI4AI-Bench is rated Flawed. A held-out Sokoban bank built from a seed in the agent&#x27;s own workspace, an image scorer without its promised gates, an unreachable optimum, and checkpoints picked on the test set.">
+<link rel="canonical" href="https://openbenchmarkreview.org/benchmarks/ai4ai-bench.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Open Benchmark Review">
+<meta property="og:title" content="AI4AI-Bench review · Open Benchmark Review">
+<meta property="og:description" content="AI4AI-Bench is rated Flawed. A held-out Sokoban bank built from a seed in the agent&#x27;s own workspace, an image scorer without its promised gates, an unreachable optimum, and checkpoints picked on the test set.">
+<meta property="og:url" content="https://openbenchmarkreview.org/benchmarks/ai4ai-bench.html">
+<meta property="og:image" content="https://openbenchmarkreview.org/assets/og/ai4ai-bench.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI4AI-Bench review · Open Benchmark Review">
+<meta name="twitter:description" content="AI4AI-Bench is rated Flawed. A held-out Sokoban bank built from a seed in the agent&#x27;s own workspace, an image scorer without its promised gates, an unreachable optimum, and checkpoints picked on the test set.">
+<meta name="twitter:image" content="https://openbenchmarkreview.org/assets/og/ai4ai-bench.png">
+<meta name="theme-color" content="#8B1E1A">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/obr-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="">
+<header class="site-header"><div class="container"><a class="brand" href="../index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="../benchmarks/index.html" aria-current="page">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a></nav></div></header><div class="page-head"><div class="container"><div class="crumbs"><a href="../index.html">Open Benchmark Review</a> · <a href="index.html">Benchmarks</a> · <a href="index.html#ml-benchmarks">ML Benchmarks</a></div><h1>AI4AI-Bench</h1><div class="facts"><p><strong>Benchmark creator:</strong> <a href="https://einsia.ai/" target="_blank" rel="noopener">Einsia</a> / Navers Lab (Yizhe Chi, Wenyi Li, Deyao Hong et al.)</p><p><strong>Original benchmark:</strong> <a href="https://lab.einsia.ai/ai4ai/" target="_blank" rel="noopener">lab.einsia.ai/ai4ai</a></p><p><strong>Version reviewed:</strong> arXiv 2608.20318 v1; repo <code>5ced1e2</code>; 10 tasks, 290 cells</p><p><strong>Verdict:</strong> <span class="badge flawed"><span class="mk" aria-hidden="true">*</span>Flawed</span></p><p><a href="https://github.com/Open-Benchmark-Review/audits/tree/main/audits/ai4ai-bench">Full report, task log and scripts</a></p></div></div></div><div class="body"><div class="container layout"><nav class="toc" aria-label="On this page"><span class="label">On this page</span><ol>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#representative-errors">Representative Errors</a></li>
+        <li><a href="#errors">Errors</a></li>
+        <li><a href="#rubric">Rubric</a>
+          <ol>
+            <li><a href="#reviewability">1. Reviewability</a></li>
+            <li><a href="#scoring">2. Scoring</a></li>
+            <li><a href="#evaluation-quality">3. Evaluation Quality</a></li>
+          </ol>
+        </li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ol></nav><main>
+      <section id="summary" aria-label="Summary">
+        <p class="lede">AI4AI-Bench asks whether coding agents can improve an existing AI training recipe. Its ten tasks span diffusion, alignment, reasoning distillation, unlearning, pruning, RL, reward modelling, graph diffusion and model merging. An agent explores for 4 hours; only its code change is replayed in a fresh 12-hour training run, and the best of up to three checkpoints is scored on held-out data and mapped to 0–1, where 0.1 is the shipped recipe. Six systems at several reasoning efforts give 29 configurations and 290 single-run cells.<sup><a href="#n1">1</a></sup></p>
+        <h3 class="sumh">What we found</h3><ul class="found"><li><strong>4 of the 10 tasks (40%)</strong> have confirmed grading defects. A benchmark is rated Flawed at 20%.</li><li>In the Sokoban task, the "hidden" test boards come from the upstream project's default seed, which sits in code the agent edits, and training covered most of the test boards; five cells score a perfect 512/512.</li><li>The image task scores images that have collapsed in prompt-following and variety, because the safety checks its README promises do not exist; its "hidden" test seed is also written in code the agent can read.</li><li>One task's declared best possible score is twice its metric's maximum, and another's baseline sits inside seed noise.</li><li>Every task reports the best of three checkpoints, picked on the test set.</li><li>Each configuration runs once, so differences of about 0.1 between configurations can't be separated from noise.</li></ul><p class="holds"><strong>Does the ranking hold?</strong> Partly. Opus 5 is first when results are averaged over effort levels, but third when systems are compared at maximum effort; with the confirmed corrections, Kimi K3 moves from third to second. No cell was judged research, and 49% gained nothing over the shipped recipe.</p>
+        <div class="figures" role="list">
+          <div class="fig bad" role="listitem"><b>4 / 10</b><span>tasks with confirmed scoring defects</span></div>
+          <div class="fig bad" role="listitem"><b>163 / 271</b><span>scored cells reporting a non-final checkpoint picked on the test set</span></div>
+          <div class="fig" role="listitem"><b>5</b><span>cells at a perfect 512/512 on a leaked Sokoban bank</span></div>
+          <div class="fig" role="listitem"><b>1</b><span>run per cell</span></div>
+        </div>
+      </section>
+
+      <section id="representative-errors" aria-label="Representative errors">
+        <h2>Representative Errors</h2>
+        <ul class="errs">
+          <li><span class="term">A held-out seed that is not hidden.</span> In <code>ragen_sokoban_grpo</code>, <code>declaration.py:50</code> sets <code>FINAL_ENVIRONMENT_SEED = 123</code>, described as "host-side so exploration cannot reconstruct the held-out boards". Upstream RAGEN's <code>config/base.yaml</code> sets <code>seed: val: 123</code>, and that tree is copied into the agent's editable <code>/workspace/ragen</code>. Generation is deterministic, so the final bank, solutions included, can be rebuilt in the container. No agent was seen doing so.<sup><a href="#n3">3</a></sup> Separately, training on solver demonstrations covered 243–490 of the 512 final boards, and five cells score a perfect 512/512. One of those got there by pure imitation, with no RL. The proxy summary also hard-codes its overlap with the final set as 0.0, although 7 boards overlap.</li>
+          <li><span class="term">Scorer optimisation counted as success.</span> The <code>ddpo_sd15_aesthetic</code> README promises "alignment/diversity gates", but the evaluator says "the original DDPO benchmark has no alignment/diversity guard" (<code>final_eval.py:233</code>). Eight cells either back-propagate through the frozen aesthetic scorer or over-train PPO. Their images collapse in prompt alignment and diversity, yet they score 6.8–17.7 against a shipped 5.53 and supply 94% of the task's above-baseline σ. The "score-only" final seed (<code>20269702</code>) is also hard-coded in the mock path of <code>/opt/harness/final_eval.py:261</code>, which the agent can read.</li>
+          <li><span class="term">An optimum the metric cannot reach.</span> In <code>openunlearning_tofu_npo_llama3p2_1b</code>, the balanced score is the harmonic mean of two values clipped to [0, 1] (<code>final_eval.py:192-221</code>), so its maximum is 1.0. The paper anchors the optimum at 2.08, which caps σ at 0.185. The six cells that reach the true maximum are scored as covering 7.5% of the distance to the optimum.</li>
+          <li><span class="term">A baseline inside the noise.</span> In <code>ultrafeedback_bt_rm_rewardbench</code>, the task calls its own reference "seed-sensitive … a single-run reference" (74.569), and the paper anchors at 74.9. Replays of the unchanged recipe score 65.4–73.95. The official score also includes the 512 proxy pairs the agent saw while exploring.</li>
+          <li><span class="term">Checkpoints chosen on the test set.</span> <code>orchestrator/final_score.py:148</code> reports the best of up to three checkpoints on the final metric, and 163 of 271 completed cells report a non-final one. Several agents published three seeds as their three checkpoints, so the reported score is a max over seeds. Using the last checkpoint instead flips 21 cells between beating and missing the baseline.</li>
+        </ul>
+        <div><p><strong>Outside the counted defects:</strong></p>
+          <ul>
+            <li><strong>Anchors that disagree with the tasks.</strong> The paper's baseline differs from the task's own reference in 7 of 10 tasks (DDPO 5.84 vs 5.53; DiGress 65.8 vs 69.57; OPD 0.436 vs 0.427; OpenR1 0.127 vs 0.123; BTRM 74.9 vs 74.57). Unreachable optima confine five tasks to σ bands 0.03–0.05 wide.</li>
+            <li><strong>Unvalidated LLM judge.</strong> OPD sends about 1,100 of each checkpoint's 1,920 samples to CompassVerifier-3B, with the question left empty.</li>
+            <li><strong>Unreproducible scorer.</strong> The public OpenR1 scorer is greedy with n = 1, scored out of 175. The published numbers use n = 10, out of 1,750.</li>
+            <li><strong>Harness asymmetry.</strong> 18 of the 19 zero-scored cells are Codex (GPT-5.6) runs, several ending within 100 s. Kimi K3 runs in Claude Code at one effort level only.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="errors" aria-label="Errors">
+        <h2>Errors</h2>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Task</th><th>Error type</th><th>Evidence</th></tr></thead>
+            <tbody>
+              <tr><td><code>ragen_sokoban_grpo</code></td><td><span class="type t-fp">False Positive</span> <span class="type t-imp">Construct</span></td><td>Final seed = upstream default in agent workspace; 243–490/512 final boards trained on; 5 cells at 512/512</td></tr>
+              <tr><td><code>ddpo_sd15_aesthetic</code></td><td><span class="type t-fp">False Positive</span></td><td>Promised gates absent; collapsed images supply 94% of σ; seed in readable source</td></tr>
+              <tr><td><code>openunlearning_tofu_npo_llama3p2_1b</code></td><td><span class="type t-fn">False Negative</span></td><td>Metric ≤ 1.0, optimum anchored at 2.08; σ capped at 0.185</td></tr>
+              <tr><td><code>ultrafeedback_bt_rm_rewardbench</code></td><td><span class="type t-fn">False Negative</span></td><td>Baseline inside ~8.5-point seed noise; seen rows scored</td></tr>
+              <tr><td><em>all tasks</em></td><td><span class="type t-fp">False Positive</span></td><td>Best of 3 checkpoints chosen on the final metric</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tally"><p>Total: <b>4</b> of <b>10</b> tasks (<b>40%</b>). The Flawed threshold is 20%. The two tasks whose hidden final data is exposed inside the container, RAGEN and DDPO, give 20% on their own. Logged but not counted: DiGress, OWL, OpenR1, OPD, DPO and Model Soup.</p></div>
+
+        <h3>Sensitivity of the ranking</h3>
+        <p>Re-ranking the six systems by mean σ under different rules:</p>
+        <div class="tbl">
+          <table class="sens">
+            <thead><tr><th>Aggregation</th><th>#1</th><th>#2</th><th>#3</th></tr></thead>
+            <tbody>
+              <tr><td>Published: mean over all efforts, best of 3</td><td>Opus 5 (0.249)</td><td>Sol (0.190)</td><td>Kimi K3 (0.173)</td></tr>
+              <tr><td>Last checkpoint instead of best of 3</td><td>Opus 5 (0.240)</td><td>Sol (0.184)</td><td>Kimi K3 (0.159)</td></tr>
+              <tr><td>Max effort only</td><td>Sol (0.244)</td><td>Terra (0.228)</td><td>Opus 5 (0.222)</td></tr>
+              <tr><td>Drop RAGEN (contaminated)</td><td>Opus 5 (0.203)</td><td>Kimi K3 (0.180)</td><td>Sol (0.147)</td></tr>
+              <tr><td>All confirmed corrections</td><td>Opus 5 (0.257)</td><td>Kimi K3 (0.237)</td><td>Sol (0.208)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">Each cell is a single run, and effort curves are non-monotone: Opus 5 scores 0.287 at medium and 0.188 at xhigh. Gaps of about 0.1 σ between configurations are therefore within noise. Under the paper's aggregation, a task bootstrap puts Opus 5 at #1 in 98% of replicates, and splits #2 between Sol (59%) and Kimi K3 (39%).</p>
+      </section>
+
+      <section id="rubric" aria-label="Rubric">
+        <h2>Rubric</h2>
+
+        <h3 id="reviewability">1. Reviewability</h3>
+        <div class="opts"><span class="opt on warn">Partial</span></div>
+        <p class="note"><span class="lbl">Notes</span>Every task contract, evaluator and orchestrator is public, along with 290 case pages carrying checkpoint scores and per-cell audits. Patch contents and raw logs are not published, despite the paper's claim. Neither is the scorer behind the published OpenR1 numbers, nor the harnesses' token and context settings.</p>
+
+        <h3 id="scoring">2. Scoring</h3>
+
+        <div class="rub">
+          <h4>Scoring</h4>
+          <div class="opts" aria-label="Status"><span class="opt on flag">Flag</span></div>
+          <div class="note"><span class="lbl">Notes</span>4 of 10 tasks (40%) are affected, and every task selects its checkpoint on the test set; see Errors.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Benchmark Consistency</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>OpenR1's final protocol changed on Aug. 20, and every cell was rescored on the new one. Claude cells were replayed on a retry-hotfix commit, under a documented waiver. One DiGress formal run was voided for GPU sharing and re-run.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Elicitation</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>Each system runs in a modern vendor CLI with a fixed 4 h + 12 h budget on one B300. Codex runs get no continuation prompt: 18 of the 19 zero-scored cells are GPT-5.6 runs, three of which exited within 100 seconds with about 4 hours left. Kimi K3 runs in Claude Code rather than its own harness.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Bias in Evaluation Setup</h4>
+          <div class="opts" aria-label="Status"><span class="opt on flag">Flag</span></div>
+          <div class="note"><span class="lbl">Notes</span>Systems are compared by averaging over unequal sets of effort levels. GPT-5.6 includes <code>none</code>, Claude starts at <code>low</code>, and Kimi K3 has only <code>max</code>. That choice decides the headline: Opus 5 is #1 averaged over efforts but #3 at maximum effort. Kimi K3's single max-effort configuration is compared against averages that include deliberately weak settings.</div>
+        </div>
+
+        <h3 id="evaluation-quality">3. Evaluation quality</h3>
+        <div class="tbl">
+          <table class="eq"><thead><tr><th>Check</th><th>What we found</th></tr></thead><tbody><tr><td>Runs per model</td><td><b>1 run per cell.</b> There are no seed replicates. Gaps in OPD (SE 0.052 on 60 questions) and BTRM (seed spread about 8.5 points) sit inside the noise.</td></tr><tr><td>Enough time and compute</td><td><strong>Yes.</strong> 4 h of exploration plus 12 h of formal training on one B300. Two tasks do no training at all.</td></tr><tr><td>Same agent setup for every model</td><td><strong>No, each model uses its own.</strong> Codex for GPT-5.6; Claude Code for Claude and Kimi K3.</td></tr><tr><td>Test data exposure</td><td>The final datasets are all public benchmarks (AIME, LiveCodeBench v6, IFEval, RewardBench, WikiText-2, QM9, ImageNetV2, TOFU), but they are mounted only at scoring, with no network. The leaks we found are inside the container: the RAGEN and DDPO seeds.</td></tr><tr><td>Measures what it claims</td><td><strong>Partly.</strong> Realistic research-repository tasks. But σ rewards optimising the evaluator (DDPO), imitation instead of RL (RAGEN) and seed luck (BTRM, OPD).</td></tr></tbody></table>
+        </div>
+      </section>
+
+      <section id="disclaimer" aria-label="Disclaimer">
+        <h2>Disclaimer</h2>
+        <p>This is a full review of all 10 tasks and 290 cells. AI4AI-Bench publishes no raw logs or patches, so cell-level calls rest on the benchmark's own case pages. Wherever a page's claim could be checked against the code, we checked it. No agent was observed using the leaked RAGEN or DDPO seeds, so their effect on the observed scores is unproven.</p>
+      </section>
+
+      <section id="notes" aria-label="Notes">
+        <h2>Notes</h2>
+        <ol class="notes">
+          <li id="n1">Paper: <a href="https://arxiv.org/abs/2608.20318">arxiv.org/abs/2608.20318</a> (v1, Aug. 20, 2026). Homepage: <a href="https://lab.einsia.ai/ai4ai/">lab.einsia.ai/ai4ai</a>.</li>
+          <li id="n2">Repository: <a href="https://github.com/Einsia/AI4AI-Bench">github.com/Einsia/AI4AI-Bench</a> at <code>5ced1e2</code>. Case pages: <a href="https://lab.einsia.ai/ai4ai/trajectories/">lab.einsia.ai/ai4ai/trajectories</a>, fetched Oct. 29, 2026.</li>
+          <li id="n3">Upstream RAGEN: <a href="https://github.com/RAGEN-AI/RAGEN">github.com/RAGEN-AI/RAGEN</a> at <code>20daedc4</code>, <code>config/base.yaml</code> lines 8–10: <code>seed: train: 10000, val: 123</code>.</li>
+          <li id="n4">Per-task notes, per-cell reviews, the adjudication, the task log, the setup audit and the scripts are in <a href="https://github.com/openbenchmarkreview/audits/tree/main/audits/ai4ai-bench">audits/ai4ai-bench</a>.</li>
+        </ol>
+        <h3>Cite</h3>
+        <div class="cite">Open Benchmark Review (2026), "AI4AI-Bench: Benchmark Review". Reviewed Oct. 29, 2026. github.com/openbenchmarkreview/audits</div>
+      </section>
+
+      <footer>Rubric: Epoch AI Benchmark Reviews, Rubric v1. Verdict categories: Verified, Flawed, Not enough information.</footer>
+    </main></div></div><footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="../benchmarks/index.html">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <span class="mono">reviews@openbenchmarkreview.org</span></p></div></footer>
+</body>
+</html>

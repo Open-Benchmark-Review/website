@@ -1,0 +1,15 @@
+{
+  "name": "Open Benchmark Review",
+  "short": "OBR",
+  "tagline": "Every benchmark score deserves an asterisk",
+  "domain": "openbenchmarkreview.org",
+  "repo": "https://github.com/Open-Benchmark-Review/audits",
+  "email": "reviews@openbenchmarkreview.org",
+  "sections": [
+    {
+      "slug": "ml-benchmarks",
+      "name": "ML Benchmarks",
+      "blurb": "Benchmarks that measure AI systems on machine learning and computer science work: research engineering, rebuilding published methods, and monitoring other agents."
+    }
+  ]
+}

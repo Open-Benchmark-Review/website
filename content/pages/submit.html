@@ -1,0 +1,36 @@
+<!-- title: Submit a review -->
+<!-- lead: Suggest a benchmark for review, contribute a review of your own, or send a correction. Every contribution is checked against the same rubric and evidence standard. -->
+<!-- toc -->
+<li><a href="#suggest">Suggest a benchmark</a></li>
+<li><a href="#contribute">Contribute a review</a></li>
+<li><a href="#developers">For benchmark developers</a></li>
+<!-- main -->
+<section id="suggest" aria-labelledby="s-suggest">
+  <h2 id="s-suggest">Suggest a benchmark</h2>
+  <div class="prose">
+    <p>Open an issue on <a href="{{repo}}/issues">GitHub</a> titled with the benchmark's name, or email <span class="mono">{{email}}</span>. Tell us:</p>
+  </div>
+  <ul class="checks">
+    <li>Where the tasks, graders and leaderboard live, with links.</li>
+    <li>Which version you mean: a commit, dataset revision or leaderboard date.</li>
+    <li>What made you suspicious, if anything: a run that passed too easily, a correct answer marked wrong, a model configured differently from the rest.</li>
+  </ul>
+  <p>We prioritise benchmarks that are widely cited and whose tasks and runs are public enough to review.</p>
+</section>
+<section id="contribute" aria-labelledby="s-contribute">
+  <h2 id="s-contribute">Contribute a review</h2>
+  <div class="prose">
+    <p>Reviews are written in the open. To contribute one, open a pull request on <a href="{{repo}}">GitHub</a> that adds a folder for the benchmark with:</p>
+  </div>
+  <ul class="checks">
+    <li>A report written from the report template, following the <a href="methodology.html">methodology</a>.</li>
+    <li>A task log with one row per inspected task, its classification and its evidence.</li>
+    <li>A setup checklist recording every leaderboard entry's model, harness and settings.</li>
+    <li>The scripts that fetch the public data and reproduce your counts.</li>
+  </ul>
+  <p>A second reviewer re-checks every counted defect before a review is published under the project's name.</p>
+</section>
+<section id="developers" aria-labelledby="s-developers">
+  <h2 id="s-developers">For benchmark developers</h2>
+  <p>If we have reviewed your benchmark, you can send a response to be linked from the review, a correction with evidence, or a new version for re-review. Email <span class="mono">{{email}}</span> or open an issue. If you want private access reviewed under NDA rather than public release, say so.</p>
+</section>

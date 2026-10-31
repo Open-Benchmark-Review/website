@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FrontierML review · Open Benchmark Review</title>
+<meta name="description" content="FrontierML is rated Flawed. Held-out data for every task sits in a public dataset the agents can reach, and 38 trials count with the rule-enforcing review skipped.">
+<link rel="canonical" href="https://openbenchmarkreview.org/benchmarks/frontierml.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Open Benchmark Review">
+<meta property="og:title" content="FrontierML review · Open Benchmark Review">
+<meta property="og:description" content="FrontierML is rated Flawed. Held-out data for every task sits in a public dataset the agents can reach, and 38 trials count with the rule-enforcing review skipped.">
+<meta property="og:url" content="https://openbenchmarkreview.org/benchmarks/frontierml.html">
+<meta property="og:image" content="https://openbenchmarkreview.org/assets/og/frontierml.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FrontierML review · Open Benchmark Review">
+<meta name="twitter:description" content="FrontierML is rated Flawed. Held-out data for every task sits in a public dataset the agents can reach, and 38 trials count with the rule-enforcing review skipped.">
+<meta name="twitter:image" content="https://openbenchmarkreview.org/assets/og/frontierml.png">
+<meta name="theme-color" content="#8B1E1A">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/obr-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="">
+<header class="site-header"><div class="container"><a class="brand" href="../index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="../benchmarks/index.html" aria-current="page">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a></nav></div></header><div class="page-head"><div class="container"><div class="crumbs"><a href="../index.html">Open Benchmark Review</a> · <a href="index.html">Benchmarks</a> · <a href="index.html#ml-benchmarks">ML Benchmarks</a></div><h1>FrontierML</h1><div class="facts"><p><strong>Benchmark creator:</strong> <a href="https://inductionlabs.com" target="_blank" rel="noopener">Induction Labs</a></p><p><strong>Original benchmark:</strong> <a href="https://www.frontierml.org" target="_blank" rel="noopener">frontierml.org</a></p><p><strong>Version reviewed:</strong> Repo <code>31837e0</code>; 21 tasks × 3 wallets; leaderboard of Oct. 27, 2026</p><p><strong>Verdict:</strong> <span class="badge flawed"><span class="mk" aria-hidden="true">*</span>Flawed</span></p><p><a href="https://github.com/Open-Benchmark-Review/audits/tree/main/audits/frontierml">Full report, task log and scripts</a></p></div></div></div><div class="body"><div class="container layout"><nav class="toc" aria-label="On this page"><span class="label">On this page</span><ol>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#representative-errors">Representative Errors</a></li>
+        <li><a href="#errors">Errors</a></li>
+        <li><a href="#rubric">Rubric</a>
+          <ol>
+            <li><a href="#reviewability">1. Reviewability</a></li>
+            <li><a href="#scoring">2. Scoring</a></li>
+            <li><a href="#evaluation-quality">3. Evaluation Quality</a></li>
+          </ol>
+        </li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ol></nav><main>
+      <section id="summary" aria-label="Summary">
+        <p class="lede">FrontierML is an agentic benchmark of 21 ML tasks: training, distillation, quantization, serving, vision, audio, Lean proofs and games. Each model works for 12 hours in its developer's own harness, with internet access and a compute wallet of $10, $50 or $200, once per wallet. A held-out metric is scaled between a per-task floor and ceiling to 0–100. A Claude Opus 5.5 reviewer can zero trials that break the rules. The leaderboard reports the mean per wallet.<sup><a href="#n1">1</a></sup></p>
+        <h3 class="sumh">What we found</h3><ul class="found"><li><strong>7 of the 21 tasks (33%)</strong> have confirmed grading defects. A benchmark is rated Flawed at 20%.</li><li>The hidden test data for all 21 tasks is in a public Hugging Face dataset, and the agents have internet access and a Hugging Face token.</li><li>The review that zeroes rule-breaking runs was switched off for 38 runs, 21 of them DeepSeek's, and those scores still count.</li><li>Each model runs once per task and budget. Near-identical runs differ by a median of 5.2 points, so several budget winners are within noise.</li></ul><p class="holds"><strong>Does the ranking hold?</strong> Yes. Opus 5.5 ranks first in every resample of the tasks. The score levels don't hold, and several tasks measure something other than what they claim.</p>
+        <div class="figures" role="list">
+          <div class="fig bad" role="listitem"><b>7 / 21</b><span>tasks with confirmed grading defects</span></div>
+          <div class="fig bad" role="listitem"><b>21 / 21</b><span>tasks whose hidden test data is public</span></div>
+          <div class="fig" role="listitem"><b>38</b><span>runs that count without the rule check</span></div>
+          <div class="fig" role="listitem"><b>1</b><span>run per model, task and budget</span></div>
+        </div>
+      </section>
+
+      <section id="representative-errors" aria-label="Representative errors">
+        <h2>Representative Errors</h2>
+        <ul class="errs">
+          <li><span class="term">Held-out answers readable from the web.</span> Every verifier downloads its held-out data from <code>&lt;task&gt;/private/</code> in <code>inductionlabs/frontier-ml-tasks</code>. That dataset is public and ungated, and was created on Sept. 24, before any audited run. Agents have internet access, and by default they receive the operator's own HF token (<code>harbor_plugin.py:521-526</code>). The only control is the reviewer: 10 of 21 rubrics forbid using the dataset, and the "searching up answers" check the methodology post describes appears in no rubric. DeepSeek <code>4ttc3o</code> cloned the benchmark repository, read the grader and the reference solution, and learned where the private split lives. It downloaded nothing and scored 0, and its review had been skipped.</li>
+          <li><span class="term">Selecting on the graded benchmark, scored as valid.</span> The prompt bans training, fine-tuning, calibrating "or selecting" on any public benchmark's test split. Graded GPQA-Diamond and LiveCodeBench files ship to the agent as development data. In <code>ternary-ptq</code>, the rubric omits "select", so it passed three Fable trials and one Argon trial that picked settings or checkpoints by GPQA accuracy. One is Fable <code>27dhfi</code>: "GPQA-Diamond first 40 questions: 4/40…", after which it changes its shipped defaults to match. In <code>llm-post-train</code>, the same behaviour was zeroed twice and passed once (Fable <code>2ikiw0</code>).</li>
+          <li><span class="term">A scorer that a blind constant beats.</span> In <code>screen-difference</code>, the floor is an empty output. An input-blind fixed paragraph scores 32.0, above 14 of the 18 audited trials. The judge scores recall only, although the prompt forbids unsupported claims.</li>
+          <li><span class="term">A rule that cannot decide its own winner.</span> In <code>llm-diffusion</code>, the review separates about 80 points from 0 on "genuine iterative denoising" without defining it. The $200 winner, Argon <code>v837u7</code>, ends each block with the causal verify pass that the reviewer cited when zeroing three other trials. The speed gate can be told apart by <code>max_tokens</code>, and Fable <code>19lyhu</code> served it a separate fast decoder.</li>
+          <li><span class="term">Floors that contradict the request or sit in the noise.</span> <code>maple-vlm</code>'s floor uses 8,192 sampled thinking tokens and a grammar, while graded requests send <code>max_tokens: 256</code> at temperature 0. The floor was also raised after half the field had run, and 54 of 57 trials score 0. <code>pokemon-random-battle</code>'s 50% floor is set against an opponent with about the candidate's compute. 41 of 57 trials score 0, and every wallet winner is within 1–2 standard errors.</li>
+          <li><span class="term">Rewarding recognition of the source.</span> In <code>ai-text-detection</code>, the held-out set is DetectRL-X's public test split, and its in-distribution train split is allowed. The 9 trials that trained on it average 92.0, against 65.3 for the rest.</li>
+        </ul>
+        <div><p><strong>Outside scoring defects:</strong></p>
+          <ul>
+            <li><strong>Review skipped.</strong> A run-wide switch, <code>FML_REVIEW_SKIP</code>, turned off review for 21 of DeepSeek's and 17 of MiniMax's trials (<code>grading.py:67</code>). They count on the leaderboard alongside reviewed trials.</li>
+            <li><strong>Provider quota.</strong> Gemini 4 Argon hit 332 <code>RESOURCE_EXHAUSTED</code> errors in 38 of 63 trials and worked a mean of 3.4 of 12 hours. 62 of its 63 trials are re-runs whose originals are unpublished.</li>
+            <li><strong>Reviewer told the model name.</strong> The Opus 5.5 reviewer is told which model it is reviewing. Claude models fail review less often (2.0% vs 6.1%, p = 0.004), but the per-trial audit found no self-preference: Opus trials had no missed violations, and the reviewer's misses favoured Fable and Argon.</li>
+            <li><strong>Unpublished harnesses.</strong> Only Claude Code's settings are published. The Codex, Antigravity and Muse Code wrappers resume after failed commands; Claude Code exits when the model ends its turn.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="errors" aria-label="Errors">
+        <h2>Errors</h2>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Task</th><th>Error type</th><th>Evidence</th></tr></thead>
+            <tbody>
+              <tr><td><code>ternary-ptq</code></td><td><span class="type t-fp">False Positive</span></td><td>4 trials select on graded GPQA; rubric omits "select" (<code>review.py:14-23</code>)</td></tr>
+              <tr><td><code>llm-post-train</code></td><td><span class="type t-fp">False Positive</span></td><td>Fable <code>2ikiw0</code> passed; same behaviour zeroed twice</td></tr>
+              <tr><td><code>screen-difference</code></td><td><span class="type t-fp">False Positive</span></td><td>Blind fixed paragraph scores 32.0, above 14 of 18 trials</td></tr>
+              <tr><td><code>llm-diffusion</code></td><td><span class="type t-imp">Impossible</span> <span class="type t-fp">False Positive</span></td><td>Undefined deciding rule; speed gate recognisable by <code>max_tokens</code></td></tr>
+              <tr><td><code>maple-vlm</code></td><td><span class="type t-fn">False Negative</span> <span class="type t-imp">Construct</span></td><td>Floor recipe contradicts the graded request; 54/57 at 0</td></tr>
+              <tr><td><code>pokemon-random-battle</code></td><td><span class="type t-fn">False Negative</span></td><td>Uncalibrated floor; winners within 1–2 SE</td></tr>
+              <tr><td><code>ai-text-detection</code></td><td><span class="type t-imp">Construct</span></td><td>Recognising the public source is worth ~27 points</td></tr>
+              <tr><td><em>all 21 tasks</em></td><td><span class="type t-fp">False Positive risk</span></td><td>Held-out data public on HF; agents have internet and an HF token</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tally"><p>Total: <b>7</b> of <b>21</b> tasks (<b>33%</b>). The Flawed threshold is 20%.</p>
+          <ul>
+            <li>Excluding the noise and construct calls (pokemon and ai-text-detection), it is 5 of 21 (24%).</li>
+            <li>Counting only tasks with a confirmed trial-level false positive, it is 2 of 21 (10%). On that count the verdict rests on the second trigger: held-out answers for every task are readable from the web by agents with internet access, and the only control is a review that is incomplete and can be switched off.</li>
+          </ul>
+        </div>
+
+        <h3>Sensitivity of the leaderboard</h3>
+        <p>Correcting the confirmed defects leaves the model order intact at every wallet.</p>
+        <div class="tbl">
+          <table class="sens">
+            <thead><tr><th>Scenario ($200)</th><th class="num">Opus</th><th class="num">Astra</th><th class="num">Fable</th><th class="num">Argon</th><th class="num">DeepSeek</th><th class="num">Muse</th></tr></thead>
+            <tbody>
+              <tr><td>Published mean</td><td class="num">1 (58.8)</td><td class="num">2 (44.5)</td><td class="num">3 (41.9)</td><td class="num">4 (39.5)</td><td class="num">5 (23.5)</td><td class="num">6 (19.3)</td></tr>
+              <tr><td>Zero the 5 confirmed false positives</td><td class="num">1</td><td class="num">2</td><td class="num">3 (40.5)</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
+              <tr><td>Strict reading (also probable false positives and the contested winner)</td><td class="num">1</td><td class="num">2</td><td class="num">3 (40.5)</td><td class="num">4 (32.3)</td><td class="num">5</td><td class="num">6</td></tr>
+              <tr><td>Leave one task out (21 variants)</td><td class="num">1</td><td class="num">2</td><td class="num">3*</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
+              <tr><td>Task bootstrap: share at this rank</td><td class="num">100%</td><td class="num">63%</td><td class="num">49%</td><td class="num">64%</td><td class="num">90%</td><td class="num">91%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">* Without llm-post-train, Fable passes Astra. Astra, Fable and Argon are within 5 points of each other at $200.</p>
+      </section>
+
+      <section id="rubric" aria-label="Rubric">
+        <h2>Rubric</h2>
+
+        <h3 id="reviewability">1. Reviewability</h3>
+        <div class="opts"><span class="opt on pass">Full</span></div>
+        <p class="note"><span class="lbl">Notes</span>Grading code, rubrics, anchors, judge prompts, held-out data, trajectories and grade pages are all public. Not public:</p>
+        <ul class="note">
+          <li>submitted files, visible only as quoted in trajectories</li>
+          <li>a zeroed trial's pre-review score</li>
+          <li>the Codex, Antigravity and Muse Code wrappers, whose settings can be read from the trajectories</li>
+          <li>the originals of 72 re-run trials</li>
+        </ul>
+
+        <h3 id="scoring">2. Scoring</h3>
+
+        <div class="rub">
+          <h4>Scoring</h4>
+          <div class="opts" aria-label="Status"><span class="opt on flag">Flag</span></div>
+          <div class="note"><span class="lbl">Notes</span>7 of 21 tasks (33%) are affected, and held-out data is readable from the web for every task; see Errors.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Benchmark Consistency</h4>
+          <div class="opts" aria-label="Status"><span class="opt on flag">Flag</span></div>
+          <div class="note"><span class="lbl">Notes</span>The leaderboard mixes reviewed and unreviewed scores. 38 trials were graded without the review that zeroes rule violations elsewhere, and two of them are probable false positives. Three further issues:</div>
+          <ul class="note">
+            <li><code>maple-vlm</code>'s floor was raised on Oct. 7, after half the field had run. All trials were rescored on the new floor.</li>
+            <li>72 re-runs have unpublished originals.</li>
+            <li>One Opus trial received an older prompt.</li>
+          </ul>
+        </div>
+
+        <div class="rub">
+          <h4>Elicitation</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>Models work for 12 hours in vendor harnesses with internet access. The caveat is Gemini 4 Argon, which was throttled by a provider quota in 38 of 63 trials and averaged 3.4 of 12 hours. That plausibly deflates its scores, but the size of the effect cannot be measured.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Bias in Evaluation Setup</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>All models get the same budgets, and the model-specific harnesses are disclosed. The reviewer is an Opus model that is told the model name; Claude models fail review less often, but we found no self-preference trial by trial. Several tasks are judged by OpenAI models that agents may also query.</div>
+        </div>
+
+        <h3 id="evaluation-quality">3. Evaluation quality</h3>
+        <div class="tbl">
+          <table class="eq"><thead><tr><th>Check</th><th>What we found</th></tr></thead><tbody><tr><td>Runs per model</td><td><b>1 run per model, task and wallet.</b> Near-replicate pairs differ by a median of 5.2 points, and several wallet winners are within noise.</td></tr><tr><td>Enough time and compute</td><td><strong>Yes.</strong> Constraining for Gemini 4 Argon, because of the provider quota. On 8 of 21 tasks a larger wallet buys the strongest models nothing.</td></tr><tr><td>Same agent setup for every model</td><td><strong>No, each model uses its own.</strong> Only Claude Code's settings are published.</td></tr><tr><td>Test data exposure</td><td>100% of the held-out data has been public on Hugging Face since Sept. 24, and the grader and repository since Oct. 13. The benchmark is contaminated for every future run.</td></tr><tr><td>Measures what it claims</td><td><strong>Partly.</strong> Realistic, open-ended tasks, but several reward identifying the evaluation source. Data-efficient pretraining rewards a recalled public recipe.</td></tr></tbody></table>
+        </div>
+      </section>
+
+      <section id="disclaimer" aria-label="Disclaimer">
+        <h2>Disclaimer</h2>
+        <p>This is a full review of all 21 tasks and of six models' 378 trials. The other 13 models were used only for leaderboard-wide statistics. Model reviewers made the per-trial calls from trajectories and grade pages, and every counted defect was re-checked by hand. A zeroed trial's pre-review score is unpublished, so false negatives cannot be restored in the ranking. The dataset is public now; its visibility during the runs is unknown.</p>
+      </section>
+
+      <section id="notes" aria-label="Notes">
+        <h2>Notes</h2>
+        <ol class="notes">
+          <li id="n1">Leaderboard and methodology: <a href="https://www.frontierml.org/data/">frontierml.org/data</a>, <a href="https://www.frontierml.org/blog/">frontierml.org/blog</a> (Oct. 13, 2026).</li>
+          <li id="n2">Repository: <a href="https://github.com/induction-labs/frontier-ml">github.com/induction-labs/frontier-ml</a> at <code>31837e0</code> ("Initial benchmark release", Oct. 13, 2026). Tasks dataset: <a href="https://huggingface.co/datasets/inductionlabs/frontier-ml-tasks">huggingface.co/datasets/inductionlabs/frontier-ml-tasks</a> at <code>925401fb</code>.</li>
+          <li id="n3">Hugging Face API, Oct. 28, 2026: <code>private: false</code>, <code>gated: false</code>, created 2026-09-24, 7,660 files under <code>&lt;task&gt;/private/</code> for all 21 tasks. Code: <code>frontier_ml/harbor_plugin.py:521-526</code> (<code>FML_AGENT_HF_TOKEN</code>, else the operator's <code>HF_TOKEN</code>); <code>frontier_ml/grading.py:67</code> (<code>FML_REVIEW_SKIP</code>); <code>frontier_ml/review_trajectory.py:154</code> (the reviewer sees the agent's <code>model_name</code>).</li>
+          <li id="n4">Per-trial reviews, the adjudication, the task log, the setup audit, the full findings and the scripts are in <a href="https://github.com/openbenchmarkreview/audits/tree/main/audits/frontierml">audits/frontierml</a>.</li>
+        </ol>
+        <h3>Cite</h3>
+        <div class="cite">Open Benchmark Review (2026), "FrontierML: Benchmark Review". Reviewed Oct. 27, 2026. github.com/openbenchmarkreview/audits</div>
+      </section>
+
+      <footer>Rubric: Epoch AI Benchmark Reviews, Rubric v1. Verdict categories: Verified, Flawed, Not enough information.</footer>
+    </main></div></div><footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="../benchmarks/index.html">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <span class="mono">reviews@openbenchmarkreview.org</span></p></div></footer>
+</body>
+</html>

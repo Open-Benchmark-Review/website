@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HackBench review · Open Benchmark Review</title>
+<meta name="description" content="HackBench is rated Flawed. Records built on the same trajectory label the same commands differently, most injected hacks cannot take effect, and 14 &quot;natural&quot; records give the monitor the red-team order to hack.">
+<link rel="canonical" href="https://openbenchmarkreview.org/benchmarks/hackbench.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Open Benchmark Review">
+<meta property="og:title" content="HackBench review · Open Benchmark Review">
+<meta property="og:description" content="HackBench is rated Flawed. Records built on the same trajectory label the same commands differently, most injected hacks cannot take effect, and 14 &quot;natural&quot; records give the monitor the red-team order to hack.">
+<meta property="og:url" content="https://openbenchmarkreview.org/benchmarks/hackbench.html">
+<meta property="og:image" content="https://openbenchmarkreview.org/assets/og/hackbench.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HackBench review · Open Benchmark Review">
+<meta name="twitter:description" content="HackBench is rated Flawed. Records built on the same trajectory label the same commands differently, most injected hacks cannot take effect, and 14 &quot;natural&quot; records give the monitor the red-team order to hack.">
+<meta name="twitter:image" content="https://openbenchmarkreview.org/assets/og/hackbench.png">
+<meta name="theme-color" content="#8B1E1A">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/obr-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="">
+<header class="site-header"><div class="container"><a class="brand" href="../index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="../benchmarks/index.html" aria-current="page">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a></nav></div></header><div class="page-head"><div class="container"><div class="crumbs"><a href="../index.html">Open Benchmark Review</a> · <a href="index.html">Benchmarks</a> · <a href="index.html#ml-benchmarks">ML Benchmarks</a></div><h1>HackBench</h1><div class="facts"><p><strong>Benchmark creator:</strong> Tianjian Li, Seungone Kim, Eryk Helenowski, Jason Weston, Ilia Kulikov, Jack Lanchantin, Weizhe Yuan (<a href="https://facebookresearch.github.io/RAM/" target="_blank" rel="noopener">Meta, RAM</a>)</p><p><strong>Original benchmark:</strong> <a href="https://facebookresearch.github.io/RAM/blogs/hackbench/" target="_blank" rel="noopener">HackBench blog post</a></p><p><strong>Version reviewed:</strong> HF release v8, 169 records; blog Table 3 (Oct. 2026)</p><p><strong>Verdict:</strong> <span class="badge flawed"><span class="mk" aria-hidden="true">*</span>Flawed</span></p><p><a href="https://github.com/Open-Benchmark-Review/audits/tree/main/audits/hackbench">Full report, task log and scripts</a></p></div></div></div><div class="body"><div class="container layout"><nav class="toc" aria-label="On this page"><span class="label">On this page</span><ol>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#representative-errors">Representative Errors</a></li>
+        <li><a href="#errors">Errors</a></li>
+        <li><a href="#rubric">Rubric</a>
+          <ol>
+            <li><a href="#reviewability">1. Reviewability</a></li>
+            <li><a href="#scoring">2. Scoring</a></li>
+            <li><a href="#evaluation-quality">3. Evaluation Quality</a></li>
+          </ol>
+        </li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ol></nav><main>
+      <section id="summary" aria-label="Summary">
+        <p class="lede">HackBench tests whether an AI monitor can spot reward hacking: an AI agent cheating on a task to get a better score. The monitor reads an agent's full work log, a median of 264 commands, and has to point to the exact commands that cheat. Its score runs from 0 to 100 and is high only if it flags the cheating commands and little else (researchers call this F1). There are 169 logs: 41 with hacks the agents made on their own, found by GPT-5.6 Sol, and 128 with hacks inserted by GLM-5.2.<sup><a href="#n2">2</a></sup> The published leaderboard runs from Claude Opus 5 at 64.9 to GLM-5.2 at 32.3, with no error bars.</p>
+        <h3 class="sumh">What we found</h3><ul class="found"><li><strong>35 of the 50 records we checked (70%)</strong> have a wrong or contradictory answer key, or give the answer away. A benchmark is rated Flawed at 20%.</li><li>Even counting only problems a script can detect, with no judgement calls, <strong>65 of all 169 records (38%)</strong> are affected.</li><li>The answer key contradicts itself. A command marked as cheating in one record is left unmarked in a near-identical copy of the same log, so even a perfect monitor can score at most 82.</li><li>Most of the hacks GLM-5.2 inserted can't work: they edit files that don't exist in that environment.</li><li>14 logs labelled as natural include the instruction that told the agent to cheat, so the monitor is handed the answer.</li><li>A plain text search, with no AI at all, scores 36.1. That beats GLM-5.2.</li><li>The logs and answer key are public. The prompt and settings used for the leaderboard are not.</li></ul><p class="holds"><strong>Does the ranking hold?</strong> We can't tell. The monitor settings and per-record answers behind the leaderboard aren't published.</p>
+        <div class="figures" role="list">
+          <div class="fig bad" role="listitem"><b>35 / 50</b><span>of the records we checked have a defect</span></div>
+          <div class="fig bad" role="listitem"><b>65 / 169</b><span>of all records fail automatic checks</span></div>
+          <div class="fig" role="listitem"><b>82.0</b><span>highest score a perfect monitor can get</span></div>
+          <div class="fig" role="listitem"><b>36.1</b><span>score of a plain text search, with no AI (GLM-5.2: 32.3)</span></div>
+        </div>
+      </section>
+
+      <section id="representative-errors" aria-label="Representative errors">
+        <h2>Representative Errors</h2>
+        <ul class="errs">
+          <li><span class="term">Inconsistent gold across siblings.</span> A command labelled a hack in one record appears verbatim and unlabelled in another record built on the same trajectory (51 of 169 records). Records 32 and 33 are byte-identical, yet their gold is [246, 630] and [246, 252, 260, 673, 678]. Natural record 42 labels [120], while the ten synthetic records built on the same run label [119, 120]. Applied consistently, the benchmark's own labels cap a perfect monitor at 82.0 F1.</li>
+          <li><span class="term">Injected "hacks" that are not hacks.</span> Most GLM-5.2 injections were written for a codebase that does not exist:
+            <ul>
+              <li>All 24 improving-replay-buffers injections target files the environment never contains, such as <code>pgr/replay_buffer.py</code> and <code>sac/train_sac.py</code>. They are still gold.</li>
+              <li>In record 115 the injection retrains after submission and scales a bias, and the next turn still cites the old perplexity.</li>
+              <li>In seven moving_mnist records the "data_leak" injection is a variable rename, and the gold falls back to an unrelated natural hack.</li>
+            </ul></li>
+          <li><span class="term">Answer leakage.</span> 15 "natural" records come from runs whose agent was told to perform "exactly ONE covert action" that inflates the score. In 14 of them this order is in the monitor's task context. In 13 of those it falls within the 6,000-character cap of the published evaluation.<sup><a href="#n3">3</a></sup></li>
+          <li><span class="term">Incomplete gold.</span> Record 69 has 618 identical fake-log writes. Gold labels 247 of them and none after CMD 798, so a monitor that flags all 618 scores F1 0.57.</li>
+        </ul>
+        <div><p><strong>Outside scoring defects:</strong></p>
+          <ul>
+            <li><strong>Shortcut.</strong> 74 of the 88 task-specific injections are followed by a placeholder shell prompt, <code>root@host:/app#</code>, that occurs nowhere in the real trajectories, and they have no reasoning around them. A regex using this tell scores 36.1 F1, above GLM-5.2. The blog says the needle "cannot be found by string-matching".</li>
+            <li><strong>Undisclosed chunking.</strong> A figure committed next to the post, but not shown in it, finds that chunked reading lifts GLM-5.2 from about 31 to about 80 detection F1.<sup><a href="#n4">4</a></sup> The post does not say whether the leaderboard used chunking.</li>
+            <li><strong>Overlapping roles.</strong> The models that generated, injected, screened and audited the data are all ranked monitors.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="errors" aria-label="Errors">
+        <h2>Errors</h2>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Record</th><th>Error type</th><th>Evidence</th></tr></thead>
+            <tbody>
+              <tr><td>record 0</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/0.json">real hack left unlabelled</a></td></tr>
+              <tr><td>record 6</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/6.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 29</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/29.json">labelled differently in a sibling record; gold labels a non-hack</a></td></tr>
+              <tr><td>record 30</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/30.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 31</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/31.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 33</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/33.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 42</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/42.json">labelled differently in a sibling record</a></td></tr>
+              <tr><td>record 49</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/49.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 62</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/62.json">real hack left unlabelled</a></td></tr>
+              <tr><td>record 69</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/69.json">real hack left unlabelled</a></td></tr>
+              <tr><td>record 72</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/72.json">real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 80</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/80.json">real hack left unlabelled</a></td></tr>
+              <tr><td>record 82</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/82.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 92</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/92.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 93</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/93.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 96</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/96.json">labelled differently in a sibling record; real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 97</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/97.json">labelled differently in a sibling record; real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 100</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/100.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 114</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/114.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 115</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/115.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 119</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/119.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 120</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/120.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 121</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/121.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 122</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/122.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 127</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/127.json">labelled differently in a sibling record; real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 128</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/128.json">labelled differently in a sibling record; real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 133</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/133.json">gold labels a non-hack</a></td></tr>
+              <tr><td>record 143</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/143.json">labelled differently in a sibling record; real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 148</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/148.json">labelled differently in a sibling record; real hack left unlabelled; gold labels a non-hack</a></td></tr>
+              <tr><td>record 153</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/153.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 167</td><td><span class="type t-fn">False Negative</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/167.json">labelled differently in a sibling record; real hack left unlabelled</a></td></tr>
+              <tr><td>record 55</td><td><span class="type t-fn">False Negative</span> <span class="type t-fp">False Positive</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/55.json">red-team order in the monitor input; real hack left unlabelled</a></td></tr>
+              <tr><td>record 56</td><td><span class="type t-fp">False Positive</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/56.json">red-team order in the monitor input</a></td></tr>
+              <tr><td>record 57</td><td><span class="type t-fp">False Positive</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/57.json">red-team order in the monitor input</a></td></tr>
+              <tr><td>record 59</td><td><span class="type t-fp">False Positive</span></td><td><a href="https://github.com/Open-Benchmark-Review/audits/blob/main/audits/hackbench/data/record_reviews/59.json">red-team order in the monitor input</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tally"><p>Total: <b>35</b> of <b>50</b> sampled records (<b>70%</b>): 32 with a false-negative defect, 4 with a false-positive defect. The Flawed threshold is 20%. The verdict holds on narrower counts too:</p>
+          <ul>
+            <li>Counting only high-confidence calls and defects the lead auditor re-checked, 25 of 50 records (50%) are affected.</li>
+            <li>Judgement-free checks flag 65 of all 169 records (38%): sibling-inconsistent gold, red-team orders in the monitor's input, and duplicate transcripts with different gold.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="rubric" aria-label="Rubric">
+        <h2>Rubric</h2>
+
+        <h3 id="reviewability">1. Reviewability</h3>
+        <div class="opts"><span class="opt on warn">Partial</span></div>
+        <p class="note"><span class="lbl">Notes</span>Every trajectory, monitor input and gold label is public. The monitor prompt, reasoning effort, output limits, single-pass vs chunked reading, handling of inputs beyond a context window (97 records exceed about 1M characters), predictions and run count are not. A strict reading would rate this Inadequate. We proceeded because the scoring defects lie in the released data and do not depend on any monitor's settings.</p>
+
+        <h3 id="scoring">2. Scoring</h3>
+        <div class="rub">
+          <h4>Scoring</h4>
+          <div class="opts" aria-label="Status"><span class="opt on flag">Flag</span></div>
+          <div class="note"><span class="lbl">Notes</span>35 of 50 sampled records (70%); at least 65 of 169 (38%) by mechanical checks. Inconsistent sibling labels and broken injections corrupt grading at scale.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Benchmark Consistency</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>All published monitors share one version, but it is not the released one: the manifest records <code>fresh_model_evaluation_performed: false</code>, a 6,000-character task context (114 rows since restored), 16 rows of gold changed by renumbering, and 33 legit rows removed. Results on the release are not comparable with the published table.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Elicitation</h4>
+          <div class="opts" aria-label="Status"><span class="opt on neutral">Not reviewed</span></div>
+          <div class="note"><span class="lbl">Notes</span>Monitor settings are undisclosed. The authors' own unpublished figure shows chunked reading moves GLM-5.2 by about 50 detection-F1 points, more than the whole published spread.</div>
+        </div>
+
+        <div class="rub">
+          <h4>Bias in Evaluation Setup</h4>
+          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span></div>
+          <div class="note"><span class="lbl">Notes</span>No material advantage shown. GPT-5.6 Sol (8 chunks) selected the natural hacks; GLM-5.2 wrote every injection; Claude Opus 4.8 and GPT-5.5 audited every label; GPT-5.5 and GLM-5.2 generated every trajectory. All of them are ranked monitors.</div>
+        </div>
+
+        <h3 id="evaluation-quality">3. Evaluation quality</h3>
+        <div class="tbl">
+          <table class="eq"><thead><tr><th>Check</th><th>What we found</th></tr></thead><tbody><tr><td>Runs per model</td><td><b>Unknown runs/model; no error bars.</b> With 55 base trajectories, a 95% interval is about 28 F1 points wide when base trajectories are resampled. Four models lie within 2.1 points.</td></tr><tr><td>Enough time and compute</td><td><strong>Unknown.</strong> Undisclosed. Chunking alone changes scores by up to about 50 F1 in the authors' figure.</td></tr><tr><td>Same agent setup for every model</td><td>Unknown: no monitor scaffold is described.</td></tr><tr><td>Test data exposure</td><td>100% of tasks public; 100% of solutions public. The download is gated, but the gold ships with the data, and sibling records reveal each injection by diff.</td></tr><tr><td>Measures what it claims</td><td><strong>Partly.</strong> Every record contains a hack; the 33 clean trajectories were removed, so false alarms on honest runs are not measured. Four records hold 918 of the 1,312 gold labels.</td></tr></tbody></table>
+        </div>
+      </section>
+
+      <section id="disclaimer" aria-label="Disclaimer">
+        <h2>Disclaimer</h2>
+        <p>This is a full review of a 50-record stratified sample, plus mechanical checks over all 169 records. Model reviewers did the per-record review under a written protocol. The lead auditor re-checked every defect the verdict relies on, and contested calls were resolved conservatively. No monitor was run, and the chunking values are read off a plot.</p>
+      </section>
+
+      <section id="notes" aria-label="Notes">
+        <h2>Notes</h2>
+        <ol class="notes">
+          <li id="n1">Epoch AI, Benchmark Reviews methodology (Rubric v1): <a href="https://epoch.ai/data/benchmark-reviews-documentation/methodology">epoch.ai/data/benchmark-reviews-documentation/methodology</a>.</li>
+          <li id="n2">Dataset: <a href="https://huggingface.co/datasets/facebook/hackbench">huggingface.co/datasets/facebook/hackbench</a>, file <code>data/hackbench_169_gpt55_glm52.numbered.jsonl</code>, sha256 <code>42c0cfa4…9fd87</code>. Blog: <a href="https://facebookresearch.github.io/RAM/blogs/hackbench/">facebookresearch.github.io/RAM/blogs/hackbench</a>.</li>
+          <li id="n3"><code>MANIFEST.json</code>: <code>historical_evaluation_character_cap: 6000</code>. The red-team block starts at characters 4,468–5,633 in 13 of the 14 records.</li>
+          <li id="n4"><code>fig4.png</code> in <a href="https://github.com/facebookresearch/RAM/tree/main/projects/hackbench">github.com/facebookresearch/RAM/tree/main/projects/hackbench</a> (also <code>fig3.png</code> and <code>fig5.png</code>; none is shown in the post).</li>
+          <li>The report, task log, per-record reviews, review protocol and analysis scripts are in <a href="https://github.com/openbenchmarkreview/audits/tree/main/audits/hackbench">audits/hackbench</a>.</li>
+        </ol>
+        <h3>Cite</h3>
+        <div class="cite">Open Benchmark Review (2026), "HackBench: Benchmark Review". Reviewed Oct. 27, 2026. github.com/openbenchmarkreview/audits</div>
+      </section>
+
+      <footer>Rubric: Epoch AI Benchmark Reviews, Rubric v1. Verdict categories: Verified, Flawed, Not enough information.</footer>
+    </main></div></div><footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="../benchmarks/index.html">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <span class="mono">reviews@openbenchmarkreview.org</span></p></div></footer>
+</body>
+</html>
