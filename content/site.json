@@ -7,9 +7,9 @@
   "email": "reviews@openbenchmarkreview.org",
   "sections": [
     {
-      "slug": "ml-benchmarks",
-      "name": "ML Benchmarks",
-      "blurb": "Benchmarks that measure AI systems on machine learning and computer science work: research engineering, rebuilding published methods, and monitoring other agents."
+      "slug": "rsi-benchmarks",
+      "name": "RSI Benchmarks",
+      "blurb": "We picked 6 benchmarks that are either self-proclaimed RSI benchmarks or benchmark some RSI-related component, such as ML research or reward hacking detection."
     }
   ]
 }

@@ -1,0 +1,711 @@
+{
+ "_about": "Per-checkpoint diagnostics from the \"Aesthetic score versus alignment and diversity\" table on each DDPO case page (lab.einsia.ai/ai4ai/trajectories/<case>/), fetched 2026-11-03.",
+ "cells": [
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-opus-5__high",
+   "model": "claude-opus-5",
+   "effort": "high",
+   "checkpoints": [
+    {
+     "artifact": "artifact-132",
+     "aesthetic": 7.8749,
+     "alignment": 0.2028,
+     "distance": 0.22
+    },
+    {
+     "artifact": "artifact-268",
+     "aesthetic": 8.4185,
+     "alignment": 0.1513,
+     "distance": 0.0841
+    },
+    {
+     "artifact": "artifact-676",
+     "aesthetic": 7.2377,
+     "alignment": 0.1597,
+     "distance": 0.11
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-opus-5__low",
+   "model": "claude-opus-5",
+   "effort": "low",
+   "checkpoints": [
+    {
+     "artifact": "artifact-3845",
+     "aesthetic": 12.113,
+     "alignment": 0.0988,
+     "distance": 0.0651
+    },
+    {
+     "artifact": "artifact-3846",
+     "aesthetic": 12.11,
+     "alignment": 0.0966,
+     "distance": 0.0715
+    },
+    {
+     "artifact": "artifact-3847",
+     "aesthetic": 12.134,
+     "alignment": 0.0964,
+     "distance": 0.0667
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-opus-5__max",
+   "model": "claude-opus-5",
+   "effort": "max",
+   "checkpoints": [
+    {
+     "artifact": "artifact-4780",
+     "aesthetic": 17.519,
+     "alignment": 0.1136,
+     "distance": 0.0414
+    },
+    {
+     "artifact": "artifact-4920",
+     "aesthetic": 17.627,
+     "alignment": 0.1043,
+     "distance": 0.0478
+    },
+    {
+     "artifact": "artifact-5060",
+     "aesthetic": 17.668,
+     "alignment": 0.1085,
+     "distance": 0.0471
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-opus-5__medium",
+   "model": "claude-opus-5",
+   "effort": "medium",
+   "checkpoints": [
+    {
+     "artifact": "artifact-60",
+     "aesthetic": 7.1503,
+     "alignment": 0.2425,
+     "distance": 0.3289
+    },
+    {
+     "artifact": "artifact-90",
+     "aesthetic": 8.3137,
+     "alignment": 0.2229,
+     "distance": 0.2753
+    },
+    {
+     "artifact": "artifact-120",
+     "aesthetic": 8.9804,
+     "alignment": 0.1816,
+     "distance": 0.185
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-opus-5__xhigh",
+   "model": "claude-opus-5",
+   "effort": "xhigh",
+   "checkpoints": [
+    {
+     "artifact": "artifact-4370",
+     "aesthetic": 14.37,
+     "alignment": 0.1135,
+     "distance": 0.0753
+    },
+    {
+     "artifact": "artifact-4371",
+     "aesthetic": 14.377,
+     "alignment": 0.1133,
+     "distance": 0.0705
+    },
+    {
+     "artifact": "artifact-4372",
+     "aesthetic": 14.446,
+     "alignment": 0.1128,
+     "distance": 0.0714
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-sonnet-5__high",
+   "model": "claude-sonnet-5",
+   "effort": "high",
+   "checkpoints": [
+    {
+     "artifact": "artifact-171",
+     "aesthetic": 5.8174,
+     "alignment": 0.2335,
+     "distance": 0.3092
+    },
+    {
+     "artifact": "artifact-172",
+     "aesthetic": 5.822,
+     "alignment": 0.2332,
+     "distance": 0.3096
+    },
+    {
+     "artifact": "artifact-173",
+     "aesthetic": 5.8233,
+     "alignment": 0.2336,
+     "distance": 0.3107
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-sonnet-5__low",
+   "model": "claude-sonnet-5",
+   "effort": "low",
+   "checkpoints": [
+    {
+     "artifact": "artifact-18",
+     "aesthetic": 5.9971,
+     "alignment": 0.2338,
+     "distance": 0.3185
+    },
+    {
+     "artifact": "artifact-19",
+     "aesthetic": 6.0367,
+     "alignment": 0.2343,
+     "distance": 0.3084
+    },
+    {
+     "artifact": "artifact-20",
+     "aesthetic": 6.1309,
+     "alignment": 0.2322,
+     "distance": 0.3153
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-sonnet-5__max",
+   "model": "claude-sonnet-5",
+   "effort": "max",
+   "checkpoints": [
+    {
+     "artifact": "artifact-34",
+     "aesthetic": 6.1095,
+     "alignment": 0.2371,
+     "distance": 0.317
+    },
+    {
+     "artifact": "artifact-35",
+     "aesthetic": 6.1272,
+     "alignment": 0.2356,
+     "distance": 0.3128
+    },
+    {
+     "artifact": "artifact-36",
+     "aesthetic": 6.1536,
+     "alignment": 0.2354,
+     "distance": 0.3064
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-sonnet-5__medium",
+   "model": "claude-sonnet-5",
+   "effort": "medium",
+   "checkpoints": [
+    {
+     "artifact": "artifact-38",
+     "aesthetic": 5.8082,
+     "alignment": 0.2378,
+     "distance": 0.3369
+    },
+    {
+     "artifact": "artifact-39",
+     "aesthetic": 5.8592,
+     "alignment": 0.2386,
+     "distance": 0.3325
+    },
+    {
+     "artifact": "artifact-40",
+     "aesthetic": 5.8642,
+     "alignment": 0.2386,
+     "distance": 0.3319
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__claude-sonnet-5__xhigh",
+   "model": "claude-sonnet-5",
+   "effort": "xhigh",
+   "checkpoints": [
+    {
+     "artifact": "artifact-170",
+     "aesthetic": 4.0198,
+     "alignment": 0.1767,
+     "distance": 0.1679
+    },
+    {
+     "artifact": "artifact-171",
+     "aesthetic": 3.968,
+     "alignment": 0.1836,
+     "distance": 0.129
+    },
+    {
+     "artifact": "artifact-172",
+     "aesthetic": 4.4878,
+     "alignment": 0.1746,
+     "distance": 0.167
+    }
+   ]
+  },
+  {
+   "case": "claude__ddpo_sd15_aesthetic__kimi-k3__max",
+   "model": "kimi-k3",
+   "effort": "max",
+   "checkpoints": [
+    {
+     "artifact": "artifact-750",
+     "aesthetic": 9.0421,
+     "alignment": 0.1474,
+     "distance": 0.1554
+    },
+    {
+     "artifact": "artifact-900",
+     "aesthetic": 9.0149,
+     "alignment": 0.1561,
+     "distance": 0.1529
+    },
+    {
+     "artifact": "artifact-1050",
+     "aesthetic": 9.0433,
+     "alignment": 0.1467,
+     "distance": 0.1508
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-luna__high",
+   "model": "gpt-5.6-luna",
+   "effort": "high",
+   "checkpoints": [
+    {
+     "artifact": "artifact-37",
+     "aesthetic": 5.6178,
+     "alignment": 0.2343,
+     "distance": 0.3526
+    },
+    {
+     "artifact": "artifact-38",
+     "aesthetic": 5.6178,
+     "alignment": 0.234,
+     "distance": 0.3549
+    },
+    {
+     "artifact": "artifact-39",
+     "aesthetic": 5.6157,
+     "alignment": 0.2342,
+     "distance": 0.3543
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-luna__low",
+   "model": "gpt-5.6-luna",
+   "effort": "low",
+   "checkpoints": [
+    {
+     "artifact": "artifact-10",
+     "aesthetic": 5.5363,
+     "alignment": 0.2342,
+     "distance": 0.3654
+    },
+    {
+     "artifact": "artifact-11",
+     "aesthetic": 5.5413,
+     "alignment": 0.2339,
+     "distance": 0.3653
+    },
+    {
+     "artifact": "artifact-12",
+     "aesthetic": 5.5264,
+     "alignment": 0.2344,
+     "distance": 0.3661
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-luna__max",
+   "model": "gpt-5.6-luna",
+   "effort": "max",
+   "checkpoints": [
+    {
+     "artifact": "artifact-27",
+     "aesthetic": 6.4759,
+     "alignment": 0.2361,
+     "distance": 0.2666
+    },
+    {
+     "artifact": "artifact-28",
+     "aesthetic": 6.5127,
+     "alignment": 0.2342,
+     "distance": 0.2644
+    },
+    {
+     "artifact": "artifact-29",
+     "aesthetic": 6.5327,
+     "alignment": 0.2341,
+     "distance": 0.2603
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-luna__medium",
+   "model": "gpt-5.6-luna",
+   "effort": "medium",
+   "checkpoints": [
+    {
+     "artifact": "artifact-3",
+     "aesthetic": 5.5574,
+     "alignment": 0.2325,
+     "distance": 0.3823
+    },
+    {
+     "artifact": "artifact-4",
+     "aesthetic": 5.5053,
+     "alignment": 0.2328,
+     "distance": 0.3847
+    },
+    {
+     "artifact": "artifact-5",
+     "aesthetic": 5.4734,
+     "alignment": 0.2332,
+     "distance": 0.3806
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-luna__none",
+   "model": "gpt-5.6-luna",
+   "effort": "none",
+   "checkpoints": [
+    {
+     "artifact": "artifact-687",
+     "aesthetic": 5.1101,
+     "alignment": 0.1483,
+     "distance": 0.1018
+    },
+    {
+     "artifact": "artifact-688",
+     "aesthetic": 5.0684,
+     "alignment": 0.1493,
+     "distance": 0.1073
+    },
+    {
+     "artifact": "artifact-689",
+     "aesthetic": 4.9579,
+     "alignment": 0.1556,
+     "distance": 0.114
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-luna__xhigh",
+   "model": "gpt-5.6-luna",
+   "effort": "xhigh",
+   "checkpoints": [
+    {
+     "artifact": "artifact-1",
+     "aesthetic": 5.6103,
+     "alignment": 0.2341,
+     "distance": 0.3529
+    },
+    {
+     "artifact": "artifact-2",
+     "aesthetic": 5.6137,
+     "alignment": 0.2332,
+     "distance": 0.3264
+    },
+    {
+     "artifact": "artifact-3",
+     "aesthetic": 5.7388,
+     "alignment": 0.2342,
+     "distance": 0.3241
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-sol__high",
+   "model": "gpt-5.6-sol",
+   "effort": "high",
+   "checkpoints": [
+    {
+     "artifact": "artifact-151",
+     "aesthetic": 5.7149,
+     "alignment": 0.2369,
+     "distance": 0.3591
+    },
+    {
+     "artifact": "artifact-152",
+     "aesthetic": 5.7329,
+     "alignment": 0.237,
+     "distance": 0.3421
+    },
+    {
+     "artifact": "artifact-153",
+     "aesthetic": 5.7702,
+     "alignment": 0.2376,
+     "distance": 0.3467
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-sol__low",
+   "model": "gpt-5.6-sol",
+   "effort": "low",
+   "checkpoints": []
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-sol__max",
+   "model": "gpt-5.6-sol",
+   "effort": "max",
+   "checkpoints": [
+    {
+     "artifact": "artifact-512",
+     "aesthetic": 6.0955,
+     "alignment": 0.2399,
+     "distance": 0.3601
+    },
+    {
+     "artifact": "artifact-4412",
+     "aesthetic": 8.982,
+     "alignment": 0.1871,
+     "distance": 0.2253
+    },
+    {
+     "artifact": "artifact-8812",
+     "aesthetic": 7.8644,
+     "alignment": 0.2182,
+     "distance": 0.3161
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-sol__medium",
+   "model": "gpt-5.6-sol",
+   "effort": "medium",
+   "checkpoints": [
+    {
+     "artifact": "artifact-63",
+     "aesthetic": 5.9542,
+     "alignment": 0.2248,
+     "distance": 0.3404
+    },
+    {
+     "artifact": "artifact-95",
+     "aesthetic": 5.9322,
+     "alignment": 0.2152,
+     "distance": 0.2923
+    },
+    {
+     "artifact": "artifact-630",
+     "aesthetic": 6.8344,
+     "alignment": 0.181,
+     "distance": 0.2318
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-sol__none",
+   "model": "gpt-5.6-sol",
+   "effort": "none",
+   "checkpoints": [
+    {
+     "artifact": "artifact-41",
+     "aesthetic": 5.8212,
+     "alignment": 0.2341,
+     "distance": 0.3061
+    },
+    {
+     "artifact": "artifact-42",
+     "aesthetic": 5.8216,
+     "alignment": 0.2336,
+     "distance": 0.3088
+    },
+    {
+     "artifact": "artifact-43",
+     "aesthetic": 5.822,
+     "alignment": 0.2332,
+     "distance": 0.3096
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-sol__xhigh",
+   "model": "gpt-5.6-sol",
+   "effort": "xhigh",
+   "checkpoints": [
+    {
+     "artifact": "artifact-8",
+     "aesthetic": 5.9235,
+     "alignment": 0.2337,
+     "distance": 0.3572
+    },
+    {
+     "artifact": "artifact-17",
+     "aesthetic": 5.7638,
+     "alignment": 0.2357,
+     "distance": 0.3402
+    },
+    {
+     "artifact": "artifact-26",
+     "aesthetic": 4.9883,
+     "alignment": 0.1626,
+     "distance": 0.0785
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-terra__high",
+   "model": "gpt-5.6-terra",
+   "effort": "high",
+   "checkpoints": [
+    {
+     "artifact": "artifact-19",
+     "aesthetic": 6.4313,
+     "alignment": 0.2219,
+     "distance": 0.2548
+    },
+    {
+     "artifact": "artifact-20",
+     "aesthetic": 6.5185,
+     "alignment": 0.2309,
+     "distance": 0.2658
+    },
+    {
+     "artifact": "artifact-21",
+     "aesthetic": 6.6246,
+     "alignment": 0.2367,
+     "distance": 0.265
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-terra__low",
+   "model": "gpt-5.6-terra",
+   "effort": "low",
+   "checkpoints": [
+    {
+     "artifact": "artifact-10",
+     "aesthetic": 5.5363,
+     "alignment": 0.2342,
+     "distance": 0.3654
+    },
+    {
+     "artifact": "artifact-11",
+     "aesthetic": 5.5413,
+     "alignment": 0.2339,
+     "distance": 0.3653
+    },
+    {
+     "artifact": "artifact-12",
+     "aesthetic": 5.5264,
+     "alignment": 0.2344,
+     "distance": 0.3661
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-terra__max",
+   "model": "gpt-5.6-terra",
+   "effort": "max",
+   "checkpoints": [
+    {
+     "artifact": "artifact-45",
+     "aesthetic": 6.0074,
+     "alignment": 0.2386,
+     "distance": 0.3175
+    },
+    {
+     "artifact": "artifact-451",
+     "aesthetic": 5.6586,
+     "alignment": 0.2365,
+     "distance": 0.3607
+    },
+    {
+     "artifact": "artifact-452",
+     "aesthetic": 5.8419,
+     "alignment": 0.2381,
+     "distance": 0.3322
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-terra__medium",
+   "model": "gpt-5.6-terra",
+   "effort": "medium",
+   "checkpoints": [
+    {
+     "artifact": "artifact-174",
+     "aesthetic": 5.8314,
+     "alignment": 0.2336,
+     "distance": 0.3121
+    },
+    {
+     "artifact": "artifact-175",
+     "aesthetic": 5.8373,
+     "alignment": 0.2338,
+     "distance": 0.3126
+    },
+    {
+     "artifact": "artifact-176",
+     "aesthetic": 5.8522,
+     "alignment": 0.2342,
+     "distance": 0.3128
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-terra__none",
+   "model": "gpt-5.6-terra",
+   "effort": "none",
+   "checkpoints": [
+    {
+     "artifact": "artifact-10",
+     "aesthetic": 5.5363,
+     "alignment": 0.2342,
+     "distance": 0.3654
+    },
+    {
+     "artifact": "artifact-11",
+     "aesthetic": 5.5413,
+     "alignment": 0.2339,
+     "distance": 0.3653
+    },
+    {
+     "artifact": "artifact-12",
+     "aesthetic": 5.5264,
+     "alignment": 0.2344,
+     "distance": 0.3661
+    }
+   ]
+  },
+  {
+   "case": "codex__ddpo_sd15_aesthetic__gpt-5.6-terra__xhigh",
+   "model": "gpt-5.6-terra",
+   "effort": "xhigh",
+   "checkpoints": [
+    {
+     "artifact": "artifact-82",
+     "aesthetic": 5.9514,
+     "alignment": 0.2367,
+     "distance": 0.34
+    },
+    {
+     "artifact": "artifact-83",
+     "aesthetic": 5.9513,
+     "alignment": 0.2367,
+     "distance": 0.339
+    },
+    {
+     "artifact": "artifact-84",
+     "aesthetic": 5.9558,
+     "alignment": 0.2372,
+     "distance": 0.3367
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PostTrainBench review · Open Benchmark Review</title>
+<meta name="description" content="PostTrainBench is rated Verified. No grading errors, and no reward hacks in the top run of each of its 24 tasks.">
+<link rel="canonical" href="https://openbenchmarkreview.org/benchmarks/posttrainbench.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Open Benchmark Review">
+<meta property="og:title" content="PostTrainBench review · Open Benchmark Review">
+<meta property="og:description" content="PostTrainBench is rated Verified. No grading errors, and no reward hacks in the top run of each of its 24 tasks.">
+<meta property="og:url" content="https://openbenchmarkreview.org/benchmarks/posttrainbench.html">
+<meta property="og:image" content="https://openbenchmarkreview.org/assets/og/posttrainbench.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PostTrainBench review · Open Benchmark Review">
+<meta name="twitter:description" content="PostTrainBench is rated Verified. No grading errors, and no reward hacks in the top run of each of its 24 tasks.">
+<meta name="twitter:image" content="https://openbenchmarkreview.org/assets/og/posttrainbench.png">
+<meta name="theme-color" content="#8B1E1A">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/obr-mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Open+Sans:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="">
+<header class="site-header"><div class="container"><a class="brand" href="../index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="../benchmarks/index.html" aria-current="page">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a></nav></div></header><div class="page-head"><div class="container"><div class="crumbs"><a href="../index.html">Open Benchmark Review</a> · <a href="index.html">Benchmarks</a> · <a href="index.html#rsi-benchmarks">RSI Benchmarks</a></div><h1>PostTrainBench</h1><div class="facts"><p><strong>Benchmark creator:</strong> Ben Rank, Hardik Bhatnagar, Ameya Prabhu, Shira Eisenberg, Karina Nguyen, Matthias Bethge, Maksym Andriushchenko (<a href="https://github.com/aisa-group" target="_blank" rel="noopener">aisa-group</a>)</p><p><strong>Original benchmark:</strong> <a href="https://posttrainbench.com" target="_blank" rel="noopener">posttrainbench.com</a></p><p><strong>Version reviewed:</strong> v1.2, repository commit <code>62c69d36</code>; 6 target benchmarks × 4 base models; leaderboard of Nov. 4, 2026</p><p><strong>Verdict:</strong> <span class="badge verified">Verified</span></p><p><a href="https://github.com/Open-Benchmark-Review/audits/tree/main/audits/posttrainbench">Full report, task log and scripts</a></p></div></div></div><div class="body"><div class="container layout"><nav class="toc" aria-label="On this page"><span class="label">On this page</span><ol>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#case-studies">Case studies</a></li>
+        <li><a href="#errors">All issues</a></li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
+        <li><a href="#notes">Notes</a></li>
+      </ol></nav><main>
+      <section id="summary" aria-label="Summary">
+        <h2 class="vh">Summary</h2>
+        <p class="lede">PostTrainBench tests whether AI agents can post-train a language model. Each agent gets 10 hours on one H100 GPU to make a small base model (Qwen3-1.7B, Qwen3-4B, SmolLM3-3B or Gemma-3-4B) score as high as possible on one target benchmark, such as AIME 2025, GPQA or HumanEval. That makes 24 tasks, and each agent runs each one two or three times. LLM judges read every run for cheating.<sup><a href="#na">a</a></sup></p>
+        <h3 class="sumh">What we found</h3>
+        <ul class="found"><li>We reviewed all 24 tasks and found that <strong>none</strong> had grading errors that affect the score.</li><li>We found no reward hacks. In each of the 24 tasks we read the highest-scoring run that the benchmark's cheating checks did not flag, and every one is legitimate: no test data in training, no swapped-in model, no tampering with the evaluation.</li><li>Seven of the 19 entries, including the top five, have no public runs, so their results can't be checked.</li></ul>
+      </section>
+      <section id="case-studies" aria-label="Case studies"><h2>Case studies</h2><div class="case" id="case-gpqa"><h3>GPQA Main</h3>
+<p>The task is to post-train a base model so it answers GPQA Main, 448 graduate-level multiple-choice questions in biology, chemistry and physics. The answer must end with a line like "ANSWER: B", and the four choices are shuffled for each of three scoring seeds.</p>
+<p>Base models score between 2% and 14%, mostly because they don't answer in that format. So the first thing any agent gains is the format, and the format alone is worth a lot: a model that <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src1">answers "B" to every question scores 26.0%</span><span class="xref-pop" id="src1"><span class="xe"><span class="xh"><span>gpqa_letters.py in the audit folder</span></span></span></span></span>. The official instruct models, built by the model developers with far more compute, score 36.2%. The best agent, GPT-6 Astra, reaches 33.5%, and Kimi K3, Opus 4.8 and Gemini 3.1 Pro end up below the constant answer.</p>
+<p>GPQA carries <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src2">24% of the leaderboard score</span><span class="xref-pop" id="src2"><span class="xe"><span class="xh"><a href="https://posttrainbench.com/blog/posttrainbench-1-2/">Version 1.2 release notes</a></span></span></span></span>, more than any target except AIME. Nothing here is a scoring error: the scorer is correct and learning the format is a real part of post-training. But on this target, even the best agents finish only a few points above a model that always answers "B".</p>
+<figure class="viz"><div class="viz-title">GPQA Main score, mean over the four base models</div><div class="viz-wrap"><div class="wide"><svg viewBox="0 0 720 312" role="img" aria-label="Bar chart of GPQA scores. Always answering B scores 26.0%. The official instruct models score 36.2%, the best agent 33.5%, and several agents score below 26%."><text x="190.0" y="306" class="ax" text-anchor="middle">0%</text><line x1="190.0" x2="190.0" y1="26" y2="290" class="g"/><text x="307.5" y="306" class="ax" text-anchor="middle">10%</text><line x1="307.5" x2="307.5" y1="26" y2="290" class="g"/><text x="425.0" y="306" class="ax" text-anchor="middle">20%</text><line x1="425.0" x2="425.0" y1="26" y2="290" class="g"/><text x="542.5" y="306" class="ax" text-anchor="middle">30%</text><line x1="542.5" x2="542.5" y1="26" y2="290" class="g"/><text x="660.0" y="306" class="ax" text-anchor="middle">40%</text><line x1="660.0" x2="660.0" y1="26" y2="290" class="g"/><g><title>Official instruct models: 36.2% on GPQA, mean over the four base models</title><text x="180" y="40" class="ylab" text-anchor="end">Official instruct models</text><rect x="190" y="29" width="425.4" height="17" rx="3" fill="#5A5A5A"/><text x="621.4" y="42" class="val">36.2</text></g><g><title>GPT-6 Astra: 33.5% on GPQA, mean over the four base models</title><text x="180" y="66" class="ylab" text-anchor="end">GPT-6 Astra</text><rect x="190" y="55" width="393.6" height="17" rx="3" fill="#B5432F"/><text x="589.6" y="68" class="val">33.5</text></g><g><title>Locus: 33.1% on GPQA, mean over the four base models</title><text x="180" y="92" class="ylab" text-anchor="end">Locus</text><rect x="190" y="81" width="388.9" height="17" rx="3" fill="#B5432F"/><text x="584.9" y="94" class="val">33.1</text></g><g><title>Opus 5.5: 29.5% on GPQA, mean over the four base models</title><text x="180" y="118" class="ylab" text-anchor="end">Opus 5.5</text><rect x="190" y="107" width="346.6" height="17" rx="3" fill="#B5432F"/><text x="542.6" y="120" class="val">29.5</text></g><g><title>Fable 5.1: 29.2% on GPQA, mean over the four base models</title><text x="180" y="144" class="ylab" text-anchor="end">Fable 5.1</text><rect x="190" y="133" width="343.1" height="17" rx="3" fill="#B5432F"/><text x="539.1" y="146" class="val">29.2</text></g><g><title>Always answers "B": 26.0% on GPQA, mean over the four base models</title><text x="180" y="170" class="ylab" text-anchor="end">Always answers "B"</text><rect x="190" y="159" width="305.5" height="17" rx="3" fill="#3B6FB6"/><text x="501.5" y="172" class="val">26.0</text></g><g><title>Kimi K3: 25.5% on GPQA, mean over the four base models</title><text x="180" y="196" class="ylab" text-anchor="end">Kimi K3</text><rect x="190" y="185" width="299.6" height="17" rx="3" fill="#B5432F"/><text x="495.6" y="198" class="val">25.5</text></g><g><title>Opus 4.8: 20.9% on GPQA, mean over the four base models</title><text x="180" y="222" class="ylab" text-anchor="end">Opus 4.8</text><rect x="190" y="211" width="245.6" height="17" rx="3" fill="#B5432F"/><text x="441.6" y="224" class="val">20.9</text></g><g><title>Gemini 3.1 Pro: 17.8% on GPQA, mean over the four base models</title><text x="180" y="248" class="ylab" text-anchor="end">Gemini 3.1 Pro</text><rect x="190" y="237" width="209.1" height="17" rx="3" fill="#B5432F"/><text x="405.1" y="250" class="val">17.8</text></g><g><title>Base models: 8.5% on GPQA, mean over the four base models</title><text x="180" y="274" class="ylab" text-anchor="end">Base models</text><rect x="190" y="263" width="99.9" height="17" rx="3" fill="#958E86"/><text x="295.9" y="276" class="val">8.5</text></g></svg></div><div class="narrow"><svg viewBox="0 0 380 494" role="img" aria-label="GPQA scores: instruct models 36.2, best agent 33.5, always answering B 26.0, base models 8.5."><text x="14.0" y="488" class="ax" text-anchor="middle">0%</text><text x="172.0" y="488" class="ax" text-anchor="middle">20%</text><text x="330.0" y="488" class="ax" text-anchor="middle">40%</text><g><title>Official instruct models: 36.2%</title><text x="14" y="42" class="ylab">Official instruct models</text><rect x="14" y="48" width="286.0" height="16" rx="3" fill="#5A5A5A"/><text x="306.0" y="61" class="val">36.2</text></g><g><title>GPT-6 Astra: 33.5%</title><text x="14" y="86" class="ylab">GPT-6 Astra</text><rect x="14" y="92" width="264.6" height="16" rx="3" fill="#B5432F"/><text x="284.6" y="105" class="val">33.5</text></g><g><title>Locus: 33.1%</title><text x="14" y="130" class="ylab">Locus</text><rect x="14" y="136" width="261.5" height="16" rx="3" fill="#B5432F"/><text x="281.5" y="149" class="val">33.1</text></g><g><title>Opus 5.5: 29.5%</title><text x="14" y="174" class="ylab">Opus 5.5</text><rect x="14" y="180" width="233.1" height="16" rx="3" fill="#B5432F"/><text x="253.1" y="193" class="val">29.5</text></g><g><title>Fable 5.1: 29.2%</title><text x="14" y="218" class="ylab">Fable 5.1</text><rect x="14" y="224" width="230.7" height="16" rx="3" fill="#B5432F"/><text x="250.7" y="237" class="val">29.2</text></g><g><title>Always answers "B": 26.0%</title><text x="14" y="262" class="ylab">Always answers "B"</text><rect x="14" y="268" width="205.4" height="16" rx="3" fill="#3B6FB6"/><text x="225.4" y="281" class="val">26.0</text></g><g><title>Kimi K3: 25.5%</title><text x="14" y="306" class="ylab">Kimi K3</text><rect x="14" y="312" width="201.4" height="16" rx="3" fill="#B5432F"/><text x="221.4" y="325" class="val">25.5</text></g><g><title>Opus 4.8: 20.9%</title><text x="14" y="350" class="ylab">Opus 4.8</text><rect x="14" y="356" width="165.1" height="16" rx="3" fill="#B5432F"/><text x="185.1" y="369" class="val">20.9</text></g><g><title>Gemini 3.1 Pro: 17.8%</title><text x="14" y="394" class="ylab">Gemini 3.1 Pro</text><rect x="14" y="400" width="140.6" height="16" rx="3" fill="#B5432F"/><text x="160.6" y="413" class="val">17.8</text></g><g><title>Base models: 8.5%</title><text x="14" y="438" class="ylab">Base models</text><rect x="14" y="444" width="67.2" height="16" rx="3" fill="#958E86"/><text x="87.2" y="457" class="val">8.5</text></g></svg></div></div><figcaption>The blue bar is a model that always answers "B". Most of what agents earn on GPQA comes from getting the answer format right. Source: the version 1.2 <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src3">leaderboard data</span><span class="xref-pop" id="src3"><span class="xe"><span class="xh"><a href="https://posttrainbench.com/#leaderboard">posttrainbench.com leaderboard</a></span></span></span></span> and our <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src4">constant-answer test</span><span class="xref-pop" id="src4"><span class="xe"><span class="xh"><span>gpqa_letters.py in the audit folder</span></span></span></span></span>.</figcaption></figure></div></section>
+      <section id="errors" aria-label="All issues">
+        <div class="errhead"><h2>All issues</h2><button type="button" class="showall" aria-pressed="false">Show all sources</button></div>
+        <ol class="errlist">
+<li id="err-base-score"><h3 class="et">Clean HumanEval runs are scored as if they did nothing, with no reason given</h3><p class="ed">The task is to post-train a base model to write Python functions that pass HumanEval's unit tests. Version 1.2 gives four HumanEval cells the base model's score, although their runs were judged clean. Opus 5's two Qwen3-4B runs scored 81.7% and 83.5% in version 1.1, and Epoch AI also found them clean; in version 1.2 the cell is 36.6%, the base score. The scoring code gives the base score for a cheating flag, a missing run or a model that fails to evaluate, and the leaderboard doesn't say which. Our code review rules out the new HumanEval sandbox. The most likely cause is an unpublished version 1.2 judge verdict. Unconfirmed, so not counted.</p><p class="emeta">Task: HumanEval: Opus 5 / Qwen3-4B, Fable 5 / SmolLM3, Grok 4.5 / SmolLM3, GLM 5.3 Flash / SmolLM3</p><details class="ew"><summary>Where: 17415833, 17419570 (Opus 5), 17415251 (Fable 5), collect.py, leaderboard · 5 sources</summary><ul><li><a class="att" href="https://huggingface.co/datasets/aisa-group/PostTrainBench-Trajectories/tree/main/claude_non_api_claude-opus-5_10h_run1/humaneval_Qwen_Qwen3-4B-Base_17415833">17415833</a> <span class="mdl">Opus 5</span> · scored 81.7% in version 1.1, all checks clean</li><li><a class="att" href="https://huggingface.co/datasets/aisa-group/PostTrainBench-Trajectories/tree/main/claude_non_api_claude-opus-5_10h_run2/humaneval_Qwen_Qwen3-4B-Base_17419570">17419570</a> <span class="mdl">Opus 5</span> · scored 83.5% in version 1.1, all checks clean</li><li><a class="att" href="https://huggingface.co/datasets/aisa-group/PostTrainBench-Trajectories/tree/main/claude_non_api_max_claude-fable-5_1m__10h_run2/humaneval_HuggingFaceTB_SmolLM3-3B-Base_17415251">17415251</a> <span class="mdl">Fable 5</span> · scored 65.9% in version 1.1, all checks clean; cell now 6.1%</li><li><a href="https://github.com/aisa-group/PostTrainBench/blob/62c69d36a7cd1a3fb4f50e9e6352c2df13e85ccf/scripts/collect.py#L187-L210"><code>scripts/collect.py:187-210</code></a>: one base score for three different reasons</li><li><a href="https://posttrainbench.com/#leaderboard">Leaderboard data</a>: <code>fallbackType: false</code> in all 504 cells</li></ul></details></li>
+<li id="err-gpqa-letter"><h3 class="et">On GPQA, always answering "B" earns most of every agent's credit</h3><p class="ed">The task is to post-train a base model to answer graduate-level science multiple-choice questions. Base models score 2–14% because they rarely give an answer in the required format. A model that always answers "ANSWER: B" scores 26.0% across the three scoring seeds, which is worth 4.2 leaderboard points. That is 70–100% of every agent's GPQA credit, and GPQA carries 24% of the score. The scorer is correct, and learning the answer format is part of post-training, so this is not counted. But the most heavily weighted target barely separates the agents on the science.</p><p class="emeta">Task: GPQA Main, all four base models</p><details class="ew"><summary>Where: GPQA scorer, reproduction · 2 sources</summary><ul><li><a href="https://github.com/aisa-group/PostTrainBench/blob/62c69d36a7cd1a3fb4f50e9e6352c2df13e85ccf/src/eval/tasks/gpqamain/evaluate_final_eval.py"><code>src/eval/tasks/gpqamain/evaluate_final_eval.py</code></a>: letter extraction and per-seed shuffling</li><li>Our re-implementation: <code>scripts/reviewers/scorers/gpqa_letters.py</code> in the audit folder</li></ul></details></li>
+<li id="err-identity"><h3 class="et">The check that the right model was submitted passes the forbidden instruct models</h3><p class="ed">Agents must post-train the base model they are given, not submit the official instruct version. The programmatic check compares only architecture fields in the model's config, not its weights. Our re-implementation passes the unmodified official instruct config of all four base models. The instruct versions of two of them sit in the task's own model cache. The LLM judge still reads every trace, and we found no swap it missed.</p><p class="emeta">Task: every run</p><details class="ew"><summary>Where: identity check, cache list · 2 sources</summary><ul><li><a href="https://github.com/aisa-group/PostTrainBench/blob/62c69d36a7cd1a3fb4f50e9e6352c2df13e85ccf/src/judges/judge_tools/model_identity_check.py#L25-L35"><code>src/judges/judge_tools/model_identity_check.py:25-35</code></a>: architecture fields only</li><li><a href="https://github.com/aisa-group/PostTrainBench/blob/62c69d36a7cd1a3fb4f50e9e6352c2df13e85ccf/containers/download_hf_cache/resources.json"><code>containers/download_hf_cache/resources.json</code></a>: Qwen3-4B and gemma-3-4b-it cached</li></ul></details></li>
+<li id="err-decon" class="more"><h3 class="et">The shared contamination checker skips the most common training-data format</h3><p class="ed">Agents and judges get the same tool for checking training data against the test set. It reads plain text fields, so chat-format records (<code>messages</code> or <code>conversations</code>), the usual format for fine-tuning data, produce nothing to check and come back clean. It also misses paraphrased, translated and answer-only overlap. The judge's instructions say a clean check does not clear a run, so the effect is small.</p><p class="emeta">Task: every run</p><details class="ew"><summary>Where: checker, reproduction · 2 sources</summary><ul><li><a href="https://github.com/aisa-group/PostTrainBench/blob/62c69d36a7cd1a3fb4f50e9e6352c2df13e85ccf/src/judges/judge_tools/contamination_check.py#L642-L672"><code>src/judges/judge_tools/contamination_check.py:642-672</code></a>: reads input documents</li><li>Our re-implementation: <code>scripts/reviewers/setup/decon_input_reimpl.py</code></li></ul></details></li>
+<li id="err-numbers" class="more"><h3 class="et">The math scorers misread a few answer formats</h3><p class="ed">The task is to post-train a base model to solve AIME and GSM8K problems; the scorer takes the last number in the answer. A number after the answer line, "(70)", "70%" or "x=70" is scored wrong, and "70.0001" or "7*10" can be scored right. The agent's own copy of the scorer is more lenient than the final one, and the prompt doesn't say so. Each case is worth well under one point.</p><p class="emeta">Task: AIME 2025 and GSM8K</p><details class="ew"><summary>Where: scorer, tests · 2 sources</summary><ul><li><a href="https://github.com/aisa-group/PostTrainBench/blob/62c69d36a7cd1a3fb4f50e9e6352c2df13e85ccf/src/eval/exact_numeric_match.py#L30-L86"><code>src/eval/exact_numeric_match.py:30-86</code></a>: last-number extraction</li><li>Our tests: <code>scripts/reviewers/scorers/test_numeric.py</code></li></ul></details></li>
+</ol><button type="button" class="moreerr" aria-expanded="false" data-more="Show 2 more issues" data-less="Show fewer issues">Show 2 more issues</button>
+      </section>
+      <section id="disclaimer" aria-label="Disclaimer">
+        <h2>Disclaimer</h2>
+        <p>This is a full review of the code and a targeted review of runs: we read the top unflagged run in every task, not every run. We used AI reviewers to find every issue, which we then hand-checked. We reviewed version 1.2; Epoch AI reviewed version 1.1 and rated it Verified.<sup><a href="#nb">b</a></sup></p>
+      </section>
+      <section id="notes" aria-label="Notes">
+        <h2>Notes</h2>
+        <ol class="notes" style="list-style-type: lower-alpha"><li id="na">Leaderboard: <a href="https://posttrainbench.com">posttrainbench.com</a>. Code: <a href="https://github.com/aisa-group/PostTrainBench">aisa-group/PostTrainBench</a> at <code>62c69d36</code>. Paper: <a href="https://arxiv.org/abs/2603.08640">arXiv 2603.08640</a>.</li><li id="nb">Epoch AI's review of version 1.1: <a href="https://epoch.ai/benchmarks/post-train-bench/review">epoch.ai</a>, Sep. 9, 2026.</li></ol>
+        <h3>Cite</h3>
+        <div class="cite">Open Benchmark Review (2026), "PostTrainBench: Benchmark Review". Reviewed Nov. 4, 2026. github.com/Open-Benchmark-Review/audits</div>
+      </section>
+<script>
+(function () {
+  var refs = document.querySelectorAll('.xref'), timer = null;
+  function place(r) {
+    var btn = r.querySelector('.xref-t'), pop = r.querySelector('.xref-pop');
+    var b = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight, pad = 12;
+    var left = Math.min(Math.max(pad, b.left + b.width / 2 - w / 2), innerWidth - pad - w);
+    var top = b.top - h - 6; if (top < pad) top = b.bottom + 6;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function open(r) {
+    clearTimeout(timer);
+    refs.forEach(function (o) { if (o !== r) { o.classList.remove('open'); o.querySelector('.xref-t').setAttribute('aria-expanded', 'false'); } });
+    r.classList.add('open'); r.querySelector('.xref-t').setAttribute('aria-expanded', 'true'); place(r);
+  }
+  function close(r) { r.classList.remove('open'); r.querySelector('.xref-t').setAttribute('aria-expanded', 'false'); }
+  refs.forEach(function (r) {
+    var btn = r.querySelector('.xref-t');
+    r.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') open(r); });
+    r.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') { clearTimeout(timer); timer = setTimeout(function () { close(r); }, 180); } });
+    btn.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); r.classList.contains('open') ? close(r) : open(r); } });
+    btn.addEventListener('blur', function () { setTimeout(function () { if (!r.contains(document.activeElement)) close(r); }, 0); });
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      if (ev.pointerType === 'mouse') { open(r); return; }
+      r.classList.contains('open') ? close(r) : open(r);
+    });
+  });
+  document.addEventListener('click', function (ev) { if (!ev.target.closest('.xref')) refs.forEach(close); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Escape') return;
+    var o = document.querySelector('.xref.open'); refs.forEach(close); if (o) o.querySelector('.xref-t').focus();
+  });
+  addEventListener('scroll', function () { refs.forEach(function (r) { if (r.classList.contains('open')) place(r); }); }, true);
+  addEventListener('resize', function () { refs.forEach(function (r) { if (r.classList.contains('open')) place(r); }); });
+
+  var sec = document.getElementById('errors'), mb = document.querySelector('.moreerr');
+  function fold(on) {
+    if (!sec || !mb) return;
+    sec.classList.toggle('folded', on);
+    mb.setAttribute('aria-expanded', on ? 'false' : 'true');
+    mb.textContent = on ? mb.getAttribute('data-more') : mb.getAttribute('data-less');
+  }
+  function reveal() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    if (t && sec && sec.contains(t) && t.closest('.more')) { fold(false); t.scrollIntoView(); }
+  }
+  if (mb) {
+    fold(true);
+    mb.addEventListener('click', function () {
+      var opening = sec.classList.contains('folded');
+      fold(!opening);
+      if (opening) { var first = sec.querySelector('.more .et, li.more .et'); if (first) { first.setAttribute('tabindex', '-1'); first.focus({ preventScroll: true }); } }
+      else { mb.scrollIntoView({ block: 'nearest' }); }
+    });
+    reveal(); addEventListener('hashchange', reveal);
+  }
+  var btn = document.querySelector('.showall'), all = [].slice.call(document.querySelectorAll('details.ew'));
+  if (btn) btn.addEventListener('click', function () {
+    var on = btn.getAttribute('aria-pressed') !== 'true';
+    if (on) fold(false);
+    all.forEach(function (d) { d.open = on; });
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? 'Hide all sources' : 'Show all sources';
+  });
+
+  var nav = document.querySelector('nav.toc'); if (!nav) return;
+  var lab = nav.querySelector('.label'), list = nav.querySelector('ol'); if (!lab || !list) return;
+  var t = document.createElement('button'); t.type = 'button'; t.className = 'toc-btn'; t.textContent = lab.textContent;
+  t.setAttribute('aria-expanded', 'false'); lab.replaceWith(t);
+  var mq = matchMedia('(max-width: 720px)');
+  function apply() {
+    if (mq.matches) { list.hidden = t.getAttribute('aria-expanded') !== 'true'; t.removeAttribute('tabindex'); }
+    else { list.hidden = false; t.setAttribute('tabindex', '-1'); }
+  }
+  t.addEventListener('click', function () {
+    if (!mq.matches) return;
+    t.setAttribute('aria-expanded', t.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); apply();
+  });
+  list.addEventListener('click', function (e) { if (mq.matches && e.target.closest('a')) { t.setAttribute('aria-expanded', 'false'); apply(); } });
+  (mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply)); apply();
+})();
+</script>
+
+    </main></div></div><footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="../benchmarks/index.html">Benchmarks</a><a href="../methodology.html">Methodology</a><a href="../submit.html">Submit a review</a><a href="../about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <span class="mono">reviews@openbenchmarkreview.org</span></p></div></footer>
+</body>
+</html>

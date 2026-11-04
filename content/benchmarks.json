@@ -5,13 +5,11 @@
     "creator": "Meta, RAM team",
     "measures": "Whether an LLM monitor can find reward hacking in long agent trajectories",
     "verdict": "Flawed",
-    "reviewed": "Oct. 27, 2026",
-    "defects": 35,
-    "inspected": 50,
-    "unit": "sampled records",
-    "lower_bound": 0.385,
-    "lower_bound_note": "38% of all 169 records by checks that need no judgement",
-    "summary": "Records built on the same trajectory label the same commands differently, most injected hacks cannot take effect, and 14 \"natural\" records give the monitor the red-team order to hack.",
+    "reviewed": "Nov. 3, 2026",
+    "defects": 107,
+    "inspected": 169,
+    "unit": "records",
+    "summary": "Records from the same trajectory label the same commands differently, many inserted hacks cannot take effect, all 15 red-team records give the monitor the order to hack, and a string rule that reads nothing ties for third.",
     "ranking": "Cannot be re-checked: monitor settings and predictions are not released.",
     "rubric": {
       "reviewability": [
@@ -22,7 +20,7 @@
       "scoring": [
         "flag",
         "Flag",
-        "35/50 sampled; at least 65/169 overall"
+        "107/169 records; 60 confirmed by script"
       ],
       "consistency": [
         "pass",
@@ -40,7 +38,7 @@
         "Dataset builders are also ranked monitors"
       ]
     },
-    "section": "ml-benchmarks",
+    "section": "rsi-benchmarks",
     "creator_links": {
       "Meta, RAM team": "https://facebookresearch.github.io/RAM/",
       "Meta, RAM": "https://facebookresearch.github.io/RAM/"
@@ -54,11 +52,11 @@
     "creator": "FrontierCS Team",
     "measures": "Whether an agent can rebuild a paper's key contribution and beat the authors' code",
     "verdict": "Flawed",
-    "reviewed": "Oct. 27, 2026",
-    "defects": 23,
+    "reviewed": "Nov. 3, 2026",
+    "defects": 15,
     "inspected": 48,
     "unit": "tasks",
-    "summary": "Strict \"win every workload\" rules on noisy measurements, reward-hackable bars, and a leaderboard that mixes runs scored before and after scorer fixes.",
+    "summary": "Many tasks require beating the reference on every workload with no tolerance on noisy measurements, so even the reference often fails its own bar; one target is faster than any real reference run.",
     "ranking": "Model order mostly survives correction; pass-rate levels and close comparisons do not.",
     "rubric": {
       "reviewability": [
@@ -69,7 +67,7 @@
       "scoring": [
         "flag",
         "Flag",
-        "23/48 tasks"
+        "15/48 tasks"
       ],
       "consistency": [
         "flag",
@@ -87,7 +85,7 @@
         "Effort and refusal handling differ by entry"
       ]
     },
-    "section": "ml-benchmarks",
+    "section": "rsi-benchmarks",
     "creator_links": {
       "FrontierCS Team": "https://frontier-cs.org/"
     },
@@ -100,11 +98,11 @@
     "creator": "Hillclimb",
     "measures": "Open-ended ML research engineering, ranked by Elo over per-task wins",
     "verdict": "Flawed",
-    "reviewed": "Oct. 27, 2026",
-    "defects": 6,
+    "reviewed": "Nov. 3, 2026",
+    "defects": 5,
     "inspected": 15,
     "unit": "tasks",
-    "summary": "Scored attempts that break their own prompt's rules, disqualifications under a rule the prompt never states, and no published disqualification criteria.",
+    "summary": "Rule-breaking attempts scored as valid, and disqualifications under a rule the prompt never states that change a task's winner.",
     "ranking": "Top four are robust under every correction; only the bottom two swap.",
     "rubric": {
       "reviewability": [
@@ -115,7 +113,7 @@
       "scoring": [
         "flag",
         "Flag",
-        "6/15 tasks"
+        "5/15 tasks"
       ],
       "consistency": [
         "pass",
@@ -125,7 +123,7 @@
       "elicitation": [
         "pass",
         "Pass",
-        "GPT-6 Astra capped at a 272k context"
+        "GPT-6 Astra at 272k context, the Codex default"
       ],
       "bias": [
         "pass",
@@ -133,7 +131,7 @@
         "One model on a different provider route"
       ]
     },
-    "section": "ml-benchmarks",
+    "section": "rsi-benchmarks",
     "creator_links": {
       "Hillclimb": "https://www.hillclimb.com/"
     },
@@ -144,9 +142,9 @@
     "slug": "frontierml",
     "name": "FrontierML",
     "creator": "Induction Labs",
-    "measures": "Agentic ML engineering across 21 tasks and three compute wallets",
+    "measures": "Agentic ML engineering across 21 tasks, each run at three compute budgets",
     "verdict": "Flawed",
-    "reviewed": "Oct. 27, 2026",
+    "reviewed": "Nov. 3, 2026",
     "defects": 7,
     "inspected": 21,
     "unit": "tasks",
@@ -179,7 +177,7 @@
         "The reviewer model is also a ranked model"
       ]
     },
-    "section": "ml-benchmarks",
+    "section": "rsi-benchmarks",
     "creator_links": {
       "Induction Labs": "https://inductionlabs.com"
     },
@@ -192,12 +190,12 @@
     "creator": "Einsia / Navers Lab",
     "measures": "Improving AI training recipes in real research repositories, scored against the shipped recipe",
     "verdict": "Flawed",
-    "reviewed": "Oct. 29, 2026",
+    "reviewed": "Nov. 3, 2026",
     "defects": 4,
     "inspected": 10,
     "unit": "tasks",
-    "summary": "A held-out Sokoban bank built from a seed in the agent's own workspace, an image scorer without its promised gates, an unreachable optimum, and checkpoints picked on the test set.",
-    "ranking": "Opus 5 leads when averaged over efforts but is third at maximum effort; corrections move Kimi K3 to second.",
+    "summary": "A Sokoban test set the agent can rebuild in its own workspace, an image score that rewards pictures ignoring their prompts, an unlearning optimum above its metric's maximum, and checkpoints picked on the test set.",
+    "ranking": "Opus 5 leads when averaged over efforts and is third at maximum effort only because of the Sokoban task; corrections move Kimi K3 to second.",
     "rubric": {
       "reviewability": [
         "cav",
@@ -220,12 +218,12 @@
         "Codex runs get no continuation"
       ],
       "bias": [
-        "flag",
-        "Flag",
-        "Unequal effort sets decide the system ranking"
+        "pass",
+        "Pass",
+        "Unequal effort sets; first place unchanged"
       ]
     },
-    "section": "ml-benchmarks",
+    "section": "rsi-benchmarks",
     "creator_links": {
       "Einsia": "https://einsia.ai/"
     },
@@ -233,49 +231,48 @@
     "benchmark_label": "lab.einsia.ai/ai4ai"
   },
   {
-    "slug": "vals-rsi-index",
-    "name": "Vals RSI Index",
-    "creator": "Vals AI",
-    "measures": "Autonomous LLM research across four tasks: compression, LM training, judge harnesses and post-training",
-    "verdict": "Not enough info",
-    "reviewed": "Oct. 29, 2026",
-    "page": false,
-    "defects": null,
-    "inspected": 4,
+    "slug": "posttrainbench",
+    "name": "PostTrainBench",
+    "creator": "aisa-group",
+    "measures": "Agents post-training a small base model for one target benchmark in 10 hours on one H100",
+    "verdict": "Verified",
+    "reviewed": "Nov. 4, 2026",
+    "defects": 0,
+    "inspected": 24,
     "unit": "tasks",
-    "summary": "Its tasks, graders and run logs aren't published, so we can't give a Flawed or Verified verdict.",
+    "summary": "No grading errors, and no reward hacks in the top run of each of its 24 tasks.",
     "rubric": {
       "reviewability": [
-        "nr",
-        "Inadequate",
-        "No task, grader or run log public"
+        "cav",
+        "Partial",
+        "7 of 19 entries have no public runs"
       ],
       "scoring": [
-        "nr",
-        "Not reviewed",
-        "Tasks not open to inspect"
+        "pass",
+        "Pass",
+        "0/24 tasks; 24 top runs clean"
       ],
       "consistency": [
-        "nr",
-        "Not reviewed",
-        "Stopped at reviewability"
+        "pass",
+        "Pass",
+        "Small scorer commits a day after release"
       ],
       "elicitation": [
-        "nr",
-        "Not reviewed",
-        "Stopped at reviewability"
+        "pass",
+        "Pass",
+        "Same GPU and time; native CLIs"
       ],
       "bias": [
-        "nr",
-        "Not reviewed",
-        "Stopped at reviewability"
+        "pass",
+        "Pass",
+        "Fable GPQA fallback disclosed"
       ]
     },
-    "section": "ml-benchmarks",
+    "section": "rsi-benchmarks",
     "creator_links": {
-      "Vals AI": "https://www.vals.ai"
+      "aisa-group": "https://github.com/aisa-group"
     },
-    "benchmark_url": "https://www.vals.ai/benchmarks/rsi_index",
-    "benchmark_label": "vals.ai/benchmarks/rsi_index"
+    "benchmark_url": "https://posttrainbench.com",
+    "benchmark_label": "posttrainbench.com"
   }
 ]

@@ -10,7 +10,7 @@ Inputs (all under content/ unless noted):
 
 Output: docs/, a static site with no build-time dependencies beyond Python 3:
   index.html                     landing page: mission, why, what we do, principles, review sections
-  benchmarks/index.html          every reviewed benchmark, grouped by section (ML Benchmarks first)
+  benchmarks/index.html          every reviewed benchmark, grouped by section (RSI Benchmarks first)
   benchmarks/<slug>.html         one page per review
   methodology.html, about.html, submit.html, 404.html, sitemap.xml, robots.txt, CNAME
 Serve it with `python3 -m http.server -d docs`; GitHub Pages serves it from main /docs.
@@ -161,8 +161,9 @@ def acard(b, href):
             f'<div class="who">{creator_html(b)} · {html.escape(b["measures"])}</div>')
     if not has_page(b):
         return f'<div class="acard nolink">{head}</div>'
-    return (f'<div class="acard">{head}'
-            f'<div class="meta"><div class="rate">{b["defects"]}/{b["inspected"]}<small>tasks defective</small>'
+    ok = " ok" if b["verdict"] == "Verified" else ""
+    return (f'<div class="acard{ok}">{head}'
+            f'<div class="meta"><div class="rate">{b["defects"]}/{b["inspected"]}<small>{b.get("unit", "tasks")} defective</small>'
             f'</div><a class="go" href="{href}">Read the review →</a></div></div>')
 
 
@@ -197,19 +198,10 @@ def landing():
 <section class="band page" aria-labelledby="h-why"><div class="container">
   <div class="band-head"><h2 id="h-why">Benchmarks break in quiet ways</h2></div>
   <div class="three">
-    <div><h3>Grading goes wrong</h3><p>A grader that rejects correct work, or accepts a shortcut, changes the score and nobody notices. Every benchmark we have been able to fully review so far had this problem.</p></div>
+    <div><h3>Grading goes wrong</h3><p>A grader that rejects correct work, or accepts a shortcut, changes the score and nobody notices.</p></div>
     <div><h3>Agents find the gaps</h3><p>AI agents are good at raising a score without doing the task. If a benchmark allows it, its leaderboard rewards it.</p></div>
     <div><h3>No one is assigned to check</h3><p>Benchmark teams move on to the next release, and readers can't inspect the code behind a leaderboard. Independent review fills that gap.</p></div>
   </div>
-</div></section>
-
-<section class="band" aria-labelledby="h-what"><div class="container">
-  <div class="band-head"><h2 id="h-what">From leaderboard to evidence</h2></div>
-  <ol class="steps">
-    <li><h3>Review</h3><p>We read the tasks, the grading code and, where they are released, the agents' own runs, and apply a public rubric to all of it.</p></li>
-    <li><h3>Publish</h3><p>Each review gives a verdict, lists every error we count with its evidence, and includes the scripts that reproduce our numbers.</p></li>
-    <li><h3>Follow up</h3><p>Benchmark developers can reply, and we link their response. A fixed version of a benchmark gets a new review.</p></li>
-  </ol>
 </div></section>
 
 <section class="band cream" aria-labelledby="h-principles"><div class="container">
@@ -250,32 +242,30 @@ def chart(bs, prefix):
     rows = []
     for b in sorted(bs, key=lambda b: -rate(b)):
         lb = f'<div class="lb" style="left:{100 * b["lower_bound"]:.1f}%"></div>' if b.get("lower_bound") else ""
-        rows.append(f'<div class="crow"><div class="name"><a href="{prefix}{b["slug"]}.html">{b["name"]}</a></div>'
-                    f'<div class="track"><div class="bar" style="width:{rate(b):.1f}%"></div>{lb}<div class="thr"></div>'
-                    f'</div><div class="val">{rate(b):.1f}%</div></div>')
-    label = "; ".join(f'{b["name"]} {rate(b):.1f} percent' for b in bs)
+        ok = b["verdict"] == "Verified"
+        mark = '<span class="okmark">Verified</span>' if ok else ""
+        rows.append(f'<div class="crow{" ok" if ok else ""}"><div class="name"><a href="{prefix}{b["slug"]}.html">{b["name"]}</a></div>'
+                    f'<div class="track"><div class="bar" style="width:{rate(b):.1f}%"></div>{lb}{mark}'
+                    f'{"" if ok else '<div class="thr"></div>'}</div><div class="val">{rate(b):.1f}%</div></div>')
+    label = "; ".join(f'{b["name"]} {rate(b):.1f} percent' + (", Verified" if b["verdict"] == "Verified" else "")
+                      for b in bs)
+    oklg = '<span><i class="k-ok"></i>Verified</span>' if any(b["verdict"] == "Verified" for b in bs) else ""
     lbs = "".join(f'<span><i class="k-lb"></i>{b["name"]} lower bound: {b["lower_bound_note"]}</span>'
                   for b in bs if b.get("lower_bound"))
     return (f'<div class="chart" role="img" aria-label="Share of checked tasks with a confirmed grading defect: '
             f'{label}. Flawed threshold 20 percent."><div><div class="title">Share of checked tasks with a confirmed '
-            f'grading defect</div><div class="src">From each review\'s task log.</div></div>{"".join(rows)}<div class="axis" aria-hidden="true"><div></div><div class="ticks">'
+            f'grading defect</div><div class="src">From each review\'s task log; for HackBench, the share of records.</div></div>{"".join(rows)}<div class="axis" aria-hidden="true"><div></div><div class="ticks">'
             f'<span style="left:0">0%</span><span style="left:20%">20%</span><span class="mid" style="left:40%">40%</span>'
             f'<span class="mid" style="left:60%">60%</span><span class="mid" style="left:80%">80%</span>'
             f'<span style="left:100%">100%</span></div><div></div></div><div class="legend"><span><i class="k-bar"></i>'
-            f'Defect rate</span><span><i class="k-thr"></i>Flawed threshold, 20%</span>{lbs}</div></div>')
+            f'Defect rate</span><span><i class="k-thr"></i>Flawed threshold, 20%</span>{oklg}{lbs}</div></div>')
 
 
 def benchmarks_page():
-    """One page listing every reviewed benchmark, grouped by section (ML Benchmarks first)."""
+    """One page listing every reviewed benchmark, grouped by section (RSI Benchmarks first)."""
     blocks, toc = [], []
     for sec in SECTIONS:
         bs = in_section(sec)
-        rubric_rows = "".join(
-            (f'<tr><th scope="row"><a href="{b["slug"]}.html">{b["name"]}</a></th>' if has_page(b)
-             else f'<tr><th scope="row">{b["name"]}</th>') + "".join(
-                f'<td title="{html.escape(b["rubric"][k][2])}"><span class="rs {b["rubric"][k][0]}">'
-                f'{b["rubric"][k][1]}</span></td>'
-                for k in ("reviewability", "scoring", "consistency", "elicitation", "bias")) + "</tr>" for b in bs)
         cards = "".join(acard(b, f'{b["slug"]}.html') for b in bs)
         sid = sec["slug"]
         blocks.append(f'''
@@ -284,13 +274,10 @@ def benchmarks_page():
   <p>{html.escape(sec["blurb"])}</p>
   <div class="cards">{cards}</div>
   <h3 id="{sid}-rates">How much of each benchmark is affected</h3>
-  {chart([b for b in bs if b.get("defects") is not None], "")}
-  <h3 id="{sid}-rubric">Rubric results</h3>
-  <p>Failing any check makes a benchmark Flawed. <a href="../methodology.html">Methodology</a>.</p>
-  <div class="tbl"><table class="rubric"><thead><tr><th>Benchmark</th><th>Open to inspect</th><th>Grading</th><th>Consistency</th><th>Model setup</th><th>Fairness</th></tr></thead><tbody>{rubric_rows}</tbody></table></div>
+  {chart([b for b in bs if b.get("defects") is not None ], "")}
 </section>''')
         toc.append(f'<li><a href="#{sid}">{sec["name"]}</a><ol><li><a href="#{sid}-rates">How much is affected</a></li>'
-                   f'<li><a href="#{sid}-rubric">Rubric results</a></li></ol></li>')
+                   f'</ol></li>')
     coming = ('<section id="coming" aria-labelledby="h-coming" class="coming"><h2 id="h-coming">More benchmarks coming soon</h2>'
               '<p>Math, Reasoning and Multimodal reviews are on the way. <a href="../submit.html#suggest">'
               'Suggest one</a>.</p></section>')

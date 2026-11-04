@@ -1,382 +1,144 @@
 <title>DeepRSI Review</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>
-/* Layout: an audit dossier. Sticky contents rail on the left, a single reading column on the right; stacks to one column on phones. */
-:root {
-  --bg: #f6f7f8;
-  --paper: #ffffff;
-  --ink: #16202a;
-  --muted: #5a6672;
-  --rule: #dde2e7;
-  --accent: #1f5f73;
-  --accent-soft: #e3eef1;
-  --flag: #b23a2a;
-  --flag-soft: #f8e5e1;
-  --pass: #2f6b3e;
-  --pass-soft: #e2efe5;
-  --warn: #8a5a00;
-  --warn-soft: #f6ecd6;
-  --code-bg: #eef1f4;
-  --font-display: "Newsreader", "Iowan Old Style", "Georgia", serif;
-  --font-body: "Public Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f1418; --paper: #151c21; --ink: #e4e9ed; --muted: #9aa6b0; --rule: #2a343c;
-    --accent: #7cc0d3; --accent-soft: #1b2d34;
-    --flag: #f08a78; --flag-soft: #3a1f1b; --pass: #86c995; --pass-soft: #1b2e21;
-    --warn: #e2b764; --warn-soft: #33290f; --code-bg: #1d262c;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0f1418; --paper: #151c21; --ink: #e4e9ed; --muted: #9aa6b0; --rule: #2a343c;
-  --accent: #7cc0d3; --accent-soft: #1b2d34;
-  --flag: #f08a78; --flag-soft: #3a1f1b; --pass: #86c995; --pass-soft: #1b2e21;
-  --warn: #e2b764; --warn-soft: #33290f; --code-bg: #1d262c;
-  color-scheme: dark;
-}
-
-* { box-sizing: border-box; }
-body {
-  background: var(--bg); color: var(--ink);
-  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-a { color: var(--accent); text-underline-offset: 2px; }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
-code { font-family: var(--font-mono); font-size: 0.86em; background: var(--code-bg); padding: 0.05em 0.35em; border-radius: 3px; overflow-wrap: anywhere; }
-
-.wrap {
-  max-width: 1180px; margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 40px 72px;
-}
-
-/* masthead */
-.eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
-.back { display: inline-block; margin-bottom: 18px; font-size: 14px; }
-header.mast { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--rule); margin-bottom: 32px; }
-h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
-.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 28px; margin: 6px 0 0; }
-.meta div { min-width: 0; }
-.meta dt { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
-.meta dd { margin: 2px 0 0; font-size: 15px; }
-.verdict { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; color: var(--flag); background: var(--flag-soft); padding: 3px 12px 3px 10px; border-radius: 999px; }
-.verdict::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--flag); }
-.howlink { font-size: 14px; }
-
-/* two-column body */
-.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; align-items: start; }
-nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); font-size: 14px; }
-nav.toc ol { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
-nav.toc ol ol { padding-left: 14px; margin-top: 4px; gap: 4px; }
-nav.toc a { color: var(--muted); text-decoration: none; }
-nav.toc a:hover { color: var(--ink); }
-main { min-width: 0; max-width: 760px; }
-
-section { padding-block: 8px 28px; }
-h2 { font-family: var(--font-display); font-weight: 600; font-size: 28px; line-height: 1.2; margin: 18px 0 12px; text-wrap: balance; scroll-margin-top: 16px; }
-h3 { font-size: 17px; font-weight: 700; margin: 26px 0 8px; scroll-margin-top: 16px; }
-p { margin: 0 0 14px; }
-.lede { font-size: 18px; line-height: 1.6; }
-ul.errs { padding-left: 20px; margin: 0 0 14px; display: grid; gap: 12px; }
-ul.errs li::marker { color: var(--accent); }
-.term { font-weight: 700; }
-
-/* key figures */
-.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; margin: 22px 0 26px; }
-.fig { background: var(--paper); padding: 14px 16px; min-width: 0; }
-.fig b { display: block; font-family: var(--font-display); font-size: 30px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.fig span { font-size: 13px; color: var(--muted); }
-.fig.bad b { color: var(--flag); }
-
-/* tables */
-.tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); margin: 12px 0 18px; }
-table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
-th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-thead th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; background: var(--paper); }
-tbody tr:last-child td { border-bottom: 0; }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-td code { white-space: nowrap; }
-.type { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
-.t-fp { color: var(--warn); background: var(--warn-soft); }
-.t-fn { color: var(--accent); background: var(--accent-soft); }
-.t-imp { color: var(--flag); background: var(--flag-soft); }
-.tally { font-size: 15px; }
-.tally b { font-variant-numeric: tabular-nums; }
-
-/* rubric blocks */
-.rub { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; margin: 12px 0 14px; display: grid; gap: 10px; }
-.rub h4 { margin: 0; font-size: 16px; font-weight: 700; }
-.rub .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
-.rub ul { margin: 2px 0 0; padding-left: 18px; }
-.opts { display: flex; flex-wrap: wrap; gap: 6px; }
-.opt { font-size: 13px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--rule); color: var(--muted); }
-.opt.on { font-weight: 700; border-color: transparent; }
-.opt.on.flag { color: var(--flag); background: var(--flag-soft); }
-.opt.on.pass { color: var(--pass); background: var(--pass-soft); }
-.opt.on.neutral { color: var(--accent); background: var(--accent-soft); }
-.opt.on.warn { color: var(--warn); background: var(--warn-soft); }
-.note { font-size: 14.5px; color: var(--ink); }
-.note .lbl { margin-right: 6px; }
-
-.levels td:first-child { font-weight: 700; white-space: nowrap; }
-.levels tr.on td { background: var(--pass-soft); }
-.levels tr.on td:first-child::after { content: " ✓"; color: var(--pass); }
-
-.eq td:first-child { width: 38%; }
-.eq .opts { margin-bottom: 6px; }
-
-.sens td:first-child { white-space: nowrap; }
-
-/* notes */
-ol.notes { padding-left: 20px; font-size: 14px; color: var(--muted); display: grid; gap: 6px; }
-ol.notes a { overflow-wrap: anywhere; }
-sup a { text-decoration: none; font-size: 0.75em; }
-.cite { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 14px; font-family: var(--font-mono); font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); }
-footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
-
-@media (max-width: 860px) {
-  .layout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  nav.toc { position: static; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper); padding: 12px 14px; }
-  .wrap { padding-block: 24px 56px; }
-}
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-</style>
-
 <div class="wrap">
   <header class="mast">
-    <a class="back" href="https://github.com/openbenchmarkreview/audits">← Open Benchmark Review</a>
-    <div class="eyebrow">Benchmark Review</div>
     <h1>DeepRSI</h1>
     <dl class="meta">
-      <div><dt>Reviewed</dt><dd>Oct. 27, 2026</dd></div>
+      <div><dt>Reviewed</dt><dd>Nov. 3, 2026</dd></div>
       <div><dt>Benchmark creator</dt><dd>Hillclimb (Pruthvi Rajaghatta, Pranav Devarinti, Alex Berezovsky, Jun Park et al.)</dd></div>
       <div><dt>Version reviewed</dt><dd>15 tasks, 180 attempts; leaderboard of Oct. 23, 2026</dd></div>
       <div><dt>Verdict</dt><dd><span class="verdict">Flawed</span></dd></div>
     </dl>
-    <a class="howlink" href="https://epoch.ai/data/benchmark-reviews-documentation/methodology">How we review benchmarks (Epoch AI Rubric v1)</a>
   </header>
-
   <div class="layout">
     <nav class="toc" aria-label="Contents">
-      <div class="eyebrow">Contents</div>
       <ol>
         <li><a href="#summary">Summary</a></li>
-        <li><a href="#methodology">Methodology</a></li>
-        <li><a href="#representative-errors">Representative Errors</a></li>
-        <li><a href="#errors">Errors</a></li>
-        <li><a href="#rubric">Rubric</a>
-          <ol>
-            <li><a href="#reviewability">1. Reviewability</a></li>
-            <li><a href="#scoring">2. Scoring</a></li>
-            <li><a href="#evaluation-quality">3. Evaluation Quality</a></li>
-            <li><a href="#research-vs-gaming">Research vs. Gaming</a></li>
-          </ol>
-        </li>
+        <li><a href="#case-studies">Case studies</a></li>
+        <li><a href="#errors">All errors</a></li>
         <li><a href="#disclaimer">Disclaimer</a></li>
         <li><a href="#notes">Notes</a></li>
       </ol>
     </nav>
-
     <main>
       <section id="summary" aria-label="Summary">
-        <p class="lede">DeepRSI is an agentic benchmark of 15 open-ended ML research-engineering tasks: training recipes, GPU kernels, estimators and search algorithms. Each model gets two 48-hour attempts per task in the Pi harness, with no internet. A private grader scores the final code on held-out data, and the score is the improvement over the starting code. Some attempts are disqualified by an unpublished process. Models are ranked by an Elo rating built from per-task wins and losses.<sup><a href="#n1">1</a></sup></p>
-        <h3 class="sumh">What we found</h3><ul class="found"><li><strong>6 of the 15 tasks (40%)</strong> contain a wrongly graded attempt. A benchmark is rated Flawed at 20%.</li><li>In five tasks, an attempt that breaks a rule written in its own prompt was scored as valid.</li><li>In one task, five attempts were disqualified under a rule the prompt never mentions. Lifting those disqualifications changes the winner.</li><li>Disqualifications have no published criteria. The same behaviour is disqualified in one attempt and scored in another.</li><li>Each model gets only two attempts per task, against the five the rubric recommends. The scores are imprecise as a result: Fable 5.1's Elo interval runs from 1159 to 2567.</li></ul><p class="holds"><strong>Does the ranking hold?</strong> Yes. Fable 5.1, GPT-6 Astra, Gemini 4 Argon and Kimi K3 keep their places under every correction we tried, and enforcing the rules consistently only swaps the bottom two. The scores themselves don't hold: several results presented as valid break the task rules.</p>
-        <div class="figures" role="list">
-          <div class="fig bad" role="listitem"><b>6 / 15</b><span>tasks with confirmed grading defects</span></div>
-          <div class="fig" role="listitem"><b>5</b><span>rule-breaking attempts scored as valid</span></div>
-          <div class="fig" role="listitem"><b>5</b><span>attempts disqualified under an unstated rule</span></div>
-          <div class="fig" role="listitem"><b>2</b><span>attempts per task and model</span></div>
-        </div>
+        <h2 class="vh">Summary</h2>
+        <p class="lede">DeepRSI tests whether AI agents can do open-ended ML research, measured by an Elo ranking built from wins on each task. It has 15 tasks (such as training recipes, GPU kernels and estimators), and each model gets two 48-hour attempts per task, graded on private data the agent never sees.<sup><a href="#na">a</a></sup></p>
+        <h3 class="sumh">What we found</h3>
+        <ul class="found"><li>We reviewed all 15 tasks and found that <strong>5 (33%)</strong> had grading errors - attempts that broke the task's rules but still counted, or attempts disqualified under a rule the agents were never given.</li><li>On four tasks, attempts that broke a rule written in their own prompt still count, including the winner of one task. On two of them, other attempts that did the same thing were disqualified.</li><li>Five attempts were disqualified under a rule that appears only on the website, not in the prompt the agents got. Without that rule, a different model wins the task.</li></ul>
       </section>
-
-      <section id="methodology" aria-label="Methodology">
-        <h2>Methodology</h2>
-        <p>DeepRSI has fewer than 50 tasks, so we assessed all 15, and every one of their 180 attempts. We downloaded each trial record and full trajectory (784 MB), along with the leaderboard bundles that embed the task list, the Elo method and parameters, and the excluded trials. We parsed the embedded data as text and executed no site code. For each attempt we read four things: the exact prompt the agent received, the starter and public-verifier code as the agent saw it, the final patch, and the private reward breakdown. We searched the trajectory for key behaviour. Each attempt was classified as research, engineering, grey area, reward hack or no gain. We compared each official outcome with that judgement.<sup><a href="#n3">3</a></sup></p>
-        <p>We reimplemented the leaderboard Elo from the method text embedded in the site, and it reproduces all six published ratings to 0.1 points. We then used it to measure how each finding moves the ranking. Model reviewers made the per-attempt calls. The lead auditor re-verified every counted defect directly in the submitted code or the prompt text.</p>
-        <p>A task counts toward the threshold only if a defect is confirmed and it changes at least one attempt's score. Contested calls are logged in the task log but not counted. We could not inspect the private verifier code or the held-out data.</p>
+      <section id="case-studies" aria-label="Case studies"><h2>Case studies</h2><p class="cintro">Two tasks show the main problems: an attempt that broke its task's rule and won, and attempts disqualified under a rule the agents were never given.</p><div class="case" id="case-philly"><h3><a href="https://www.deeprsi.com/tasks/philly-job-survival-prediction">Philly job survival prediction</a></h3>
+<p>The task is to predict, from snapshots of jobs running on Microsoft's Philly GPU cluster, how likely each job is to finish within 5, 30, 120 and 480 minutes. Agents get a public set of example jobs with the answers, to check their work, and a private set they never see decides the score. <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src1">The prompt</span><span class="xref-pop" id="src1"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a><span class="xm">Grok 4.7</span></span><span class="xl">Step #1</span></span></span></span> says "Do not train on public labels."</p>
+<p>Grok 4.7 wrote down early in its run that <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src2">"hardcoding bias parameters from public data is therefore not allowed"</span><span class="xref-pop" id="src2"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a><span class="xm">Grok 4.7</span></span><span class="xl">Step #40</span></span></span></span>. A few hours later it started doing exactly that. It added small corrections for particular users, clusters and weekdays, kept each one if it lowered the loss on the public answers, and <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src3">shipped a model that gives individual users their own rules</span><span class="xref-pop" id="src3"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a><span class="xm">Grok 4.7</span></span><span class="xl">Step #348</span></span></span></span>. It scored 0.347, the best on the task, and was not disqualified. The score measures how much lower an attempt's private loss is than the starter code's. Gemini 4 Argon fitted the public answers in the same way and <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src4">was disqualified for "Public-label fitting"</span><span class="xref-pop" id="src4"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/wNhNTs5">wNhNTs5</a><span class="xm">Gemini 4 Argon</span></span></span></span></span>. Without Grok, <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src5">Claude Fable 5.1 would win the task</span><span class="xref-pop" id="src5"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/yqUkqCb">yqUkqCb</a><span class="xm">Claude Fable 5.1</span></span></span></span></span>.</p>
+<figure class="viz"><div class="viz-title">Log loss on the public set (open circle) vs the private test set (filled), lower is better</div><div class="viz-wrap"><div class="wide"><svg viewBox="0 0 720 150" role="img" aria-label="Both attempts score far better on the public labels they fitted than on the private set. Argon was disqualified; Grok was scored and won."><text x="266.6" y="142" class="ax" text-anchor="middle">0.15</text><line x1="266.6" x2="266.6" y1="18" y2="126" class="g"/><text x="343.1" y="142" class="ax" text-anchor="middle">0.20</text><line x1="343.1" x2="343.1" y1="18" y2="126" class="g"/><text x="419.7" y="142" class="ax" text-anchor="middle">0.25</text><line x1="419.7" x2="419.7" y1="18" y2="126" class="g"/><text x="496.2" y="142" class="ax" text-anchor="middle">0.30</text><line x1="496.2" x2="496.2" y1="18" y2="126" class="g"/><text x="572.8" y="142" class="ax" text-anchor="middle">0.35</text><line x1="572.8" x2="572.8" y1="18" y2="126" class="g"/><text x="649.4" y="142" class="ax" text-anchor="middle">0.40</text><line x1="649.4" x2="649.4" y1="18" y2="126" class="g"/><line x1="642.3" x2="642.3" y1="18" y2="126" class="cap"/><text x="638.3" y="14" class="lab" text-anchor="end">starter, 0.395</text><g><title>Gemini 4 Argon wNhNTs5: public loss 0.155, private loss 0.308; disqualified, scored 0</title><text x="178" y="38" class="ylab" text-anchor="end">Gemini 4 Argon</text><text x="178" y="53" class="sub" text-anchor="end" style="font-size:12px">disqualified, scored 0</text><line x1="274.2" x2="508.5" y1="34" y2="34" stroke="#958E86" stroke-width="2"/><circle cx="274.2" cy="34" r="6" fill="#fff" stroke="#5A5A5A" stroke-width="2"/><circle cx="508.5" cy="34" r="6" fill="#5A5A5A"/></g><g><title>Grok 4.7 ZQBYTSN: public loss 0.239, private loss 0.294; scored, wins the task</title><text x="178" y="82" class="ylab" text-anchor="end">Grok 4.7</text><text x="178" y="97" class="sub" text-anchor="end" style="font-size:12px">scored, wins the task</text><line x1="402.8" x2="487.1" y1="78" y2="78" stroke="#958E86" stroke-width="2"/><circle cx="402.8" cy="78" r="6" fill="#fff" stroke="#B5432F" stroke-width="2"/><circle cx="487.1" cy="78" r="6" fill="#B5432F"/></g></svg></div><div class="narrow"><svg viewBox="0 0 380 206" role="img" aria-label="Public loss 0.155 and private loss 0.308 for Gemini 4 Argon, disqualified; public 0.239 and private 0.294 for Grok 4.7, scored and winning."><text x="69.0" y="200" class="ax" text-anchor="middle">0.15</text><line x1="69.0" x2="69.0" y1="24" y2="182" class="g"/><text x="179.0" y="200" class="ax" text-anchor="middle">0.25</text><line x1="179.0" x2="179.0" y1="24" y2="182" class="g"/><text x="289.0" y="200" class="ax" text-anchor="middle">0.35</text><line x1="289.0" x2="289.0" y1="24" y2="182" class="g"/><line x1="338.9" x2="338.9" y1="24" y2="182" class="cap"/><text x="334.9" y="16" class="lab" text-anchor="end">starter, 0.395</text><g><title>Gemini 4 Argon wNhNTs5: public loss 0.155, private loss 0.308; disqualified, scored 0</title><text x="14" y="46" class="ylab">Gemini 4 Argon</text><text x="14" y="64" class="sub">disqualified, scored 0</text><line x1="74.5" x2="242.8" y1="82" y2="82" stroke="#958E86" stroke-width="2"/><circle cx="74.5" cy="82" r="7" fill="#fff" stroke="#5A5A5A" stroke-width="2"/><circle cx="242.8" cy="82" r="7" fill="#5A5A5A"/></g><g><title>Grok 4.7 ZQBYTSN: public loss 0.239, private loss 0.294; scored, wins the task</title><text x="14" y="116" class="ylab">Grok 4.7</text><text x="14" y="134" class="sub">scored, wins the task</text><line x1="166.9" x2="227.4" y1="152" y2="152" stroke="#958E86" stroke-width="2"/><circle cx="166.9" cy="152" r="7" fill="#fff" stroke="#B5432F" stroke-width="2"/><circle cx="227.4" cy="152" r="7" fill="#B5432F"/></g></svg></div></div><figcaption>How the fitting shows up: both attempts score far better on the public answers they fitted than on the private jobs. Argon was disqualified; Grok was scored. The dashed line is the starter code's private loss. Source: <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src6">each attempt's final public run</span><span class="xref-pop" id="src6"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/wNhNTs5">wNhNTs5</a><span class="xm">Gemini 4 Argon</span></span><span class="xl">Step #1174</span></span><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a><span class="xm">Grok 4.7</span></span><span class="xl">Step #2320</span></span></span></span> and its private score on deeprsi.com.</figcaption></figure></div><div class="case" id="case-unstated"><h3><a href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration">Large-vocabulary cross-entropy acceleration</a></h3>
+<p>The task is to speed up the last step of a language model, the final linear layer and the cross-entropy loss, for Qwen3's 152k-token vocabulary on one GPU. The result must match the reference gradients within fixed tolerances, and the score is the speedup.</p>
+<p>The <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src7">task overview on the website</span><span class="xref-pop" id="src7"><span class="xe"><span class="xh"><a href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration">DeepRSI task overview</a></span></span></span></span> adds a rule: an attempt "may not skip unlikely next tokens". <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src8">The prompt the agents got</span><span class="xref-pop" id="src8"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/XLG9UMd">XLG9UMd</a><span class="xm">Claude Fable 5.1</span></span><span class="xl">Step #1</span></span></span></span> never mentions it. Five attempts skipped those tokens anyway, each in its own way: <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src9">GPT-6 Astra drops gradient entries below a cutoff</span><span class="xref-pop" id="src9"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/C67AxpK">C67AxpK</a><span class="xm">GPT-6 Astra</span></span></span></span></span>, and <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src10">Grok 4.7 keeps only each row's top 16 tokens</span><span class="xref-pop" id="src10"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/ojLuB26">ojLuB26</a><span class="xm">Grok 4.7</span></span></span></span></span>. All five passed every accuracy check they were given, and all five were disqualified.</p>
+<p>The fastest of them, Grok 4.7 at 3.79×, would beat <span class="xref"><span class="xref-t" tabindex="0" role="button" aria-expanded="false" aria-controls="src11">the official winner, Claude Fable 5.1 at 3.70×</span><span class="xref-pop" id="src11"><span class="xe"><span class="xh"><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/XLG9UMd">XLG9UMd</a><span class="xm">Claude Fable 5.1</span></span></span></span></span>. A rule the agents could not see decided who won the task.</p></div></section>
+      <section id="errors" aria-label="All errors">
+        <div class="errhead"><h2>All errors</h2><button type="button" class="showall" aria-pressed="false">Show all sources</button></div>
+        <ol class="errlist">
+<li id="err-public-labels"><h3 class="et">Grok 4.7 hard-codes corrections fitted to the public labels and wins the task</h3><p class="ed">The task is to predict, from snapshots of running jobs on Microsoft's Philly GPU cluster, how likely each job is to finish within 5, 30, 120 and 480 minutes. The prompt says "Do not train on public labels". One Grok 4.7 attempt hard-codes hundreds of small corrections for specific users, clusters and weekdays, all read off the public labels, and gets the best score on the task. The agent notes partway through that this isn't allowed, and submits it. Gemini 4 Argon did the same kind of thing and was disqualified.</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/philly-job-survival-prediction">Philly Job Survival Prediction</a></p><details class="ew"><summary>Where: ZQBYTSN (Grok 4.7), wNhNTs5 (Gemini 4 Argon) · 5 sources</summary><ul><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a> <span class="mdl">Grok 4.7</span> · Step #40: "Hardcoding bias parameters from public data is therefore not allowed"</li><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a> <span class="mdl">Grok 4.7</span> · Step #348: ships it anyway</li><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a> <span class="mdl">Grok 4.7</span> · <code>research/NOTES.md</code>: "826467 h30 +2.5 … official 0.29084"</li><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/ZQBYTSN">ZQBYTSN</a> <span class="mdl">Grok 4.7</span> · <code>model.py</code>: <code>USER_SLOW3_ID = '826467'</code></li><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/wNhNTs5">wNhNTs5</a> <span class="mdl">Gemini 4 Argon</span> · Steps #610–#611, disqualified</li></ul></details></li>
+<li id="err-unstated-rule"><h3 class="et">Five attempts disqualified under a rule the agents were never given</h3><p class="ed">The task is to speed up the final linear layer and cross-entropy loss for Qwen3's 152k-token vocabulary on one GPU, while matching the reference gradients within fixed tolerances. The rule "may not skip unlikely next tokens" only appears in the task overview on the website. The prompt the agents got never mentions it, and all five attempts passed the accuracy checks they were given. Lifting the disqualifications changes the winner: Grok 4.7 (3.79× speedup) beats Claude Fable 5.1 (3.70×).</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration">Large-Vocabulary Cross-Entropy Acceleration</a></p><details class="ew"><summary>Where: C67AxpK, VPUizq6 (GPT-6 Astra), a4oLpi5, ojLuB26 (Grok 4.7), z3Viy4a (Gemini 4 Argon), XLG9UMd (Claude Fable 5.1) · 7 sources</summary><ul><li>The prompt at Step #1 of any attempt, against the <a href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration">task overview</a></li><li><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/C67AxpK">C67AxpK</a> <span class="mdl">GPT-6 Astra</span> · <code>dense_linear_ce.py</code>: drops gradient entries below a cutoff</li><li><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/VPUizq6">VPUizq6</a> <span class="mdl">GPT-6 Astra</span> · <code>linear_ce_sparse.py</code>: <code>_RELATIVE_CUTOFF</code></li><li><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/a4oLpi5">a4oLpi5</a> <span class="mdl">Grok 4.7</span> · <code>fast_linear_ce.py</code>: <code>_SPARSE_EPS = 1e-6</code></li><li><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/ojLuB26">ojLuB26</a> <span class="mdl">Grok 4.7</span> · <code>fast_linear_ce.py</code>: keeps each row's top 16 tokens (3.79×)</li><li><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/z3Viy4a">z3Viy4a</a> <span class="mdl">Gemini 4 Argon</span> · <code>linear_ce.py</code>: <code>_zero_dead_tail_scales_kernel</code></li><li><a class="att" href="https://www.deeprsi.com/tasks/large-vocabulary-cross-entropy-acceleration/XLG9UMd">XLG9UMd</a> <span class="mdl">Claude Fable 5.1</span> · 3.70×, the official winner</li></ul></details></li>
+<li id="err-reward-hack-kept"><h3 class="et">A reward hack the authors flagged in their blog appears to be in the published scores</h3><p class="ed">The task is to post-train a small transformer to finish a 12×12 colour-swap puzzle with as few conflicts as possible, using 20 minutes of training. The prompt says not to submit weights, even if they're encoded in source files. Astra builds a puzzle solver directly into the model's weights instead of training it. The authors themselves identify this reward hack in their blog post, but seem to have included this run in the final published scores.</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/color-swap-puzzle-post-training">Color-Swap Puzzle Post-Training</a></p><details class="ew"><summary>Where: eURgQdS (GPT-6 Astra) · 4 sources</summary><ul><li><a class="att" href="https://www.deeprsi.com/tasks/color-swap-puzzle-post-training/eURgQdS">eURgQdS</a> <span class="mdl">GPT-6 Astra</span> · <code>sft.py:660</code>: <code>class CounterScaffold</code> sets and locks the weights by hand</li><li><a class="att" href="https://www.deeprsi.com/tasks/color-swap-puzzle-post-training/eURgQdS">eURgQdS</a> <span class="mdl">GPT-6 Astra</span> · <code>sft.py:1256</code>, <code>:1370</code>, <code>:1375</code>, <code>:1399</code>: installs it, masks its gradients, re-projects it before saving</li><li><a class="att" href="https://www.deeprsi.com/tasks/color-swap-puzzle-post-training/eURgQdS">eURgQdS</a> <span class="mdl">GPT-6 Astra</span> · Steps #245 and #1165</li><li><a href="https://www.deeprsi.com/blog/">DeepRSI blog</a>: "Catastrophic Reward Hack – Astra Writes the Teacher into Weights"</li></ul></details></li>
+<li id="err-time-budget" class="more"><h3 class="et">Different time budgets allowed for different attempts</h3><p class="ed">The task is to fine-tune a pretrained transformer to predict the next 32 frames of an infection simulator, with 600 seconds to generate data, train and save. One Grok 4.7 attempt manipulates the time budget, adding 25 seconds to the 600-second budget. Another Grok attempt on the same task did a similar manipulation, adding 35 seconds, and the authors disqualified it for "Budget gaming". The two attempts were not held to the same standard for disqualification.</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/nca-world-model-rollout-fidelity">NCA World-Model Rollout Fidelity</a></p><details class="ew"><summary>Where: SuK3gtG, uQfoSfX (Grok 4.7) · 2 sources</summary><ul><li><a class="att" href="https://www.deeprsi.com/tasks/nca-world-model-rollout-fidelity/SuK3gtG">SuK3gtG</a> <span class="mdl">Grok 4.7</span> · <code>train.py</code>: <code>min(budget + 25.0, 635.0)</code></li><li><a class="att" href="https://www.deeprsi.com/tasks/nca-world-model-rollout-fidelity/uQfoSfX">uQfoSfX</a> <span class="mdl">Grok 4.7</span> · <code>train.py</code>: <code>min(budget + 35.0, 640.0)</code>, disqualified</li></ul></details></li>
+<li id="err-judge-memorises" class="more"><h3 class="et">Grok 4.7's judge is 212 hand-written rules matched to public answers</h3><p class="ed">The task is to rewrite a judge function so that the Qwen3-4B model keeps correct generated answers and rejects wrong ones. Grok 4.7's judge doesn't call a model at all; it's 212 hand-written rules matched to specific answers in the public set. One rule only fires on a single public question. The agent says early on that this isn't allowed, and it still scores 1.23: its balanced error is less than half the starter code's.</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/qwen3-4b-self-judge-filtering">Qwen3-4B Self-Judge Filtering</a></p><details class="ew"><summary>Where: cxmH3Ca (Grok 4.7) · 3 sources</summary><ul><li><a class="att" href="https://www.deeprsi.com/tasks/qwen3-4b-self-judge-filtering/cxmH3Ca">cxmH3Ca</a> <span class="mdl">Grok 4.7</span> · <code>_narrow_paraphrase</code>: the 212 rules</li><li><a class="att" href="https://www.deeprsi.com/tasks/qwen3-4b-self-judge-filtering/cxmH3Ca">cxmH3Ca</a> <span class="mdl">Grok 4.7</span> · <code>_caregiver_stress_paraphrase</code>: fires only on "overactive stress response … parenting"</li><li><a class="att" href="https://www.deeprsi.com/tasks/qwen3-4b-self-judge-filtering/cxmH3Ca">cxmH3Ca</a> <span class="mdl">Grok 4.7</span> · Steps #6 and #18: the agent acknowledges the rule</li></ul></details></li>
+<li id="err-flash-tunes" class="more"><h3 class="et">Gemini 3.8 Flash tunes its settings on the public labels</h3><p class="ed">On the same Philly task, <code>public/endpoints.parquet</code> holds the public set's labels: when each job actually ended. The agent tries several values for a calibration setting, scores each one against those labels, and keeps whichever gives the lowest loss.</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/philly-job-survival-prediction">Philly Job Survival Prediction</a></p><details class="ew"><summary>Where: hC46BnX, psyhBvH (Gemini 3.8 Flash) · 3 sources</summary><ul><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/hC46BnX">hC46BnX</a> <span class="mdl">Gemini 3.8 Flash</span> · Step #538: scores each value against <code>public/endpoints.parquet</code></li><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/hC46BnX">hC46BnX</a> <span class="mdl">Gemini 3.8 Flash</span> · repeats this about 328 times, e.g. Steps #1959 and #2114</li><li><a class="att" href="https://www.deeprsi.com/tasks/philly-job-survival-prediction/psyhBvH">psyhBvH</a> <span class="mdl">Gemini 3.8 Flash</span> · Steps #2538–#2540, then hard-codes the chosen value in <code>model.py</code></li></ul></details></li>
+<li id="err-vlm-no-vision" class="more"><h3 class="et">The VLM task's winner skips the vision part</h3><p class="ed">The task is to make the Qwen2.5-VL-3B vision-language model answer questions about short image sequences faster without losing accuracy. The winning GPT-6 Astra attempt never shows the image to the language model. Small trained classifiers turn the image into labels, and a tiny model answers from those. That bypasses the vision-language model even more than Gemini 4 Argon's attempt, which was disqualified for using a handwritten program.</p><p class="emeta">Task: <a href="https://www.deeprsi.com/tasks/qwen2-5-vl-vqa-latency-reduction">Qwen2.5-VL VQA Latency Reduction</a></p><details class="ew"><summary>Where: UiTsk8e, RcwQqSn (GPT-6 Astra), VzbVnhR (Gemini 4 Argon) · 3 sources</summary><ul><li><a class="att" href="https://www.deeprsi.com/tasks/qwen2-5-vl-vqa-latency-reduction/UiTsk8e">UiTsk8e</a> <span class="mdl">GPT-6 Astra</span> · Steps #167 and #392</li><li><a class="att" href="https://www.deeprsi.com/tasks/qwen2-5-vl-vqa-latency-reduction/RcwQqSn">RcwQqSn</a> <span class="mdl">GPT-6 Astra</span> · Step #77, Astra's other attempt</li><li><a class="att" href="https://www.deeprsi.com/tasks/qwen2-5-vl-vqa-latency-reduction/VzbVnhR">VzbVnhR</a> <span class="mdl">Gemini 4 Argon</span> · <code>_apply_attr_bonus</code>, Step #882, disqualified</li></ul></details></li>
+</ol><button type="button" class="moreerr" aria-expanded="false" data-more="Show 4 more errors" data-less="Show fewer errors">Show 4 more errors</button>
       </section>
-
-      <section id="representative-errors" aria-label="Representative errors">
-        <h2>Representative Errors</h2>
-        <ul class="errs">
-          <li><span class="term">Public-label fitting scored as valid.</span> In <code>philly-job-survival-prediction</code>, the task winner, Grok 4.7 <code>ZQBYTSN</code>, ships hundreds of hard-coded logit shifts for named users, virtual clusters and weekdays. They were read off public-set residuals; its notes include "826467 h30 +2.5 … official 0.29084". The prompt says "Do not train on public labels", and the agent itself reasoned that hardcoding public-fit biases "is therefore not allowed". Gemini 4 Argon was disqualified for "Public-label fitting" in the same task. With consistent enforcement, Fable wins the task.</li>
-          <li><span class="term">Weights compiled into source code.</span> In <code>color-swap-puzzle-post-training</code>, GPT-6 Astra <code>eURgQdS</code> hand-constructs and locks embedding, attention and MLP weights in <code>sft.py</code> (<code>self.lock(...)</code>), wiring a solver into the transformer. The prompt forbids weights "even if they're encoded in source files". DeepRSI's own methodology post calls this a "catastrophic reward hack", yet the attempt scored 14.3.<sup><a href="#n4">4</a></sup></li>
-          <li><span class="term">Budget overruns enforced once, missed twice.</span> Grok <code>uQfoSfX</code> was disqualified for "Budget gaming" in the NCA world-model task. In the same task, Grok <code>SuK3gtG</code> trains to <code>min(budget+25, 635)</code> seconds against a 600 s budget, and was scored. In chess, Grok <code>o85kXzg</code> sets its deadline at <code>budget_seconds + 55 - SAVE_MARGIN</code> (<code>train.py:652</code>), and was also scored.</li>
-          <li><span class="term">Memorised public answers.</span> In <code>qwen3-4b-self-judge-filtering</code>, Grok <code>cxmH3Ca</code>'s "judge" makes no model calls. It applies 212 accept rules keyed to specific public reference answers.</li>
-          <li><span class="term">Hidden requirement enforced by disqualification.</span> In <code>large-vocabulary-cross-entropy-acceleration</code>, five of 12 attempts were disqualified for "Forbidden computational shortcut", meaning they dropped low-probability entries from the gradient. The public overview says agents "may not skip unlikely next tokens", but the prompt the agents received does not. The only constraint they were given is the numerical tolerances, and all five passed them. With the disqualifications lifted, Grok <code>ojLuB26</code> (3.79×) beats Fable (3.70×).</li>
-          <li><span class="term">Contested (not counted).</span> In <code>qwen2-5-vl-vqa-latency-reduction</code>, the official winner, GPT-6 Astra <code>UiTsk8e</code> (41.8), answers through a trained scene classifier and a trained question parser feeding a small executor, so the language model never sees the image. Argon was disqualified for "Required-component bypass", but its attempt used a handwritten program, which the prompt forbids. Astra's modules are trained, which it allows. Neither Astra attempt has a reward breakdown.</li>
-        </ul>
-        <p>The private verifier did catch several exploits:</p>
-        <ul>
-          <li>hashed answer tables for the public SIFT queries (private recall 0.816)</li>
-          <li>a codebook trained on the public SIFT queries (public 0.984, private 0.799)</li>
-          <li>a game-tree submission that cleared the public check by exactly one tree</li>
-        </ul>
-        <div><p><strong>Outside scoring defects:</strong></p>
-          <ul>
-            <li><strong>Context cap on one model.</strong> GPT-6 Astra ran through Pi's Azure route, whose registry entry sets a 272,000-token context window against a native 1.05M. It peaked at 307k tokens and was compacted about 12 times per attempt. Every other model ran at or near its native window.<sup><a href="#n5">5</a></sup></li>
-            <li><strong>Re-run batch.</strong> 18 of Astra's 30 attempts were re-run together on Oct. 9, three to four days after the field. The originals are not published and the re-runs lack reward breakdowns.</li>
-            <li><strong>Graded attempts dropped.</strong> Three attempts with complete private grades are excluded from the Elo as "ungraded" because they recorded no checkpoint. This removes Grok's two FlashMLA losses and is worth +58 Elo to Grok.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="errors" aria-label="Errors">
-        <h2>Errors</h2>
-        <div class="tbl">
-          <table>
-            <thead><tr><th>Task</th><th>Error type</th><th>Evidence</th></tr></thead>
-            <tbody>
-              <tr><td><code>philly-job-survival-prediction</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>ZQBYTSN</code> (task winner): public-label logit shifts</td></tr>
-              <tr><td><code>color-swap-puzzle-post-training</code></td><td><span class="type t-fp">False Positive</span></td><td>Astra <code>eURgQdS</code>: hand-set weights locked in <code>sft.py</code></td></tr>
-              <tr><td><code>chess-lm-pretraining-recipe</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>o85kXzg</code>: deadline = budget + 35 s (<code>train.py:652</code>)</td></tr>
-              <tr><td><code>nca-world-model-rollout-fidelity</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>SuK3gtG</code>: budget overrun disqualified elsewhere in the task</td></tr>
-              <tr><td><code>qwen3-4b-self-judge-filtering</code></td><td><span class="type t-fp">False Positive</span></td><td>Grok <code>cxmH3Ca</code>: 212 rules keyed to public answers</td></tr>
-              <tr><td><code>large-vocabulary-cross-entropy-acceleration</code></td><td><span class="type t-fn">False Negative</span></td><td>5 disqualifications under a rule absent from the prompt</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="tally"><p>Total: <b>6</b> of <b>15</b> tasks (<b>40%</b>): 5 false positive and 1 false negative (hidden requirement). The Flawed threshold is 20%. On the narrowest count, the defect changes the task winner in 2 of 15 tasks (13%), Philly and cross-entropy. The verdict therefore also rests on the second trigger: disqualification is DeepRSI's only enforcement of its task rules, and it has no published criteria and is applied inconsistently. That is an issue that corrupts grading at scale.</p></div>
-
-        <h3>Sensitivity of the leaderboard</h3>
-        <p>We reproduced the published Elo exactly. Correcting the confirmed defects, or any other scoring choice we tested, leaves the top four in place. Ranks are shown below; absolute Elo moves mostly because the scale is re-centred on the starter.</p>
-        <div class="tbl">
-          <table class="sens">
-            <thead><tr><th>Scenario</th><th class="num">Fable</th><th class="num">Astra</th><th class="num">Argon</th><th class="num">Kimi</th><th class="num">Grok</th><th class="num">Flash</th></tr></thead>
-            <tbody>
-              <tr><td>Published Elo (reproduced)</td><td class="num">1 (1548)</td><td class="num">2 (1232)</td><td class="num">3 (965)</td><td class="num">4 (820)</td><td class="num">5 (685)</td><td class="num">6 (643)</td></tr>
-              <tr><td>Count the 3 dropped "ungraded" attempts</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
-              <tr><td>Rewards within 5% count as ties</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
-              <tr><td>Zero the 5 confirmed false positives</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num"><b>6</b></td><td class="num"><b>5</b></td></tr>
-              <tr><td>Lift the hidden-rule disqualifications</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num">5</td><td class="num">6</td></tr>
-              <tr><td>Zero all 33 grey-area and reward-hack attempts</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">4</td><td class="num"><b>6</b></td><td class="num"><b>5</b></td></tr>
-              <tr><td>Bootstrap: share of replicates at this rank</td><td class="num">99%</td><td class="num">99%</td><td class="num">86%</td><td class="num">70%</td><td class="num">52%</td><td class="num">65%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="rubric" aria-label="Rubric">
-        <h2>Rubric</h2>
-
-        <h3 id="reviewability">1. Reviewability</h3>
-        <div class="tbl">
-          <table class="levels">
-            <thead><tr><th>Level</th><th>Meaning</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td>Full</td><td>All tasks and scoring logic inspectable, and harness/API settings for each model (reasoning effort, token and time limits, tool access, system prompts) fully disclosed</td><td>[proceed to 2]</td></tr>
-              <tr class="on"><td>Partial</td><td>A representative sample of tasks and scoring logic inspectable, with full harness/API settings disclosed</td><td>[proceed to 2]</td></tr>
-              <tr><td>Inadequate</td><td>Limited, biased or no inspectable tasks or scoring logic; harness/API settings undisclosed</td><td>[stop → NEI]</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 id="scoring">2. Scoring</h3>
-        <p>This is the minimum standard required to be Verified; failing any of these items results in a Flawed verdict.</p>
-
-        <div class="rub">
-          <h4>Scoring</h4>
-          <div><span class="lbl">Examples</span>
-            <ul>
-              <li>Essentially impossible to answer correctly as written (underspecified task, hidden requirement, missing file or tool)</li>
-              <li>False negative (overly strict scorer, stale ground truth, sandbox failure independent of the agent)</li>
-              <li>False positive (lax scorer, reward-hackable environment, shortcut that bypasses the stated skill)</li>
-              <li>Task egregiously doesn't measure the claimed capability</li>
-            </ul>
-          </div>
-          <div><span class="lbl">Default threshold for Flawed</span> Errors affect ≥20% of the total score in the inspected sample, or an issue corrupts grading at scale</div>
-          <div class="opts" aria-label="Status"><span class="opt">Pass</span><span class="opt on flag">Flag [stop → Flawed]</span><span class="opt">Not reviewed</span></div>
-          <div class="note"><span class="lbl">Notes</span>6 of 15 tasks (40%) are affected, and the disqualification process is inconsistent; see Errors.</div>
-        </div>
-
-        <div class="rub">
-          <h4>Benchmark Consistency</h4>
-          <div><span class="lbl">Examples</span> Scorer, instructions or ground truth changed without a version bump</div>
-          <div><span class="lbl">Default threshold for Flawed</span> Leaderboard has incomparable results from different versions</div>
-          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span><span class="opt">Flag [stop → Flawed]</span><span class="opt">Not reviewed</span></div>
-          <div class="note"><span class="lbl">Notes</span>We found no confirmed mixing of versions, but three things are unexplained. 18 GPT-6 Astra attempts were re-run on Oct. 9, with the originals unpublished. A trial cited in the methodology post (<code>ZDjKTPm</code>) is not on the leaderboard. Three graded attempts are excluded as "ungraded". Gemini 4 Argon was run 10 days after the field against frozen ratings, which is disclosed.</div>
-        </div>
-
-        <div class="rub">
-          <h4>Elicitation</h4>
-          <div><span class="lbl">Examples</span> Under-resourced relative to task size; poor context management; no agentic environment where one would be natural; excessive non-voluntary termination</div>
-          <div><span class="lbl">Default threshold for Flawed</span> Substantially reduced performance compared to reasonable alternatives</div>
-          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span><span class="opt">Flag [stop → Flawed]</span><span class="opt">Not reviewed</span></div>
-          <div class="note"><span class="lbl">Notes</span>Agents get 48 hours in a modern minimal harness, with reasoning effort at each provider's maximum and identical auto-resume prompts. All 29 non-voluntary terminations happened after at least 47.6 hours. The caveat is GPT-6 Astra's 272k context cap (native 1.05M). It is #2 regardless, and the cost cannot be measured from the data.</div>
-        </div>
-
-        <div class="rub">
-          <h4>Bias in Evaluation Setup</h4>
-          <div><span class="lbl">Examples</span> Uneven compute or token budgets; unfair scaffold choice</div>
-          <div><span class="lbl">Default threshold for Flawed</span> Material model-specific advantage found</div>
-          <div class="opts" aria-label="Status"><span class="opt on pass">Pass</span><span class="opt">Flag [stop → Flawed]</span><span class="opt">Not reviewed</span></div>
-          <div class="note"><span class="lbl">Notes</span>All models share the Pi harness and get equal time and hardware. GPT-6 Astra alone differs on three counts: the provider route, the context cap and the re-run batch. No material advantage is confirmed. Excluding Grok's two "ungraded" FlashMLA losses gives it +58 Elo without changing its rank.</div>
-        </div>
-
-        <h3 id="evaluation-quality">3. Evaluation Quality</h3>
-        <p>This is the standard we would like all benchmarks to meet, but it is not necessarily disqualifying to omit or fail these items.</p>
-        <div class="tbl">
-          <table class="eq">
-            <thead><tr><th>Question</th><th>Status and notes</th></tr></thead>
-            <tbody>
-              <tr><td>Elicitation and resource adequacy: are the resources given to models sufficient for them to perform near their ceiling?</td><td><div class="opts"><span class="opt on pass">Sufficient</span><span class="opt">Constraining</span><span class="opt">Unreasonably constraining</span><span class="opt">Unknown</span></div>48 hours and 1–2 GPUs per task. GPT-6 Astra is constrained on context. Sandbox rotation at 24 hours kills running processes.</td></tr>
-              <tr><td>Scaffold fairness: what scaffold does the leaderboard report?</td><td><div class="opts"><span class="opt on neutral">Shared common scaffold</span><span class="opt">Mix</span><span class="opt">Model-specific scaffolds</span></div>Pi 0.85.1 for every model, native to none. The authors list native harnesses as future work.</td></tr>
-              <tr><td>Is there evidence or risk of contamination?</td><td>0% of tasks were public before release, since they come from Hillclimb's private research collaborations. 100% of trajectories and patches are public now.</td></tr>
-              <tr><td>Has human completability been assessed?</td><td><div class="opts"><span class="opt">All tasks</span><span class="opt">Representative set</span><span class="opt">Poor implementation</span><span class="opt on warn">Not established</span></div>Open-ended tasks with no ceiling.</td></tr>
-              <tr><td>Score range</td><td>Floor 0 (the starter), no ceiling. Rewards are ratios to the starter, from 0.02 to 41.8. Elo uses only win/loss order, so a 0.1% win counts the same as a 30× win.</td></tr>
-              <tr><td>Statistical adequacy: how many runs per model (≥ 5 recommended for error bars)?</td><td><b>2 runs/model/task.</b> Elo intervals are wide (Fable 1159–2567), but the top-four order holds in at least 70% of bootstrap replicates, and #1 and #2 in 99%.</td></tr>
-              <tr><td>Construct validity</td><td><div class="opts"><span class="opt">Measures stated capabilities</span><span class="opt on warn">Partially measures stated capabilities</span><span class="opt">Does not measure stated capabilities</span></div>The tasks are realistic research-engineering problems. But 71% of attempts score through standard engineering and none was judged novel, so "recursive self-improvement" overstates what is measured.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 id="research-vs-gaming">Extension: Research vs. Gaming</h3>
-        <p>Rubric v1 does not ask whether high scores reflect research progress. We classified each of the 180 attempts by what actually produced its score.<sup><a href="#n3">3</a></sup></p>
-        <div class="tbl">
-          <table>
-            <thead><tr><th>Model</th><th class="num">Research</th><th class="num">Engineering</th><th class="num">Grey area</th><th class="num">Reward hack</th><th class="num">No gain</th></tr></thead>
-            <tbody>
-              <tr><td>Claude Fable 5.1</td><td class="num">9</td><td class="num">18</td><td class="num">2</td><td class="num">1</td><td class="num">0</td></tr>
-              <tr><td>GPT-6 Astra</td><td class="num">4</td><td class="num">20</td><td class="num">5</td><td class="num">1</td><td class="num">0</td></tr>
-              <tr><td>Gemini 4 Argon</td><td class="num">1</td><td class="num">19</td><td class="num">5</td><td class="num">3</td><td class="num">2</td></tr>
-              <tr><td>Kimi K3</td><td class="num">0</td><td class="num">29</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
-              <tr><td>Grok 4.7</td><td class="num">0</td><td class="num">14</td><td class="num">7</td><td class="num">6</td><td class="num">3</td></tr>
-              <tr><td>Gemini 3.8 Flash</td><td class="num">0</td><td class="num">27</td><td class="num">3</td><td class="num">0</td><td class="num">0</td></tr>
-              <tr><td><b>All attempts</b></td><td class="num"><b>14 (8%)</b></td><td class="num"><b>127 (71%)</b></td><td class="num"><b>22 (12%)</b></td><td class="num"><b>11 (6%)</b></td><td class="num"><b>6 (3%)</b></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p>No attempt was judged plausibly novel. The research attempts apply known ideas well to new problems: Bayesian and alpha-beta hybrids for noisy game trees, pseudo-query pretraining for retrieval, and distilling a hand-written solver for Color-Swap. In six tasks every attempt is standard engineering. Gaming is concentrated in Grok, which has 13 of its 30 attempts in grey-area or reward-hack territory and 4 of the 5 confirmed false positives.</p>
-      </section>
-
       <section id="disclaimer" aria-label="Disclaimer">
         <h2>Disclaimer</h2>
-        <p>This is a full review of all 15 tasks and 180 attempts, without access to the private verifier. Model reviewers classified each attempt from its patch and trajectory, and every counted defect was re-verified by hand. False negatives that only the private verifier would reveal cannot be ruled out.</p>
-        <p>This review uses the format and rubric of Epoch AI's Benchmark Reviews. It is an independent review and is not produced or endorsed by Epoch AI.</p>
+        <p>DeepRSI has no public repository. We review the benchmark from public information, which includes every attempt's trajectory and code patch.<sup><a href="#nb">b</a></sup> Every error listed above was found by AI review and then hand-checked against the source by a human. The VLM error is contested, so that task isn't counted. GPT-6 Astra ran with a 272k-token context, the default OpenAI's own Codex harness uses for it, and was compacted about 12 times per attempt, against 0.2 to 3.6 for the other models. We don't count this as an error.<sup><a href="#nc">c</a></sup></p>
       </section>
-
       <section id="notes" aria-label="Notes">
         <h2>Notes</h2>
-        <ol class="notes">
-          <li id="n1">Leaderboard and methodology: <a href="https://www.deeprsi.com">deeprsi.com</a>, <a href="https://www.deeprsi.com/blog/">deeprsi.com/blog</a> (Oct. 12, 2026). Epoch AI's listing: <a href="https://epoch.ai/data/benchmark-reviews-documentation/included-benchmarks">Not enough information, Oct. 26, 2026</a>.</li>
-          <li id="n2">Data endpoints: <code>/data/trial-viewer/&lt;trial&gt;.jgz</code>, <code>/data/trajectory-index/&lt;trial&gt;.jgz</code> and <code>/data/trajectory-steps/&lt;trial&gt;/&lt;n&gt;.jgz</code>. Elo parameters and the 3 excluded trials are in <code>/assets/results-oDxM4uUp.js</code>. Data revision <code>v=0b2f9df94f36</code>, generated Oct. 23, 2026 18:10 UTC.</li>
-          <li id="n3">Per-attempt reviews, the adjudication of contested calls, the task log, the setup audit and all scripts are in <a href="https://github.com/openbenchmarkreview/audits/tree/main/audits/deeprsi">audits/deeprsi</a>.</li>
-          <li id="n4">Prompt text for Color-Swap: "Create all training data and learned weights during the run. Don't submit saved data or weights, even if they're encoded in source files." The methodology post describes the same behaviour under "Catastrophic Reward Hack – Astra Writes the Teacher into Weights".</li>
-          <li id="n5">Context windows: GPT-6 Astra <a href="https://developers.openai.com/docs/models/gpt-6-astra">1.05M</a>; Pi registry <a href="https://pi.dev/models/azure/gpt-6-astra"><code>azure-openai-responses</code> contextWindow 272,000</a>; Grok 4.7 <a href="https://docs.x.ai/docs/grok-4-7">500k</a>; Gemini 4 Argon <a href="https://ai.google.dev/gemini-api/docs/models/gemini-4-argon">1,048,576</a>.</li>
-        </ol>
+        <ol class="notes" style="list-style-type: lower-alpha"><li id="na">Leaderboard and methodology: <a href="https://www.deeprsi.com">deeprsi.com</a>, <a href="https://www.deeprsi.com/blog/">deeprsi.com/blog</a> (Oct. 12, 2026).</li><li id="nb">Attempt data: <code>/data/trial-viewer/&lt;trial&gt;.jgz</code>, <code>/data/trajectory-index/&lt;trial&gt;.jgz</code> and <code>/data/trajectory-steps/&lt;trial&gt;/&lt;n&gt;.jgz</code> on deeprsi.com, as of Oct. 23, 2026. Per-attempt reviews, the task log and all scripts are in the audit folder linked at the top of this page.</li><li id="nc">Context windows: GPT-6 Astra supports <a href="https://developers.openai.com/docs/models/gpt-6-astra">1.05M tokens</a>, with input above 272k billed at twice the rate. OpenAI's Codex gives it a 272k window by default (<code>context_window: 272000</code> in <a href="https://github.com/openai/codex/blob/main/codex-rs/models-manager/models.json">Codex's model list</a>, since Sep. 3, 2026), and so does Pi 0.85.1 on every first-party OpenAI route. A compaction here is a drop of more than 40% in prompt tokens between consecutive steps.</li></ol>
         <h3>Cite</h3>
-        <div class="cite">Open Benchmark Review (2026), "DeepRSI: Benchmark Review". Reviewed Oct. 27, 2026. github.com/openbenchmarkreview/audits</div>
+        <div class="cite">Open Benchmark Review (2026), "DeepRSI: Benchmark Review". Reviewed Nov. 3, 2026. github.com/Open-Benchmark-Review/audits</div>
       </section>
+<script>
+(function () {
+  var refs = document.querySelectorAll('.xref'), timer = null;
+  function place(r) {
+    var btn = r.querySelector('.xref-t'), pop = r.querySelector('.xref-pop');
+    var b = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight, pad = 12;
+    var left = Math.min(Math.max(pad, b.left + b.width / 2 - w / 2), innerWidth - pad - w);
+    var top = b.top - h - 6; if (top < pad) top = b.bottom + 6;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
+  function open(r) {
+    clearTimeout(timer);
+    refs.forEach(function (o) { if (o !== r) { o.classList.remove('open'); o.querySelector('.xref-t').setAttribute('aria-expanded', 'false'); } });
+    r.classList.add('open'); r.querySelector('.xref-t').setAttribute('aria-expanded', 'true'); place(r);
+  }
+  function close(r) { r.classList.remove('open'); r.querySelector('.xref-t').setAttribute('aria-expanded', 'false'); }
+  refs.forEach(function (r) {
+    var btn = r.querySelector('.xref-t');
+    r.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') open(r); });
+    r.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') { clearTimeout(timer); timer = setTimeout(function () { close(r); }, 180); } });
+    btn.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); r.classList.contains('open') ? close(r) : open(r); } });
+    btn.addEventListener('blur', function () { setTimeout(function () { if (!r.contains(document.activeElement)) close(r); }, 0); });
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      if (ev.pointerType === 'mouse') { open(r); return; }
+      r.classList.contains('open') ? close(r) : open(r);
+    });
+  });
+  document.addEventListener('click', function (ev) { if (!ev.target.closest('.xref')) refs.forEach(close); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Escape') return;
+    var o = document.querySelector('.xref.open'); refs.forEach(close); if (o) o.querySelector('.xref-t').focus();
+  });
+  addEventListener('scroll', function () { refs.forEach(function (r) { if (r.classList.contains('open')) place(r); }); }, true);
+  addEventListener('resize', function () { refs.forEach(function (r) { if (r.classList.contains('open')) place(r); }); });
 
-      <footer>Rubric: Epoch AI Benchmark Reviews, Rubric v1. Verdict categories: Verified, Flawed, Not enough information.</footer>
+  var sec = document.getElementById('errors'), mb = document.querySelector('.moreerr');
+  function fold(on) {
+    if (!sec || !mb) return;
+    sec.classList.toggle('folded', on);
+    mb.setAttribute('aria-expanded', on ? 'false' : 'true');
+    mb.textContent = on ? mb.getAttribute('data-more') : mb.getAttribute('data-less');
+  }
+  function reveal() {
+    var t = location.hash && document.getElementById(location.hash.slice(1));
+    if (t && sec && sec.contains(t) && t.closest('.more')) { fold(false); t.scrollIntoView(); }
+  }
+  if (mb) {
+    fold(true);
+    mb.addEventListener('click', function () {
+      var opening = sec.classList.contains('folded');
+      fold(!opening);
+      if (opening) { var first = sec.querySelector('.more .et, li.more .et'); if (first) { first.setAttribute('tabindex', '-1'); first.focus({ preventScroll: true }); } }
+      else { mb.scrollIntoView({ block: 'nearest' }); }
+    });
+    reveal(); addEventListener('hashchange', reveal);
+  }
+  var btn = document.querySelector('.showall'), all = [].slice.call(document.querySelectorAll('details.ew'));
+  if (btn) btn.addEventListener('click', function () {
+    var on = btn.getAttribute('aria-pressed') !== 'true';
+    if (on) fold(false);
+    all.forEach(function (d) { d.open = on; });
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? 'Hide all sources' : 'Show all sources';
+  });
+
+  var nav = document.querySelector('nav.toc'); if (!nav) return;
+  var lab = nav.querySelector('.label'), list = nav.querySelector('ol'); if (!lab || !list) return;
+  var t = document.createElement('button'); t.type = 'button'; t.className = 'toc-btn'; t.textContent = lab.textContent;
+  t.setAttribute('aria-expanded', 'false'); lab.replaceWith(t);
+  var mq = matchMedia('(max-width: 720px)');
+  function apply() {
+    if (mq.matches) { list.hidden = t.getAttribute('aria-expanded') !== 'true'; t.removeAttribute('tabindex'); }
+    else { list.hidden = false; t.setAttribute('tabindex', '-1'); }
+  }
+  t.addEventListener('click', function () {
+    if (!mq.matches) return;
+    t.setAttribute('aria-expanded', t.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); apply();
+  });
+  list.addEventListener('click', function (e) { if (mq.matches && e.target.closest('a')) { t.setAttribute('aria-expanded', 'false'); apply(); } });
+  (mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply)); apply();
+})();
+</script>
+
     </main>
   </div>
 </div>
