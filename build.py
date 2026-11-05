@@ -69,7 +69,8 @@ def header(prefix, current):
              ("submit.html", "Submit a review"), ("about.html", "About")]
     cur = ' aria-current="page"'
     nav = "".join(f'<a href="{prefix}{h}"{cur if t == current else ""}>{t}</a>' for h, t in links)
-    return (f'<header class="site-header"><div class="container"><a class="brand" href="{prefix}index.html">'
+    return (f'<a class="skip" href="#main">Skip to content</a>'
+            f'<header class="site-header"><div class="container"><a class="brand" href="{prefix}index.html">'
             f'{mark(40, label=False)}<span>{NAME}</span></a><nav class="site-nav" aria-label="Site">{nav}</nav>'
             f'</div></header>')
 
@@ -82,7 +83,7 @@ def footer(prefix):
             f'<a href="{prefix}methodology.html">Methodology</a><a href="{prefix}submit.html">Submit a review</a>'
             f'<a href="{prefix}about.html">About</a><a href="{REPO}">GitHub</a></nav>'
             f'<p class="fine">{NAME} is not affiliated '
-            f'with or endorsed by Epoch AI. Contact: <span class="mono">{EMAIL}</span></p></div></footer>')
+            f'with or endorsed by Epoch AI. Contact: <a class="mono" href="mailto:{EMAIL}">{EMAIL}</a></p></div></footer>')
 
 
 def document(title, description, body, prefix, path, og_image="assets/og/home.png", page_class=""):
@@ -128,7 +129,7 @@ def document(title, description, body, prefix, path, og_image="assets/og/home.pn
 def page_with_toc(prefix, current, head_html, toc, main):
     return (f'{header(prefix, current)}<div class="page-head"><div class="container">{head_html}</div></div>'
             f'<div class="body"><div class="container layout"><nav class="toc" aria-label="On this page">'
-            f'<span class="label">On this page</span><ol>{toc}</ol></nav><main>{main}</main></div></div>'
+            f'<span class="label">On this page</span><ol>{toc}</ol></nav><main id="main">{main}</main></div></div>'
             f'{footer(prefix)}')
 
 
@@ -178,48 +179,38 @@ def landing():
         f'<p>{html.escape(s["blurb"])}</p></div><div class="count"><b>{len(in_section(s))}</b><span>reviews</span>'
         f'</div></a>' for s in SECTIONS)
     body = f'''{header("", None)}
+<div id="main" role="main">
 <section class="hero"><div class="container"><div class="hero-copy">
   <h1>{SITE["tagline"]}<span class="ast">*</span></h1>
   <p class="sub">We review the benchmarks used to measure AI progress, and publish what we find with the evidence to check it.</p>
   <div class="actions"><a class="btn primary" href="{BENCH_DIR}/index.html">Read the reviews</a><a class="btn" href="#mission">Our mission</a></div>
-</div><div class="hero-art"><img src="assets/ridgeline.png" width="1697" height="929" alt="A ridgeline of benchmark score distributions, with one red distribution that does not fit the rest"></div></div></section>
+</div><div class="hero-art"><picture><source type="image/webp" srcset="assets/ridgeline-700.webp 700w, assets/ridgeline-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 600px"><img src="assets/ridgeline.png" width="1697" height="929" fetchpriority="high" alt="A ridgeline of benchmark score distributions, with one red distribution that does not fit the rest"></picture></div></div></section>
 
 <section class="band" id="mission" aria-labelledby="h-mission"><div class="container">
   <h2 id="h-mission" class="sr-only">Our mission</h2>
   <div class="mission">
-    <p class="statement">Benchmark scores decide which AI models get used, which research gets attention, and how fast people think AI is improving. Most of those scores are never checked by anyone outside the team that built the benchmark. We check them.</p>
+    <p class="statement">Benchmark scores shape which AI models get used and how fast people think AI is improving. Few are ever checked outside the team that built them.</p>
     <div class="more">
-      <p>Our aim is simple: every headline score should come with what you need to read it. What the benchmark really measures, where its grading goes wrong, and whether its ranking holds up.</p>
-      <p>We do this in public. Every review uses a published rubric, cites its evidence, and ships the code that reproduces its numbers, so anyone can check our work too.</p>
+      <p>We evaluate every benchmark against a rubric, analyze agent runs, and publish our findings publicly. We hope our efforts increase scrutiny of benchmarks and help people understand common reward hacks and failure modes of models.</p>
     </div>
-  </div>
-</div></section>
-
-<section class="band page" aria-labelledby="h-why"><div class="container">
-  <div class="band-head"><h2 id="h-why">Benchmarks break in quiet ways</h2></div>
-  <div class="three">
-    <div><h3>Grading goes wrong</h3><p>A grader that rejects correct work, or accepts a shortcut, changes the score and nobody notices.</p></div>
-    <div><h3>Agents find the gaps</h3><p>AI agents are good at raising a score without doing the task. If a benchmark allows it, its leaderboard rewards it.</p></div>
-    <div><h3>No one is assigned to check</h3><p>Benchmark teams move on to the next release, and readers can't inspect the code behind a leaderboard. Independent review fills that gap.</p></div>
   </div>
 </div></section>
 
 <section class="band cream" aria-labelledby="h-principles"><div class="container">
   <div class="band-head"><h2 id="h-principles">Our principles</h2></div>
   <div class="principles">
-    <div><h4>A public rubric</h4><p>We apply Epoch AI's published benchmark review rubric as written. <a href="methodology.html">Read the methodology</a>.</p></div>
-    <div><h4>Evidence for every finding</h4><p>Every error we count points to a file and line, a reproduction or a log. Suspicions without evidence are listed but not counted.</p></div>
-    <div><h4>Reproducible</h4><p>Each review ships the scripts that fetch the public data and rebuild our counts.</p></div>
-    <div><h4>A right of reply</h4><p>Developers can respond to any review, and their response is linked from it. Corrections are made in the open.</p></div>
-    <div><h4>Independent</h4><p>We don't review benchmarks we helped build, and we are not affiliated with any benchmark we review.</p></div>
-    <div><h4>Clear about limits</h4><p>Each review says what we could not inspect and how the reading was divided between people and tools.</p></div>
+    <div><h3>A public rubric</h3><p>We apply Epoch AI's published benchmark review rubric as written. <a href="methodology.html">Read the methodology</a>.</p></div>
+    <div><h3>Evidence for every finding</h3><p>Every error we count points to a file and line, a reproduction or a log. Suspicions without evidence are listed but not counted.</p></div>
+    <div><h3>Reproducible</h3><p>Each review ships the scripts that fetch the public data and rebuild our counts.</p></div>
+    <div><h3>A right of reply</h3><p>Developers can respond to any review, and their response is linked from it. Corrections are made in the open.</p></div>
+    <div><h3>Independent</h3><p>We don't review benchmarks we helped build, and we are not affiliated with any benchmark we review.</p></div>
+    <div><h3>Clear about limits</h3><p>Each review says what we could not inspect and how the reading was divided between people and tools.</p></div>
   </div>
 </div></section>
 
 <section class="band" id="reviews" aria-labelledby="h-reviews"><div class="container">
   <div class="band-head"><h2 id="h-reviews">Read the reviews</h2></div>
   {tiles}
-  <div class="actions"><a class="btn primary" href="{BENCH_DIR}/index.html">See all benchmarks</a></div>
 </div></section>
 
 <section class="band page" aria-labelledby="h-involve"><div class="container">
@@ -227,9 +218,10 @@ def landing():
   <div class="involve">
     <div><h3>Suggest a benchmark</h3><p>Tell us which benchmark to review next.</p><a href="submit.html#suggest">How to suggest one →</a></div>
     <div><h3>Contribute a review</h3><p>Write a review to our rubric and evidence standard, and we will check it and publish it.</p><a href="submit.html#contribute">How to contribute →</a></div>
-    <div><h3>Get in touch</h3><p>Corrections, developer responses and questions welcome at</p><span class="mono">{EMAIL}</span></div>
+    <div><h3>Get in touch</h3><p>Corrections, developer responses and questions welcome at</p><a class="mono" href="mailto:{EMAIL}">{EMAIL}</a></div>
   </div>
 </div></section>
+</div>
 {footer("")}'''
     desc = (f"{SITE['tagline']}. Independent reviews of AI benchmarks: {n} reviewed, {nfl} flawed. "
             "Evidence for every finding.")
@@ -302,7 +294,7 @@ def fragment(path, current, out_name):
             + (f'<p class="lead">{lead}</p>' if lead.strip() else ""))
     if not toc.strip():
         body = (f'{header("", current)}<div class="page-head"><div class="container">{head}</div></div>'
-                f'<div class="body"><div class="container"><main class="solo">{main}</main></div></div>{footer("")}')
+                f'<div class="body"><div class="container"><main id="main" class="solo">{main}</main></div></div>{footer("")}')
         return document(f"{title} · {NAME}", lead.strip() or title, body, "", out_name)
     return document(f"{title} · {NAME}", lead, page_with_toc("", current, head, toc, main), "", out_name)
 
@@ -406,7 +398,8 @@ def not_found():
     head = (f'<div class="eyebrow">404</div><h1>This page has an asterisk<span class="ast">*</span></h1>'
             f'<p class="claim-note">* It does not exist. Try the <a href="/index.html">home page</a> or the '
             f'<a href="/{BENCH_DIR}/index.html">benchmarks</a>.</p>')
-    body = f'{header("/", None)}<div class="page-head"><div class="container">{head}</div></div>{footer("/")}'
+    body = (f'{header("/", None)}<div id="main" role="main"><div class="page-head"><div class="container">{head}</div></div>'
+            f'</div>{footer("/")}')
     return document(f"Not found · {NAME}", "Page not found.", body, "/", "404.html")
 
 

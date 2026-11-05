@@ -28,49 +28,39 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="landing">
-<header class="site-header"><div class="container"><a class="brand" href="index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="benchmarks/index.html">Benchmarks</a><a href="methodology.html">Methodology</a><a href="submit.html">Submit a review</a><a href="about.html">About</a></nav></div></header>
+<a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="container"><a class="brand" href="index.html"><svg viewBox="0 0 400 400" width="40" height="40" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><span>Open Benchmark Review</span></a><nav class="site-nav" aria-label="Site"><a href="benchmarks/index.html">Benchmarks</a><a href="methodology.html">Methodology</a><a href="submit.html">Submit a review</a><a href="about.html">About</a></nav></div></header>
+<div id="main" role="main">
 <section class="hero"><div class="container"><div class="hero-copy">
   <h1>Every benchmark score deserves an asterisk<span class="ast">*</span></h1>
   <p class="sub">We review the benchmarks used to measure AI progress, and publish what we find with the evidence to check it.</p>
   <div class="actions"><a class="btn primary" href="benchmarks/index.html">Read the reviews</a><a class="btn" href="#mission">Our mission</a></div>
-</div><div class="hero-art"><img src="assets/ridgeline.png" width="1697" height="929" alt="A ridgeline of benchmark score distributions, with one red distribution that does not fit the rest"></div></div></section>
+</div><div class="hero-art"><picture><source type="image/webp" srcset="assets/ridgeline-700.webp 700w, assets/ridgeline-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 600px"><img src="assets/ridgeline.png" width="1697" height="929" fetchpriority="high" alt="A ridgeline of benchmark score distributions, with one red distribution that does not fit the rest"></picture></div></div></section>
 
 <section class="band" id="mission" aria-labelledby="h-mission"><div class="container">
   <h2 id="h-mission" class="sr-only">Our mission</h2>
   <div class="mission">
-    <p class="statement">Benchmark scores decide which AI models get used, which research gets attention, and how fast people think AI is improving. Most of those scores are never checked by anyone outside the team that built the benchmark. We check them.</p>
+    <p class="statement">Benchmark scores shape which AI models get used and how fast people think AI is improving. Few are ever checked outside the team that built them.</p>
     <div class="more">
-      <p>Our aim is simple: every headline score should come with what you need to read it. What the benchmark really measures, where its grading goes wrong, and whether its ranking holds up.</p>
-      <p>We do this in public. Every review uses a published rubric, cites its evidence, and ships the code that reproduces its numbers, so anyone can check our work too.</p>
+      <p>We evaluate every benchmark against a rubric, analyze agent runs, and publish our findings publicly. We hope our efforts increase scrutiny of benchmarks and help people understand common reward hacks and failure modes of models.</p>
     </div>
-  </div>
-</div></section>
-
-<section class="band page" aria-labelledby="h-why"><div class="container">
-  <div class="band-head"><h2 id="h-why">Benchmarks break in quiet ways</h2></div>
-  <div class="three">
-    <div><h3>Grading goes wrong</h3><p>A grader that rejects correct work, or accepts a shortcut, changes the score and nobody notices.</p></div>
-    <div><h3>Agents find the gaps</h3><p>AI agents are good at raising a score without doing the task. If a benchmark allows it, its leaderboard rewards it.</p></div>
-    <div><h3>No one is assigned to check</h3><p>Benchmark teams move on to the next release, and readers can't inspect the code behind a leaderboard. Independent review fills that gap.</p></div>
   </div>
 </div></section>
 
 <section class="band cream" aria-labelledby="h-principles"><div class="container">
   <div class="band-head"><h2 id="h-principles">Our principles</h2></div>
   <div class="principles">
-    <div><h4>A public rubric</h4><p>We apply Epoch AI's published benchmark review rubric as written. <a href="methodology.html">Read the methodology</a>.</p></div>
-    <div><h4>Evidence for every finding</h4><p>Every error we count points to a file and line, a reproduction or a log. Suspicions without evidence are listed but not counted.</p></div>
-    <div><h4>Reproducible</h4><p>Each review ships the scripts that fetch the public data and rebuild our counts.</p></div>
-    <div><h4>A right of reply</h4><p>Developers can respond to any review, and their response is linked from it. Corrections are made in the open.</p></div>
-    <div><h4>Independent</h4><p>We don't review benchmarks we helped build, and we are not affiliated with any benchmark we review.</p></div>
-    <div><h4>Clear about limits</h4><p>Each review says what we could not inspect and how the reading was divided between people and tools.</p></div>
+    <div><h3>A public rubric</h3><p>We apply Epoch AI's published benchmark review rubric as written. <a href="methodology.html">Read the methodology</a>.</p></div>
+    <div><h3>Evidence for every finding</h3><p>Every error we count points to a file and line, a reproduction or a log. Suspicions without evidence are listed but not counted.</p></div>
+    <div><h3>Reproducible</h3><p>Each review ships the scripts that fetch the public data and rebuild our counts.</p></div>
+    <div><h3>A right of reply</h3><p>Developers can respond to any review, and their response is linked from it. Corrections are made in the open.</p></div>
+    <div><h3>Independent</h3><p>We don't review benchmarks we helped build, and we are not affiliated with any benchmark we review.</p></div>
+    <div><h3>Clear about limits</h3><p>Each review says what we could not inspect and how the reading was divided between people and tools.</p></div>
   </div>
 </div></section>
 
 <section class="band" id="reviews" aria-labelledby="h-reviews"><div class="container">
   <div class="band-head"><h2 id="h-reviews">Read the reviews</h2></div>
   <a class="section-tile" href="benchmarks/index.html#rsi-benchmarks"><div><h3>RSI Benchmarks</h3><p>We picked 6 benchmarks that are either self-proclaimed RSI benchmarks or benchmark some RSI-related component, such as ML research or reward hacking detection.</p></div><div class="count"><b>6</b><span>reviews</span></div></a>
-  <div class="actions"><a class="btn primary" href="benchmarks/index.html">See all benchmarks</a></div>
 </div></section>
 
 <section class="band page" aria-labelledby="h-involve"><div class="container">
@@ -78,9 +68,10 @@
   <div class="involve">
     <div><h3>Suggest a benchmark</h3><p>Tell us which benchmark to review next.</p><a href="submit.html#suggest">How to suggest one →</a></div>
     <div><h3>Contribute a review</h3><p>Write a review to our rubric and evidence standard, and we will check it and publish it.</p><a href="submit.html#contribute">How to contribute →</a></div>
-    <div><h3>Get in touch</h3><p>Corrections, developer responses and questions welcome at</p><span class="mono">reviews@openbenchmarkreview.org</span></div>
+    <div><h3>Get in touch</h3><p>Corrections, developer responses and questions welcome at</p><a class="mono" href="mailto:reviews@openbenchmarkreview.org">reviews@openbenchmarkreview.org</a></div>
   </div>
 </div></section>
-<footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="benchmarks/index.html">Benchmarks</a><a href="methodology.html">Methodology</a><a href="submit.html">Submit a review</a><a href="about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <span class="mono">reviews@openbenchmarkreview.org</span></p></div></footer>
+</div>
+<footer class="site-footer"><div class="container"><div class="fb"><svg viewBox="0 0 400 400" width="32" height="32" aria-hidden="true"><circle cx="200" cy="200" r="200" fill="#8B1E1A"/><text x="47" y="250" fill="#FFFFFF" font-family="'Open Sans', sans-serif" font-weight="800" font-size="116" letter-spacing="-4.5">OBR</text><g transform="translate(321 185)" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"><line x1="0" y1="-26" x2="0" y2="26"/><line x1="-22.5" y1="-13" x2="22.5" y2="13"/><line x1="-22.5" y1="13" x2="22.5" y2="-13"/></g></svg><p>Open Benchmark Review publishes independent reviews of AI benchmarks against a public rubric, with the evidence for every finding.</p></div><nav aria-label="Footer"><a href="benchmarks/index.html">Benchmarks</a><a href="methodology.html">Methodology</a><a href="submit.html">Submit a review</a><a href="about.html">About</a><a href="https://github.com/Open-Benchmark-Review/audits">GitHub</a></nav><p class="fine">Open Benchmark Review is not affiliated with or endorsed by Epoch AI. Contact: <a class="mono" href="mailto:reviews@openbenchmarkreview.org">reviews@openbenchmarkreview.org</a></p></div></footer>
 </body>
 </html>
