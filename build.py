@@ -235,10 +235,12 @@ def chart(bs, prefix):
     for b in sorted(bs, key=lambda b: -rate(b)):
         lb = f'<div class="lb" style="left:{100 * b["lower_bound"]:.1f}%"></div>' if b.get("lower_bound") else ""
         ok = b["verdict"] == "Verified"
-        mark = '<span class="okmark">Verified</span>' if ok else ""
+        mark = (f'<span class="okmark" style="left:calc({max(rate(b), 20) if rate(b) > 0 else 0:.1f}% + 10px)">Verified</span>'
+                if ok else "")
+        thr = '<div class="thr"></div>' if (not ok or rate(b) > 0) else ""
         rows.append(f'<div class="crow{" ok" if ok else ""}"><div class="name"><a href="{prefix}{b["slug"]}.html">{b["name"]}</a></div>'
                     f'<div class="track"><div class="bar" style="width:{rate(b):.1f}%"></div>{lb}{mark}'
-                    f'{"" if ok else '<div class="thr"></div>'}</div><div class="val">{rate(b):.1f}%</div></div>')
+                    f'{thr}</div><div class="val">{rate(b):.1f}%</div></div>')
     label = "; ".join(f'{b["name"]} {rate(b):.1f} percent' + (", Verified" if b["verdict"] == "Verified" else "")
                       for b in bs)
     oklg = '<span><i class="k-ok"></i>Verified</span>' if any(b["verdict"] == "Verified" for b in bs) else ""

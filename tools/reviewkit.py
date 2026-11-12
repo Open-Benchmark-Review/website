@@ -122,7 +122,7 @@ def _where(sources):
 SHOW_FIRST = 3  # errors shown before "Show N more errors"
 
 
-def errors_list(rows, h='h3', start=0):
+def errors_list(rows, h='h3', start=0, show_first=SHOW_FIRST):
     """rows: dicts with id, title, desc, meta (html line under the description) and sources.
 
     `start` is the number of errors already listed above (in earlier groups); errors past SHOW_FIRST get class
@@ -130,28 +130,32 @@ def errors_list(rows, h='h3', start=0):
     items = ''
     for i, r in enumerate(rows):
         meta = f'<p class="emeta">{r["meta"]}</p>' if r.get('meta') else ''
-        more = ' class="more"' if start + i >= SHOW_FIRST else ''
+        more = ' class="more"' if start + i >= show_first else ''
         items += (f'<li id="{r["id"]}"{more}><{h} class="et">{r["title"]}</{h}><p class="ed">{r["desc"]}</p>{meta}'
                   f'<details class="ew"><summary>{_where(r["sources"])}</summary><ul>'
                   + ''.join(f'<li>{s["html"]}</li>' for s in r['sources']) + '</ul></details></li>\n')
     return f'<ol class="errlist">\n{items}</ol>'
 
 
-def errors_html(errors, noun='error'):
-    """errors: a list of rows, or a list of groups dict(title, lead, rows) shown under subheads."""
+def errors_html(errors, noun='error', show_first=SHOW_FIRST):
+    """errors: a list of rows, or a list of groups dict(title, lead, rows) shown under subheads.
+
+    show_first: errors shown before the fold button; None shows every error with no button."""
+    if show_first is None:
+        show_first = float('inf')
     if errors and 'rows' in errors[0]:
         out, n = '', 0
         for g in errors:
             lead = f'<p class="elead">{g["lead"]}</p>' if g.get('lead') else ''
-            more = ' more' if n >= SHOW_FIRST else ''
+            more = ' more' if n >= show_first else ''
             out += (f'<div class="egrp{more}"><h3 class="egroup">{g["title"]}</h3>{lead}'
-                    f'{errors_list(g["rows"], "h4", n)}</div>')
+                    f'{errors_list(g["rows"], "h4", n, show_first)}</div>')
             n += len(g['rows'])
     else:
         n = len(errors)
-        out = errors_list(errors)
-    if n > SHOW_FIRST:
-        k = n - SHOW_FIRST
+        out = errors_list(errors, show_first=show_first)
+    if n > show_first:
+        k = n - show_first
         pl = 's' if k != 1 else ''
         out += (f'<button type="button" class="moreerr" aria-expanded="false" data-more="Show {k} more '
                 f'{noun}{pl}" data-less="Show fewer {noun}s">Show {k} more {noun}{pl}</button>')
@@ -266,7 +270,8 @@ SCRIPT = '''<script>
 
 
 def write_page(slug, name, reviewed, creator, version, lede, found, errors, cases, disclaimer, notes,
-               extra_script='', cases_intro='', verdict='Flawed', errors_heading='All errors'):
+               extra_script='', cases_intro='', verdict='Flawed', errors_heading='All errors',
+               show_first=SHOW_FIRST):
     """Write content/reviews/<slug>.html.
 
     lede: one paragraph (html) saying what the benchmark is.
@@ -314,7 +319,7 @@ def write_page(slug, name, reviewed, creator, version, lede, found, errors, case
       {case_sec}
       <section id="errors" aria-label="{errors_heading}">
         <div class="errhead"><h2>{errors_heading}</h2><button type="button" class="showall" aria-pressed="false">Show all sources</button></div>
-        {errors_html(errors, "issue" if errors_heading == "All issues" else "error")}
+        {errors_html(errors, "issue" if errors_heading == "All issues" else "error", show_first)}
       </section>
       <section id="disclaimer" aria-label="Disclaimer">
         <h2>Disclaimer</h2>

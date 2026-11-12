@@ -1,5 +1,95 @@
 [
   {
+    "slug": "posttrainbench",
+    "name": "PostTrainBench",
+    "creator": "aisa-group",
+    "measures": "Agents post-training a small base model for one target benchmark in 10 hours on one H100",
+    "verdict": "Verified",
+    "reviewed": "Nov. 4, 2026",
+    "defects": 0,
+    "inspected": 24,
+    "unit": "tasks",
+    "summary": "No grading errors, and no reward hacks in the top run of each of its 24 tasks.",
+    "rubric": {
+      "reviewability": [
+        "cav",
+        "Partial",
+        "7 of 19 entries have no public runs"
+      ],
+      "scoring": [
+        "pass",
+        "Pass",
+        "0/24 tasks; 24 top runs clean"
+      ],
+      "consistency": [
+        "pass",
+        "Pass",
+        "Small scorer commits a day after release"
+      ],
+      "elicitation": [
+        "pass",
+        "Pass",
+        "Same GPU and time; native CLIs"
+      ],
+      "bias": [
+        "pass",
+        "Pass",
+        "Fable GPQA fallback disclosed"
+      ]
+    },
+    "section": "rsi-benchmarks",
+    "creator_links": {
+      "aisa-group": "https://github.com/aisa-group"
+    },
+    "benchmark_url": "https://posttrainbench.com",
+    "benchmark_label": "posttrainbench.com"
+  },
+  {
+    "slug": "autoresearchexam",
+    "name": "AutoResearchExam",
+    "creator": "Bespoke Labs",
+    "measures": "Agents doing open-ended ML research for 24 hours on each of 29 tasks",
+    "verdict": "Verified",
+    "reviewed": "Nov. 11, 2026",
+    "defects": 4,
+    "inspected": 29,
+    "unit": "tasks",
+    "summary": "4 of 29 tasks have confirmed scoring defects, below the 20% threshold, including a reward hack that wins its task. The top four models are a statistical tie.",
+    "rubric": {
+      "reviewability": [
+        "pass",
+        "Pass",
+        "Tasks, graders and all 353 runs public"
+      ],
+      "scoring": [
+        "cav",
+        "Pass",
+        "4/29 tasks; one reward hack wins a task"
+      ],
+      "consistency": [
+        "cav",
+        "Partial",
+        "38 re-runs; policy unpublished"
+      ],
+      "elicitation": [
+        "pass",
+        "Pass",
+        "Same harness and highest effort"
+      ],
+      "bias": [
+        "cav",
+        "Partial",
+        "A replaced refusal run decides one task"
+      ]
+    },
+    "section": "rsi-benchmarks",
+    "creator_links": {
+      "Bespoke Labs": "https://bespokelabs.ai"
+    },
+    "benchmark_url": "https://benchmarks.bespokelabs.ai/autoresearchexam/",
+    "benchmark_label": "benchmarks.bespokelabs.ai"
+  },
+  {
     "slug": "hackbench",
     "name": "HackBench",
     "creator": "Meta, RAM team",
@@ -229,50 +319,5 @@
     },
     "benchmark_url": "https://lab.einsia.ai/ai4ai/",
     "benchmark_label": "lab.einsia.ai/ai4ai"
-  },
-  {
-    "slug": "posttrainbench",
-    "name": "PostTrainBench",
-    "creator": "aisa-group",
-    "measures": "Agents post-training a small base model for one target benchmark in 10 hours on one H100",
-    "verdict": "Verified",
-    "reviewed": "Nov. 4, 2026",
-    "defects": 0,
-    "inspected": 24,
-    "unit": "tasks",
-    "summary": "No grading errors, and no reward hacks in the top run of each of its 24 tasks.",
-    "rubric": {
-      "reviewability": [
-        "cav",
-        "Partial",
-        "7 of 19 entries have no public runs"
-      ],
-      "scoring": [
-        "pass",
-        "Pass",
-        "0/24 tasks; 24 top runs clean"
-      ],
-      "consistency": [
-        "pass",
-        "Pass",
-        "Small scorer commits a day after release"
-      ],
-      "elicitation": [
-        "pass",
-        "Pass",
-        "Same GPU and time; native CLIs"
-      ],
-      "bias": [
-        "pass",
-        "Pass",
-        "Fable GPQA fallback disclosed"
-      ]
-    },
-    "section": "rsi-benchmarks",
-    "creator_links": {
-      "aisa-group": "https://github.com/aisa-group"
-    },
-    "benchmark_url": "https://posttrainbench.com",
-    "benchmark_label": "posttrainbench.com"
   }
 ]
